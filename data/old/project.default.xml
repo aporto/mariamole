@@ -1,0 +1,10 @@
+<mm_project serial_port="COM 1" board="Arduino Diecimila or Duemilanove w\ ATmega168" programmer="Arduino as ISP" includePaths="$(ARDUINO)\hardware\arduino\cores\arduino;$(ARDUINO)\hardware\arduino\variants\standard" libs="" compileOptions="-g -Os -Wall -fno-exceptions -ffunction-sections -fdata-sections -MMD -DUSB_VID=null -DUSB_PID=null -DARDUINO=101" >
+  <files>
+    <file name="alex.cpp" open="no" />
+  </files>
+  <extras>
+
+  </extras>
+  <externals>
+  </externals>
+</mm_project>

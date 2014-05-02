@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindowClass</class>
+ <widget class="QMainWindow" name="MainWindowClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1112</width>
+    <height>673</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MariaMole</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">color:rgb(200,200,200);
+background-color: rgb(28, 36, 38);
+selection-background-color: rgb(68, 85, 89);</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="1" column="0">
+     <widget class="QSplitter" name="splitter_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QTreeWidget" name="tree">
+        <property name="styleSheet">
+         <string notr="true"> background-color: rgb(32,40,42);
+outline: 0;
+border-image: none;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::WinPanel</enum>
+        </property>
+        <property name="lineWidth">
+         <number>5</number>
+        </property>
+        <property name="rootIsDecorated">
+         <bool>false</bool>
+        </property>
+        <property name="headerHidden">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QTabWidget" name="editorTabs">
+        <property name="styleSheet">
+         <string notr="true">border-style:solid;
+background-color: rgb(32, 40, 42);
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fafafa, stop: 0.4 #f4f4f4, stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);
+}
+
+QTabBar::tab:selected {
+border-color: red;
+border-bottom-color: green; /* same as pane color */
+}
+QTabBar::tab:!selected {
+margin-top: 2px; /* make non-selected tabs look smaller */
+}</string>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Triangular</enum>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="tabsClosable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Tab 1</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Tab 2</string>
+         </attribute>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QTabWidget" name="messageTabs">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-style:solid;
+background-color: rgb(32, 40, 42);</string>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Triangular</enum>
+       </property>
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Build</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QListWidget" name="listWidget"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Output</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QTextBrowser" name="textBrowser"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_5">
+        <attribute name="title">
+         <string>Search</string>
+        </attribute>
+        <widget class="QComboBox" name="searchText">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>381</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">     border-style: outset;
+     border-width: 1px;
+     border-radius: 0px;
+     border-color: rgb(60,60,60);
+</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>121</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Type your search string:</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="searchCBCase">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>101</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Case sensitive</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btnSearch">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>30</y>
+           <width>41</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">     border-style: outset;
+     border-width: 1px;
+     border-radius: 0px;
+     border-color: rgb(60,60,60);
+</string>
+         </property>
+         <property name="text">
+          <string>Find</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="searchCBWords">
+         <property name="geometry">
+          <rect>
+           <x>130</x>
+           <y>60</y>
+           <width>141</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Match only whole words</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1112</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(28, 36, 38)</string>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSwitch_workspace"/>
+    <addaction name="actionSave_workspace"/>
+    <addaction name="actionSave_workspace_as"/>
+    <addaction name="actionReload_workspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_file"/>
+    <addaction name="actionRename_file"/>
+    <addaction name="actionRemove_file"/>
+    <addaction name="actionOpen_file"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_workspace_folder"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSearch"/>
+    <addaction name="actionFormat_code"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrefereces"/>
+   </widget>
+   <widget class="QMenu" name="menuProject">
+    <property name="title">
+     <string>Project</string>
+    </property>
+    <addaction name="actionAdd"/>
+    <addaction name="actionRename"/>
+    <addaction name="actionRemove"/>
+    <addaction name="separator"/>
+    <addaction name="actionEdit_configuration"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_serial_port_2"/>
+    <addaction name="actionClean_current_project"/>
+    <addaction name="actionClean_project_and_core_libraries"/>
+    <addaction name="actionBuild_current_project"/>
+    <addaction name="actionUpload_to_board"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionVisit_MariaMole_website"/>
+    <addaction name="actionView_software_licence"/>
+    <addaction name="actionReport_a_bug"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Arduino_online_help"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuProject"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(32, 40, 42);
+border:none;</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonFollowStyle</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSelect_workspace"/>
+   <addaction name="actionAdd_a_new_project"/>
+   <addaction name="actionAdd_a_new_file"/>
+   <addaction name="actionSave_project"/>
+   <addaction name="actionProject_configurations"/>
+   <addaction name="actionBuild_project"/>
+   <addaction name="actionBuild_and_upload_project"/>
+   <addaction name="actionOpen_serial_port"/>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(28, 36, 38)</string>
+   </property>
+  </widget>
+  <action name="actionSelect_workspace">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/workspace.png</normaloff>:/MainWindow/resources/workspace.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select workspace</string>
+   </property>
+   <property name="toolTip">
+    <string>Select workspace</string>
+   </property>
+  </action>
+  <action name="actionAdd_a_new_project">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/add_project.png</normaloff>:/MainWindow/resources/add_project.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add a new project</string>
+   </property>
+  </action>
+  <action name="actionAdd_a_new_file">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/add_file.png</normaloff>:/MainWindow/resources/add_file.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add a new file</string>
+   </property>
+  </action>
+  <action name="actionSave_project">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/save_all.png</normaloff>:/MainWindow/resources/save_all.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save project</string>
+   </property>
+  </action>
+  <action name="actionProject_configurations">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/project_properties.png</normaloff>:/MainWindow/resources/project_properties.png</iconset>
+   </property>
+   <property name="text">
+    <string>Project configurations</string>
+   </property>
+  </action>
+  <action name="actionBuild_project">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/compile.png</normaloff>:/MainWindow/resources/compile.png</iconset>
+   </property>
+   <property name="text">
+    <string>Build project</string>
+   </property>
+  </action>
+  <action name="actionBuild_and_upload_project">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/upload.png</normaloff>:/MainWindow/resources/upload.png</iconset>
+   </property>
+   <property name="text">
+    <string>Build and upload project</string>
+   </property>
+  </action>
+  <action name="actionOpen_serial_port">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/terminal.png</normaloff>:/MainWindow/resources/terminal.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open serial port</string>
+   </property>
+  </action>
+  <action name="actionSwitch_workspace">
+   <property name="text">
+    <string>Switch workspace</string>
+   </property>
+  </action>
+  <action name="actionSave_workspace">
+   <property name="text">
+    <string>Save workspace</string>
+   </property>
+  </action>
+  <action name="actionSave_workspace_as">
+   <property name="text">
+    <string>Save workspace as</string>
+   </property>
+  </action>
+  <action name="actionReload_workspace">
+   <property name="text">
+    <string>Reload workspace</string>
+   </property>
+  </action>
+  <action name="actionAdd_file">
+   <property name="text">
+    <string>Add file</string>
+   </property>
+  </action>
+  <action name="actionRename_file">
+   <property name="text">
+    <string>Rename file</string>
+   </property>
+  </action>
+  <action name="actionRemove_file">
+   <property name="text">
+    <string>Remove file</string>
+   </property>
+  </action>
+  <action name="actionOpen_file">
+   <property name="text">
+    <string>Open file</string>
+   </property>
+  </action>
+  <action name="actionOpen_workspace_folder">
+   <property name="text">
+    <string>Open workspace folder</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSearch">
+   <property name="text">
+    <string>Search</string>
+   </property>
+  </action>
+  <action name="actionFormat_code">
+   <property name="text">
+    <string>Format code</string>
+   </property>
+  </action>
+  <action name="actionPrefereces">
+   <property name="text">
+    <string>Prefereces</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionRename">
+   <property name="text">
+    <string>Rename</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="actionEdit_configuration">
+   <property name="text">
+    <string>Edit configuration</string>
+   </property>
+  </action>
+  <action name="actionOpen_serial_port_2">
+   <property name="text">
+    <string>Open serial port</string>
+   </property>
+  </action>
+  <action name="actionClean_current_project">
+   <property name="text">
+    <string>Clean current project</string>
+   </property>
+  </action>
+  <action name="actionClean_project_and_core_libraries">
+   <property name="text">
+    <string>Clean project and core libraries</string>
+   </property>
+  </action>
+  <action name="actionBuild_current_project">
+   <property name="text">
+    <string>Build current project</string>
+   </property>
+  </action>
+  <action name="actionUpload_to_board">
+   <property name="text">
+    <string>Upload to board</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionVisit_MariaMole_website">
+   <property name="text">
+    <string>Visit MariaMole website</string>
+   </property>
+  </action>
+  <action name="actionView_software_licence">
+   <property name="text">
+    <string>View software licence</string>
+   </property>
+  </action>
+  <action name="actionReport_a_bug">
+   <property name="text">
+    <string>Report a bug</string>
+   </property>
+  </action>
+  <action name="actionOpen_Arduino_online_help">
+   <property name="text">
+    <string>Open Arduino online help</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="mainwindow.qrc"/>
+ </resources>
+ <connections/>
+</ui>

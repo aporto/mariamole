@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title></title>
+<style type="text/css">
+
+html {
+    border: 0;
+    font-family: "arial";
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    vertical-align: baseline;
+    color: #000080;
+    text-indent: inherit;
+}
+body {
+    background: #fff;
+    line-height: 1;
+    color: #000080;
+    padding: 10px 10px 20px 10px;
+}
+ol {
+    list-style: decimal;   
+}
+ul {
+    list-style: none;
+    list-style-type: square;
+}
+
+a:link {color: #000080;}
+a:visited {color: #000080;}
+
+.textBlock {
+	background: #e1e1e1;
+	padding:  0px 0px 0px 5px;
+    margin: 10px 3px 10px 3px;
+	font-weight:regular;
+	background: #153a76;	
+	color:#ffffff;		
+}
+
+.linkBlock {
+        list-style: decimal;
+        padding: 10px 10px 10px 10px;
+        font-weight: bold;
+        background: #edecec;
+        color: #000080;
+        border: dotted;
+        border-width: 1px;
+    }
+
+.tutorialBlock {
+	padding:  0px 0px 0px 5px;
+    font-weight:100;
+        margin-right: 3px;
+        margin-top: 10px;
+        margin-bottom: 0px;
+    }
+
+.tutorials {
+	padding: 0px 20px 0px 20px;    
+	background: #fff;		
+}
+
+#online_frame {
+	font-size:50pt;
+}
+
+</style>
+<script language="javascript"> 	
+	function toggle2(showHideDiv, switchTextDiv) {
+		var ele = document.getElementById(showHideDiv);
+		var text = document.getElementById(switchTextDiv);
+		//alert(text);
+		if (ele.style.display == "block") {
+			ele.style.display = "none";
+			text.innerHTML = "Click to show";
+		} else {
+			ele.style.display = "block";
+			text.innerHTML = "Click to hide";
+		}
+	}	
+	
+</script>
+</head>
+<body style="color: #000080">
+	<h1>Welcome to MariaMole</h1>    
+	<p>This start page will provide you with links to tutorials, online help and information about your projects</p>	
+	
+	<div class="linkBlock">		    
+	    <strong>Online content: <strong>
+		<a id="online_content_link" href="javascript:toggle2('online_content','online_content_link');" >Click to hide</a>
+		<div id="online_content" class="tutorialBlock" style="display: block;">
+			<center><iframe id="online_frame" allowtransparency="true" src="http://dalpix.com/mm_files/online_content.php" width="95%" height="50%" frameborder="0" >teste</iframe></center>              
+		</div>
+	</div>	
+	
+	<p>Here are some information you might like:</p>
+	<div class="tutorials">
+        <div class="linkBlock">
+		    What is MariaMole?
+		    <a id="link_tutorial_1" href="javascript:toggle2('tutorial_1','link_tutorial_1');" >Click to show</a>
+            <div id="tutorial_1" class="tutorialBlock" style="display: none;">
+                MariaMole is an alternative software for creating Arduino programns. Some of its features are:
+	            <ul>
+                    <li>User interface similar to other software development environments</li>
+                    <li>Works with multiple projects at the same time</li>
+                    <li>Code coloring themes</li>
+                    
+                    <li>Full control of the building process: It still handles it for you, but you can fine-tune it.</li>
+                </ul>
+                <p>Check <a href="http://dalpix.com/mariamole">our website for more details</a></p>
+            </div>
+	    </div>
+        </br>
+        <div class="linkBlock">
+		    MariaMole quick start: Learn its basics in 60 seconds!
+		    <a id="link_tutorial_2" href="javascript:toggle2('tutorial_2','link_tutorial_2');" >Click to show</a>
+            <div id="tutorial_2" class="tutorialBlock" style="display: none;">
+                Check this tutorial for your first steps on MariaMole: <a href="http://dalpix.com/mariamole-tutorial">http://dalpix.com/mariamole-tutorial</a>
+            </div>
+	    </div>	
+        </br>
+	    <div style="clear:both;" class="linkBlock">
+		    Best font for code editing?
+		     <a id="link_tutorial_3" href="javascript:toggle2('tutorial_3','link_tutorial_3');" >Click to show</a>
+		    <div id="tutorial_3" class="tutorialBlock" style="display: none;" >
+			    <p>Reserve some time to select a good font for code editing: It pays off!</p>
+                 <p> I recomend <strong>Inconsolata</strong>, a great and free font specially designed for code editing.</p>			    
+			    <a href="http://levien.com/type/myfonts/inconsolata.html">Visit Inconsolata website to download it!</a>
+		    </div>
+	    </div>	
+	</div>
+</body></html>

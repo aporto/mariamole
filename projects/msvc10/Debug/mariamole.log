@@ -1,0 +1,34 @@
+﻿Build started 02-05-14 5:04:33 PM.
+     1>Project "C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\mariamole.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\mariamole.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         Uic'ing ..\..\code\mainwindow.ui...
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtConcurrent /IC:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets /IC:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtXml /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_CONCURRENT_LIB /D QT_WIDGETS_LIB /D QT_XML_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\code\main.cpp ..\..\code\mainwindow.cpp GeneratedFiles\Debug\moc_mainwindow.cpp
+         main.cpp
+         mainwindow.cpp
+         moc_mainwindow.cpp
+         Generating Code...
+         All outputs are up-to-date.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\\..\..\release\win32\\mariamole.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Concurrentd.lib Qt5Widgetsd.lib Qt5Xmld.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\mariamole.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\alexi_000\Desktop\mm\mariamole\release\win32\mariamole.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\\..\..\release\win32\mariamole.lib" /MACHINE:X86 Debug\main.obj
+         Debug\mainwindow.obj
+         Debug\config.obj
+         Debug\moc_mainwindow.obj
+         Debug\qrc_mainwindow.obj
+         Debug\message_handler.obj
+         Debug\project.obj
+         Debug\workspace.obj
+         LINK : C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\\..\..\release\win32\\mariamole.exe not found or not built by the last incremental link; performing full link
+         mariamole.vcxproj -> C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\\..\..\release\win32\mariamole.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\\..\..\release\win32\\mariamole.exe;#1" /manifest Debug\mariamole.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\mariamole.unsuccessfulbuild".
+         Touching "Debug\mariamole.lastbuildstate".
+     1>Done Building Project "C:\Users\alexi_000\Desktop\mm\mariamole\projects\msvc10\mariamole.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.45
