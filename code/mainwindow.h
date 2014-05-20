@@ -6,7 +6,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
 
-//#include "config.h"
+#include "config.h"
 #include "workspace.h"
 
 //-----------------------------------------------------------------------------

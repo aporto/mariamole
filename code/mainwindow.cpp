@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//connect ( this, SIGNAL ( ShowErrorSignal ( QString ) ), SLOT ( ShowError ( QString  ) ) );
 	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspace));
 
-	//config.Load();	
+	config.Load();	
 
 	SetWorkspace();
 }
@@ -46,8 +46,8 @@ void MainWindow::SetWorkspace(void)
 //	QTreeWidgetItem item;
 //	item.setText(0, "Workspace");
 	//ui.tree->addTopLevelItem(&item);
-	//workspace.Open("C:/projetos/arduino/workspaces/mainframe-kaboom/arduino");
-	//AdjustWorkspaceTree();
+	workspace.Open("C:/projetos/arduino/workspaces/mainframe-kaboom/arduino");
+	AdjustWorkspaceTree();
 }
 
 //-----------------------------------------------------------------------------
