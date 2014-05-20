@@ -23,19 +23,10 @@ selection-background-color: rgb(68, 85, 89);</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <property name="leftMargin">
+    <property name="margin">
      <number>0</number>
     </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -96,12 +87,12 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         </property>
         <widget class="QWidget" name="tab_3">
          <attribute name="title">
-          <string>Tab 1</string>
+          <string>    Tab 1</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
-          <string>Tab 2</string>
+          <string>   Tab 2</string>
          </attribute>
         </widget>
        </widget>
@@ -121,7 +112,7 @@ background-color: rgb(32, 40, 42);</string>
         <enum>QTabWidget::Triangular</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
@@ -131,16 +122,7 @@ background-color: rgb(32, 40, 42);</string>
          <string>Build</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>0</number>
          </property>
          <item row="0" column="0">
@@ -153,16 +135,7 @@ background-color: rgb(32, 40, 42);</string>
          <string>Output</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_2">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>0</number>
          </property>
          <item row="0" column="0">
@@ -265,7 +238,7 @@ background-color: rgb(32, 40, 42);</string>
      <x>0</x>
      <y>0</y>
      <width>1112</width>
-     <height>26</height>
+     <height>27</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -334,12 +307,6 @@ background-color: rgb(32, 40, 42);</string>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(32, 40, 42);
 border:none;</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>32</width>
-     <height>32</height>
-    </size>
    </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonFollowStyle</enum>
