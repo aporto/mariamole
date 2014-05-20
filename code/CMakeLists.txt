@@ -22,7 +22,7 @@ endif()
 
 
 file(GLOB_RECURSE UI_FILES *.ui)
-file(GLOB_RECURSE CODE_FILES *.cpp)
+file(GLOB_RECURSE CODE_FILES config.cpp  main.cpp  mainwindow.cpp workspace.cpp project.cpp message_handler.cpp)
 
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 qt5_add_resources(RESOURCE_FILES mainwindow.qrc)

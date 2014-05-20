@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//connect ( this, SIGNAL ( ShowErrorSignal ( QString ) ), SLOT ( ShowError ( QString  ) ) );
 	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspace));
 
-	config.Load();	
+	//config.Load();	
 
 	SetWorkspace();
 }
@@ -46,8 +46,8 @@ void MainWindow::SetWorkspace(void)
 //	QTreeWidgetItem item;
 //	item.setText(0, "Workspace");
 	//ui.tree->addTopLevelItem(&item);
-	workspace.Open("C:/projetos/arduino/workspaces/mainframe-kaboom/arduino");
-	AdjustWorkspaceTree();
+	//workspace.Open("C:/projetos/arduino/workspaces/mainframe-kaboom/arduino");
+	//AdjustWorkspaceTree();
 }
 
 //-----------------------------------------------------------------------------
@@ -57,6 +57,7 @@ void MainWindow::AdjustWorkspaceTree(void)
 	QTreeWidgetItem *root = ui.tree->topLevelItem(0);
 
 	// Fisr, find projects on workspace that are not yet on the tree, and add them.	
+        
 	for (int pwi=0; pwi < workspace.projects.size(); pwi++) {
 		bool foundAtTree = false;
 		for (int pti=0; pti < root->childCount(); pti++) {
@@ -101,7 +102,8 @@ void MainWindow::AdjustWorkspaceTree(void)
 //-----------------------------------------------------------------------------
 
 void MainWindow::AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode)
-{	
+{
+		
 	vector <Project>::iterator project = workspace.projects.begin() + pwi;
 	
 	// Get the node with the label "External files"
