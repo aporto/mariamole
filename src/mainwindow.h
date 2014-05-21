@@ -8,14 +8,13 @@
 #include <QIcon>
 #include <QMessageBox>
 #include <QFileInfo>
-#include <Qsci/qsciscintilla.h>
-#include <Qsci/qscilexercpp.h>
-#include <Qsci/qsciapis.h>
 
 #include "ui_mainwindow.h"
 
 #include "config.h"
 #include "workspace.h"
+
+#include "editor.h"
 
 //-----------------------------------------------------------------------------
 
@@ -26,7 +25,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
-    QsciScintilla *textEdit;
+    Editor *textEdit;
 
 public slots:
 	void SetWorkspace(void);
@@ -40,7 +39,7 @@ private:
 	Ui::MainWindowClass ui;
 
 	void AdjustWorkspaceTree(void);
-	void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode);
+    void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);
 };
 

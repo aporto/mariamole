@@ -63,20 +63,9 @@ void MainWindow::loadFile(const QString &fileName)
     QTextStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
+    QString txt(in.readAll());
 
-    textEdit = new QsciScintilla;
-
-    QsciLexerCPP *lexer = new QsciLexerCPP;
-    textEdit->setLexer(lexer);
-
-
-    //QsciAPIs *api = new QsciAPIs(lexer);
-
-    //api->prepare();
-
-    textEdit->setText(in.readAll());
-    textEdit->setAutoCompletionThreshold(1);
-    textEdit->setAutoCompletionSource(QsciScintilla::AcsAll);
+    textEdit = new Editor(txt);
 
     ui.editorTabs->addTab(textEdit, QFileInfo(fileName).fileName());
 
