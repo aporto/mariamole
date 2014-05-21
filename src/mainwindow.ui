@@ -119,14 +119,17 @@ margin-top: 2px; /* make non-selected tabs look smaller */
          <enum>QTabWidget::Triangular</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="tabsClosable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="tab_3">
+        <property name="movable">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="">
          <attribute name="title">
-          <string>Tab 1</string>
+          <string> Tab 1</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="tab_4">
@@ -283,6 +286,11 @@ background-color: rgb(32, 40, 42);</string>
           <string>Match only whole words</string>
          </property>
         </widget>
+        <zorder>searchText</zorder>
+        <zorder>label</zorder>
+        <zorder>searchCBCase</zorder>
+        <zorder>searchCBWords</zorder>
+        <zorder>btnSearch</zorder>
        </widget>
       </widget>
      </widget>

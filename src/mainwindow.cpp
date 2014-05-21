@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 	SetWorkspace();
 
     cout << ui.editorTabs->count() << endl;
+    ui.editorTabs->clear();
 
     ui.actionOpen_file->setShortcut(tr("Ctrl+O"));
     ui.actionOpen_file->setStatusTip(tr("Open an existing file"));
