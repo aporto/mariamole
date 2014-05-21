@@ -17,25 +17,35 @@ MainWindow::MainWindow(QWidget *parent)
 
 	SetWorkspace();
 
-    cout << ui.editorTabs->count() << endl;
-    ui.editorTabs->clear();
+    ui.editorTabs->clear();  //removes all the previous tabs
 
-    ui.actionOpen_file->setShortcut(tr("Ctrl+O"));
-    ui.actionOpen_file->setStatusTip(tr("Open an existing file"));
-    connect(ui.actionOpen_file, SIGNAL(triggered()), this, SLOT(open()));
+    setupActions();
 
 }
 
 //-----------------------------------------------------------------------------
 
+void MainWindow::setupActions()
+{
+    //Open Action
+    ui.actionOpen_file->setShortcut(tr("Ctrl+O"));
+    ui.actionOpen_file->setStatusTip(tr("Open an existing file"));
+    connect(ui.actionOpen_file, SIGNAL(triggered()), this, SLOT(open()));
+
+    //Save Action
+
+
+}
+
+
+
 
 void MainWindow::open()
 {
-
         QString fileName = QFileDialog::getOpenFileName(this);
+
         if (!fileName.isEmpty())
           loadFile(fileName);
-
 }
 
 
@@ -60,11 +70,9 @@ void MainWindow::loadFile(const QString &fileName)
     textEdit->setLexer(lexer);
 
 
-    QsciAPIs *api = new QsciAPIs(lexer);
-    api->add("Serial");
-    api->add("Teste");
+    //QsciAPIs *api = new QsciAPIs(lexer);
 
-    api->prepare();
+    //api->prepare();
 
     textEdit->setText(in.readAll());
     textEdit->setAutoCompletionThreshold(1);
@@ -75,6 +83,7 @@ void MainWindow::loadFile(const QString &fileName)
     cout << ui.editorTabs->count() << endl;
 
     ui.editorTabs->setCurrentIndex(ui.editorTabs->count() - 1);
+
 
 
     QApplication::restoreOverrideCursor();

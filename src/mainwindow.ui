@@ -514,6 +514,11 @@ border:none;</string>
    </property>
   </action>
   <action name="actionOpen_file">
+   <property name="icon">
+    <iconset>
+     <selectedon>:/MainWindow/resources/workspace.png</selectedon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open file</string>
    </property>

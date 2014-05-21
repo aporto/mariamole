@@ -41,6 +41,7 @@ private:
 
 	void AdjustWorkspaceTree(void);
 	void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode);
+    void setupActions(void);
 };
 
 #endif // MAINWINDOW_H
