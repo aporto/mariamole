@@ -5,7 +5,6 @@ set(CMAKE_AUTOMOC ON)
 
 # Find the QtWidgets library
 find_package(Qt5Widgets)
-
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 
@@ -32,5 +31,5 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
-  Qt5::Widgets
+  Qt5::Widgets qscintilla2
 )

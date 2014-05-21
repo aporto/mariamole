@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 
 //-----------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -12,10 +14,73 @@ MainWindow::MainWindow(QWidget *parent)
 
 	config.Load();	
 
+
 	SetWorkspace();
+
+    cout << ui.editorTabs->count() << endl;
+
+    ui.actionOpen_file->setShortcut(tr("Ctrl+O"));
+    ui.actionOpen_file->setStatusTip(tr("Open an existing file"));
+    connect(ui.actionOpen_file, SIGNAL(triggered()), this, SLOT(open()));
+
 }
 
 //-----------------------------------------------------------------------------
+
+
+void MainWindow::open()
+{
+
+        QString fileName = QFileDialog::getOpenFileName(this);
+        if (!fileName.isEmpty())
+          loadFile(fileName);
+
+}
+
+
+void MainWindow::loadFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly)) {
+        QMessageBox::warning(this, tr("Application"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return;
+    }
+
+    QTextStream in(&file);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+
+    textEdit = new QsciScintilla;
+
+    QsciLexerCPP *lexer = new QsciLexerCPP;
+    textEdit->setLexer(lexer);
+
+
+    QsciAPIs *api = new QsciAPIs(lexer);
+    api->add("Serial");
+    api->add("Teste");
+
+    api->prepare();
+
+    textEdit->setText(in.readAll());
+    textEdit->setAutoCompletionThreshold(1);
+    textEdit->setAutoCompletionSource(QsciScintilla::AcsAll);
+
+    ui.editorTabs->addTab(textEdit, QFileInfo(fileName).fileName());
+
+    cout << ui.editorTabs->count() << endl;
+
+    ui.editorTabs->setCurrentIndex(ui.editorTabs->count() - 1);
+
+
+    QApplication::restoreOverrideCursor();
+}
+
+
+
 
 MainWindow::~MainWindow()
 {

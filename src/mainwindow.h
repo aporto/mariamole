@@ -4,6 +4,14 @@
 //-----------------------------------------------------------------------------
 
 #include <QtWidgets/QMainWindow>
+#include <QFileDialog>
+#include <QIcon>
+#include <QMessageBox>
+#include <QFileInfo>
+#include <Qsci/qsciscintilla.h>
+#include <Qsci/qscilexercpp.h>
+#include <Qsci/qsciapis.h>
+
 #include "ui_mainwindow.h"
 
 #include "config.h"
@@ -18,9 +26,12 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
+    QsciScintilla *textEdit;
 
 public slots:
 	void SetWorkspace(void);
+    void open(void);
+    void loadFile(const QString &);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
