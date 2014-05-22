@@ -12,11 +12,9 @@ class Editor : public QsciScintilla
 public:
     Editor(QWidget *parent = 0);
     Editor(QString &text);
-    void setCodeText(QString &text);
+    void setText(QString &text);
 
 private:
-
-    QsciScintilla *codeEditor;
 
 };
 

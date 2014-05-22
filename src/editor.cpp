@@ -25,8 +25,8 @@ Editor::Editor(QString &text) : Editor()
 }
 
 
-void Editor::setCodeText(QString &text)
+void Editor::setText(QString &text)
 {
-    setText(text);
+    QsciScintilla::setText(text);
 }
 
