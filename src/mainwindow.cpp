@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 
 //-----------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -12,10 +14,72 @@ MainWindow::MainWindow(QWidget *parent)
 
 	config.Load();	
 
+
 	SetWorkspace();
+
+    ui.editorTabs->clear();  //removes all the previous tabs
+
+    setupActions();
+
 }
 
 //-----------------------------------------------------------------------------
+
+void MainWindow::setupActions()
+{
+    //Open Action
+    ui.actionOpen_file->setShortcut(tr("Ctrl+O"));
+    ui.actionOpen_file->setStatusTip(tr("Open an existing file"));
+    connect(ui.actionOpen_file, SIGNAL(triggered()), this, SLOT(open()));
+
+    //Save Action
+
+
+}
+
+
+
+
+void MainWindow::open()
+{
+        QString fileName = QFileDialog::getOpenFileName(this);
+
+        if (!fileName.isEmpty())
+          loadFile(fileName);
+}
+
+
+void MainWindow::loadFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly)) {
+        QMessageBox::warning(this, tr("Application"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return;
+    }
+
+    QTextStream in(&file);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    QString txt(in.readAll());
+
+    textEdit = new Editor(txt);
+
+    ui.editorTabs->addTab(textEdit, QFileInfo(fileName).fileName());
+
+    cout << ui.editorTabs->count() << endl;
+
+    ui.editorTabs->setCurrentIndex(ui.editorTabs->count() - 1);
+
+
+
+    QApplication::restoreOverrideCursor();
+}
+
+
+
 
 MainWindow::~MainWindow()
 {
@@ -57,6 +121,7 @@ void MainWindow::AdjustWorkspaceTree(void)
 	QTreeWidgetItem *root = ui.tree->topLevelItem(0);
 
 	// Fisr, find projects on workspace that are not yet on the tree, and add them.	
+        
 	for (int pwi=0; pwi < workspace.projects.size(); pwi++) {
 		bool foundAtTree = false;
 		for (int pti=0; pti < root->childCount(); pti++) {
@@ -101,7 +166,8 @@ void MainWindow::AdjustWorkspaceTree(void)
 //-----------------------------------------------------------------------------
 
 void MainWindow::AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode)
-{	
+{
+		
 	vector <Project>::iterator project = workspace.projects.begin() + pwi;
 	
 	// Get the node with the label "External files"

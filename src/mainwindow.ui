@@ -67,6 +67,36 @@ border-image: none;</string>
           <string notr="true">1</string>
          </property>
         </column>
+        <column>
+         <property name="text">
+          <string>New Column</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>New Column</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>New Column</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>New Column</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>New Column</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>New Column</string>
+         </property>
+        </column>
        </widget>
        <widget class="QTabWidget" name="editorTabs">
         <property name="styleSheet">
@@ -89,14 +119,17 @@ margin-top: 2px; /* make non-selected tabs look smaller */
          <enum>QTabWidget::Triangular</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="tabsClosable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="tab_3">
+        <property name="movable">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="">
          <attribute name="title">
-          <string>Tab 1</string>
+          <string> Tab 1</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="tab_4">
@@ -253,6 +286,11 @@ background-color: rgb(32, 40, 42);</string>
           <string>Match only whole words</string>
          </property>
         </widget>
+        <zorder>searchText</zorder>
+        <zorder>label</zorder>
+        <zorder>searchCBCase</zorder>
+        <zorder>searchCBWords</zorder>
+        <zorder>btnSearch</zorder>
        </widget>
       </widget>
      </widget>
@@ -265,7 +303,7 @@ background-color: rgb(32, 40, 42);</string>
      <x>0</x>
      <y>0</y>
      <width>1112</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -337,8 +375,8 @@ border:none;</string>
    </property>
    <property name="iconSize">
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>24</width>
+     <height>24</height>
     </size>
    </property>
    <property name="toolButtonStyle">
@@ -476,6 +514,11 @@ border:none;</string>
    </property>
   </action>
   <action name="actionOpen_file">
+   <property name="icon">
+    <iconset>
+     <selectedon>:/MainWindow/resources/workspace.png</selectedon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open file</string>
    </property>
