@@ -31,6 +31,7 @@ public slots:
 	void SetWorkspace(void);
     void open(void);
     void loadFile(const QString &);
+    void closeTab(int);
 
 protected:
 	void resizeEvent(QResizeEvent *event);

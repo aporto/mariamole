@@ -11,11 +11,13 @@ MainWindow::MainWindow(QWidget *parent)
 	
 	//connect ( this, SIGNAL ( ShowErrorSignal ( QString ) ), SLOT ( ShowError ( QString  ) ) );
 	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspace));
+    connect(ui.editorTabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
 	config.Load();	
 
 
 	SetWorkspace();
+
 
     ui.editorTabs->clear();  //removes all the previous tabs
 
@@ -37,6 +39,11 @@ void MainWindow::setupActions()
 
 }
 
+
+void MainWindow::closeTab(int index)
+{
+    ui.editorTabs->removeTab(index);
+}
 
 
 
