@@ -12,9 +12,12 @@ class Editor : public QsciScintilla
 public:
     Editor(QWidget *parent = 0);
     Editor(QString &text);
+    ~Editor();
     void setText(QString &text);
 
 private:
+    QsciAPIs *api;
+    QsciLexerCPP *lexer;
 
 };
 

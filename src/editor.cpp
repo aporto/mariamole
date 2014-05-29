@@ -3,11 +3,11 @@
 Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
 {
 
-    QsciLexerCPP *lexer = new QsciLexerCPP;
+    lexer = new QsciLexerCPP;
     this->setLexer(lexer);
 
 
-    QsciAPIs *api = new QsciAPIs(lexer);
+    api = new QsciAPIs(lexer);
 
     api->prepare();
 
@@ -28,5 +28,12 @@ Editor::Editor(QString &text) : Editor()
 void Editor::setText(QString &text)
 {
     QsciScintilla::setText(text);
+}
+
+
+Editor::~Editor()
+{
+    delete lexer;
+    delete api;
 }
 
