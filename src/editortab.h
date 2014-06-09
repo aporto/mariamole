@@ -5,6 +5,8 @@
 
 class EditorTab : public QTabWidget
 {
+    Q_OBJECT
+
 public:
     EditorTab(QWidget *parent = 0);
 

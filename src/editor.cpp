@@ -16,9 +16,6 @@ Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
 
     this->setAutoCompletionThreshold(1);
     this->setAutoCompletionSource(QsciScintilla::AcsAll);
-
-
-
 }
 
 
@@ -38,7 +35,7 @@ Editor::~Editor()
 {
 
     cout << "Destruindo aba" << endl;
-    delete lexer;
-    delete api;
+    //delete lexer;
+    //delete api;
 }
 

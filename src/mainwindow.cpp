@@ -1,13 +1,13 @@
 #include "mainwindow.h"
+#include "editortab.h"
 
 //-----------------------------------------------------------------------------
 #include <iostream>
 using namespace std;
 
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
-	ui.setupUi(this);		
+    ui.setupUi(this);
 	
 	//connect ( this, SIGNAL ( ShowErrorSignal ( QString ) ), SLOT ( ShowError ( QString  ) ) );
 	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspace));
@@ -37,6 +37,7 @@ void MainWindow::setupActions()
     ui.actionOpen_file->setShortcut(tr("Ctrl+O"));
     ui.actionOpen_file->setStatusTip(tr("Open an existing file"));
     connect(ui.actionOpen_file, SIGNAL(triggered()), this, SLOT(open()));
+
 
     //Save Action
     ui.actionSave_File->setShortcut(tr("Ctrl+S"));
@@ -75,12 +76,11 @@ void MainWindow::loadFile(const QString &fileName)
     QString txt(in.readAll());
 
 
-    //tabsEditor->addTab(new QWidget, "oi");
     tabsEditor->addTab(new Editor(txt), QFileInfo(fileName).fileName());
 
     cout << tabsEditor->count() << endl;
 
-    tabsEditor->setCurrentIndex(tabsEditor->count() - 1);
+    //tabsEditor->setCurrentIndex(tabsEditor->count() - 1);
 
 
 

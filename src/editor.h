@@ -8,6 +8,8 @@
 
 class Editor : public QsciScintilla
 {
+    Q_OBJECT
+
 
 public:
     Editor(QWidget *parent = 0);
