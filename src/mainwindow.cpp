@@ -11,7 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
 	
 	//connect ( this, SIGNAL ( ShowErrorSignal ( QString ) ), SLOT ( ShowError ( QString  ) ) );
 	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspace));
-    connect(ui.editorTabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+    tabsEditor = new EditorTab();
+
+    connect(tabsEditor, SIGNAL(tabCloseRequested(int)), tabsEditor, SLOT(closeTab(int)));
+
 
 	config.Load();	
 
@@ -19,7 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
 	SetWorkspace();
 
 
-    ui.editorTabs->clear();  //removes all the previous tabs
+    tabsEditor->clear();  //removes all the previous tabs
+    ui.splitter->addWidget(tabsEditor);
 
     setupActions();
 
@@ -35,14 +39,12 @@ void MainWindow::setupActions()
     connect(ui.actionOpen_file, SIGNAL(triggered()), this, SLOT(open()));
 
     //Save Action
+    ui.actionSave_File->setShortcut(tr("Ctrl+S"));
+    ui.actionOpen_file->setStatusTip(tr("Save file"));
+    //connect(ui.actionSave_File, SIGNAL(triggered()), this, SLOT(open()));
 
 
-}
 
-
-void MainWindow::closeTab(int index)
-{
-    ui.editorTabs->removeTab(index);
 }
 
 
@@ -72,18 +74,47 @@ void MainWindow::loadFile(const QString &fileName)
 
     QString txt(in.readAll());
 
-    textEdit = new Editor(txt);
 
-    ui.editorTabs->addTab(textEdit, QFileInfo(fileName).fileName());
+    //tabsEditor->addTab(new QWidget, "oi");
+    tabsEditor->addTab(new Editor(txt), QFileInfo(fileName).fileName());
 
-    cout << ui.editorTabs->count() << endl;
+    cout << tabsEditor->count() << endl;
 
-    ui.editorTabs->setCurrentIndex(ui.editorTabs->count() - 1);
+    tabsEditor->setCurrentIndex(tabsEditor->count() - 1);
 
 
 
     QApplication::restoreOverrideCursor();
 }
+
+
+bool MainWindow::saveFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly)) {
+        QMessageBox::warning(this, tr("Application"),
+                             tr("Cannot write file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return false;
+    }
+
+    QTextStream out(&file);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    int tabidx = tabsEditor->currentIndex();
+
+    //QString str =
+
+
+    //out <<
+    QApplication::restoreOverrideCursor();
+
+    //setCurrentFile(fileName);
+    //statusBar()->showMessage(tr("File saved"), 2000);
+    return true;
+}
+
+
 
 
 
@@ -101,7 +132,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 	float h = height();
 	//ui.tree->resize(0.1 * w, ui.tree->height());
 	ui.messageTabs->resize(w, 0.1 * h);
-	ui.editorTabs->resize(0.90 * w, h * 9);
+    tabsEditor->resize(0.90 * w, h * 9);
 	
 }
 

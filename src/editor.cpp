@@ -1,4 +1,7 @@
 #include "editor.h"
+#include <iostream>
+using namespace std;
+
 
 Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
 {
@@ -33,6 +36,8 @@ void Editor::setText(QString &text)
 
 Editor::~Editor()
 {
+
+    cout << "Destruindo aba" << endl;
     delete lexer;
     delete api;
 }

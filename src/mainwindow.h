@@ -14,7 +14,9 @@
 #include "config.h"
 #include "workspace.h"
 
+
 #include "editor.h"
+#include "editortab.h"
 
 //-----------------------------------------------------------------------------
 
@@ -25,19 +27,19 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
-    Editor *textEdit;
 
 public slots:
 	void SetWorkspace(void);
     void open(void);
     void loadFile(const QString &);
-    void closeTab(int);
+    bool saveFile(const QString &);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
 
 private:
 	Ui::MainWindowClass ui;
+    EditorTab *tabsEditor;
 
 	void AdjustWorkspaceTree(void);
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);

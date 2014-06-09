@@ -3,10 +3,10 @@
 
 #include <QTabWidget>
 
-class EditoTab : public QTabWidget
+class EditorTab : public QTabWidget
 {
 public:
-    EditoTab(QWidget *parent = 0);
+    EditorTab(QWidget *parent = 0);
 
 public slots:
     void closeTab(int);
