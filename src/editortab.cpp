@@ -6,10 +6,10 @@ using namespace std;
 EditorTab::EditorTab(QWidget *parent) : QTabWidget(parent)
 {
     this->setTabsClosable(true);
-    this->setStyleSheet("border-style:solid");
-    this->setStyleSheet("background-color: rgb(32, 40, 42)");
+    //this->setStyleSheet("border-style: solid");
+    //this->setStyleSheet("background-color: rgb(32, 40, 42)");
+    this->setTabShape(Triangular);
 }
-
 
 
 void EditorTab::closeTab(int index)
