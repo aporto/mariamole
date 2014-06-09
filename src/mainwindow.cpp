@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 	SetWorkspace();
 
 
-    tabsEditor->clear();  //removes all the previous tabs
+    //tabsEditor->clear();  //removes all the previous tabs
     ui.splitter->addWidget(tabsEditor);
 
     setupActions();
@@ -79,10 +79,6 @@ void MainWindow::loadFile(const QString &fileName)
     tabsEditor->addTab(new Editor(txt), QFileInfo(fileName).fileName());
 
     cout << tabsEditor->count() << endl;
-
-    //tabsEditor->setCurrentIndex(tabsEditor->count() - 1);
-
-
 
     QApplication::restoreOverrideCursor();
 }

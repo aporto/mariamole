@@ -33,9 +33,8 @@ void Editor::setText(QString &text)
 
 Editor::~Editor()
 {
-
     cout << "Destruindo aba" << endl;
-    //delete lexer;
-    //delete api;
+    delete lexer;
+    delete api;
 }
 
