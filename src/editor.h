@@ -8,13 +8,18 @@
 
 class Editor : public QsciScintilla
 {
+    Q_OBJECT
+
 
 public:
     Editor(QWidget *parent = 0);
     Editor(QString &text);
+    ~Editor();
     void setText(QString &text);
 
 private:
+    QsciAPIs *api;
+    QsciLexerCPP *lexer;
 
 };
 
