@@ -17,9 +17,17 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:rgb(200,200,200);
-background-color: rgb(28, 36, 38);
-selection-background-color: rgb(68, 85, 89);</string>
+   <string notr="true"> QMenu {
+     background-color: red; /* sets background of the menu */
+     border: 1px solid black;
+ }
+
+QWidget {
+	color:rgb(200,200,200);
+	background-color: rgb(28, 36, 38);
+	selection-background-color: rgb(68, 85, 89);
+}
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -35,68 +43,141 @@ selection-background-color: rgb(68, 85, 89);</string>
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
       <widget class="QSplitter" name="splitter">
+       <property name="styleSheet">
+        <string notr="true">border: 0px solid;</string>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <widget class="QTreeWidget" name="tree">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="styleSheet">
-         <string notr="true"> background-color: rgb(32,40,42);
-outline: 0;
-border-image: none;</string>
+         <string notr="true"> QTreeView {
+	background-color: rgb(32,40,42);
+	color:rgb(145, 157, 167);
+	outline: 0;
+	border-image: none;
+}
+
+ QTreeView::branch:has-siblings:!adjoins-item {
+     border-image: none;
+ }
+
+ QTreeView::branch:has-siblings:adjoins-item {
+          border-image: none;
+ }
+
+ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+          border-image: none;
+ }
+
+ QTreeView::branch:has-children:!has-siblings:closed,
+ QTreeView::branch:closed:has-children:has-siblings {
+         border-image: none;
+         image: url(&quot;:/MainWindow/resources/tree_structure/stylesheet-branch-closed.png&quot;);
+ }
+
+ QTreeView::branch:open:has-children:!has-siblings,
+ QTreeView::branch:open:has-children:has-siblings  {
+         border-image: none;
+         image: url(&quot;:/MainWindow/resources/tree_structure/stylesheet-branch-open.png&quot;);
+ }</string>
         </property>
         <property name="frameShape">
-         <enum>QFrame::WinPanel</enum>
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
         </property>
         <property name="lineWidth">
-         <number>5</number>
+         <number>0</number>
+        </property>
+        <property name="midLineWidth">
+         <number>0</number>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="textElideMode">
+         <enum>Qt::ElideNone</enum>
         </property>
         <property name="rootIsDecorated">
+         <bool>true</bool>
+        </property>
+        <property name="uniformRowHeights">
          <bool>false</bool>
         </property>
         <property name="headerHidden">
          <bool>true</bool>
         </property>
+        <attribute name="headerCascadingSectionResizes">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="headerDefaultSectionSize">
+         <number>500</number>
+        </attribute>
+        <attribute name="headerShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
         <column>
          <property name="text">
           <string notr="true">1</string>
          </property>
         </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
+       </widget>
+       <widget class="QTabWidget" name="editorTabs">
+        <property name="styleSheet">
+         <string notr="true">border-style: 0px solid;
+background-color: rgb(32, 40, 42);
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fafafa, stop: 0.4 #f4f4f4, stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);
+}
+
+QTabBar::tab:selected {
+__border-color: red;
+__border-bottom-color: green; /* same as pane color */
+}
+QTabBar::tab:!selected {
+__margin-top: 2px; /* make non-selected tabs look smaller */
+}</string>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Triangular</enum>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <property name="tabsClosable">
+         <bool>true</bool>
+        </property>
+        <property name="movable">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="widget">
+         <attribute name="title">
+          <string> Tab 1</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Tab 2</string>
+         </attribute>
+        </widget>
        </widget>
       </widget>
       <widget class="QTabWidget" name="messageTabs">
@@ -107,8 +188,38 @@ border-image: none;</string>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-style:solid;
-background-color: rgb(32, 40, 42);</string>
+        <string notr="true"> QTabWidget::pane { /* The tab widget frame */
+     border-top: 1px solid rgb(55, 60,70);
+	border-bottom: none;
+ }
+
+ QTabWidget::tab-bar {
+     left: 10px; /* move to the right by 5px */
+ }
+
+ /* Style the tab using the tab sub-control. Note that
+     it reads QTabBar _not_ QTabWidget */
+ QTabBar::tab {
+     background: rgb(45, 53,60);
+     border: 1px solid rgb(55, 60,70);
+     _border-bottom-color: #C2C7CB; /* same as the pane color */
+     border-top-left-radius: 4px;
+     border-top-right-radius: 4px;
+     min-width: 8ex;
+     padding: 1px 15px;
+ }
+
+ QTabBar::tab:selected, QTabBar::tab:hover {
+     background: rgb(115, 123, 130);
+	_font-weight:bold;
+
+ }
+
+ QTabBar::tab:selected {
+          background: rgb(95, 103,110);
+     _border-bottom-color: #C2C7CB; /* same as pane color */
+ }
+</string>
        </property>
        <property name="tabShape">
         <enum>QTabWidget::Triangular</enum>
@@ -119,14 +230,11 @@ background-color: rgb(32, 40, 42);</string>
        <property name="tabsClosable">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="tabBuildMessages">
         <attribute name="title">
          <string>Build</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
          <property name="topMargin">
           <number>0</number>
          </property>
@@ -137,11 +245,383 @@ background-color: rgb(32, 40, 42);</string>
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QListWidget" name="listWidget"/>
+          <widget class="QSplitter" name="splitter_3">
+           <property name="minimumSize">
+            <size>
+             <width>5</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">_background-color: rgb(18, 26, 28);</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QListWidget" name="buildMessages">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border:none;
+padding: 5px;
+background-color: rgb(28, 36, 38);</string>
+            </property>
+           </widget>
+           <widget class="QStackedWidget" name="buildStatus">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>400</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(28, 36, 38);
+border-left: 1px solid rgb(55, 60,70);</string>
+            </property>
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <widget class="QWidget" name="page_3">
+             <widget class="QLabel" name="label_8">
+              <property name="geometry">
+               <rect>
+                <x>60</x>
+                <y>30</y>
+                <width>81</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Not executed</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_9">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>81</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string> Last build:</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_6">
+              <property name="geometry">
+               <rect>
+                <x>30</x>
+                <y>30</y>
+                <width>21</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="mainwindow.qrc">:/MainWindow/resources/build_messages/build_messages_icon_info.png</pixmap>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page">
+             <widget class="QLabel" name="label_2">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>81</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string> Last build:</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_4">
+              <property name="geometry">
+               <rect>
+                <x>60</x>
+                <y>30</y>
+                <width>53</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Failed</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_5">
+              <property name="geometry">
+               <rect>
+                <x>30</x>
+                <y>30</y>
+                <width>21</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="mainwindow.qrc">:/MainWindow/resources/build_messages/build_messages_icon_build_error.png</pixmap>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_2">
+             <layout class="QGridLayout" name="gridLayout_4">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>10</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_3">
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string> Last build:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>20</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="lbProgramSize">
+                    <property name="text">
+                     <string>Program size:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QProgressBar" name="pbProgramSize">
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"> QProgressBar {
+     border: 2px solid grey;
+     _text-align: center;
+color:white;
+ }
+QProgressBar:horizontal {
+border: 0px solid rgb(68, 85, 89);
+background: rgb(40,48,50);
+padding: 1px;
+}
+QProgressBar::chunk:horizontal {
+background: rgb(120, 192, 255);
+ss: rgb(69, 143, 208);
+}
+</string>
+                    </property>
+                    <property name="value">
+                     <number>50</number>
+                    </property>
+                    <property name="textVisible">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lbMemorySize">
+                    <property name="text">
+                     <string>Memory size:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QProgressBar" name="pbMemorySize">
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"> QProgressBar {
+     border: 2px solid grey;
+     _text-align: center;
+	color:white;
+ }
+QProgressBar:horizontal {
+border: 0px solid rgb(68, 85, 89);
+background: rgb(40,48,50);
+padding: 1px;
+}
+QProgressBar::chunk:horizontal {
+background: rgb(235, 236, 175);
+ss: rgb(69, 143, 208);
+}
+</string>
+                    </property>
+                    <property name="value">
+                     <number>50</number>
+                    </property>
+                    <property name="textVisible">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lbEEPROMSize">
+                    <property name="text">
+                     <string>EEPROM size:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QProgressBar" name="pbEEPROMSize">
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"> QProgressBar {
+     border: 2px solid grey;
+     _text-align: center;
+color:white;
+ }
+QProgressBar:horizontal {
+border: 0px solid rgb(68, 85, 89);
+background: rgb(40,48,50);padding: 1px;
+}
+QProgressBar::chunk:horizontal {
+background:rgb(176, 255, 170);
+ss: rgb(69, 143, 208);
+}
+</string>
+                    </property>
+                    <property name="value">
+                     <number>50</number>
+                    </property>
+                    <property name="textVisible">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_2">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="tabOutput">
         <attribute name="title">
          <string>Output</string>
         </attribute>
@@ -158,8 +638,19 @@ background-color: rgb(32, 40, 42);</string>
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QTextBrowser" name="textBrowser"/>
+         <item row="1" column="0">
+          <widget class="QTextBrowser" name="outputWindow">
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border:none;
+padding: 5px;</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -263,18 +754,30 @@ background-color: rgb(32, 40, 42);</string>
      <x>0</x>
      <y>0</y>
      <width>1112</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(28, 36, 38)</string>
+    <string notr="true">QMenuBar{
+	background-color: rgb(28, 36, 38);
+	border:0px;
+}
+
+ QMenu {
+     background-color: rgb(52, 60, 62); 
+     border: 1px solid black;
+ }
+</string>
    </property>
    <widget class="QMenu" name="menuFile">
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="title">
      <string>File</string>
     </property>
     <addaction name="actionSwitch_workspace"/>
-    <addaction name="actionSave_workspace"/>
+    <addaction name="actionSave_Workspace"/>
     <addaction name="actionSave_workspace_as"/>
     <addaction name="actionReload_workspace"/>
     <addaction name="separator"/>
@@ -283,10 +786,18 @@ background-color: rgb(32, 40, 42);</string>
     <addaction name="actionRemove_file"/>
     <addaction name="actionOpen_file"/>
     <addaction name="separator"/>
-    <addaction name="actionSave_File"/>
     <addaction name="actionOpen_workspace_folder"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSearch"/>
+    <addaction name="actionFormat_code"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrefereces"/>
    </widget>
    <widget class="QMenu" name="menuProject">
     <property name="title">
@@ -296,13 +807,12 @@ background-color: rgb(32, 40, 42);</string>
     <addaction name="actionRename"/>
     <addaction name="actionRemove"/>
     <addaction name="separator"/>
-    <addaction name="actionEdit_configuration"/>
+    <addaction name="actionProject_configurations"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_serial_port_2"/>
     <addaction name="actionClean_current_project"/>
-    <addaction name="actionClean_project_and_core_libraries"/>
-    <addaction name="actionBuild_current_project"/>
-    <addaction name="actionUpload_to_board"/>
+    <addaction name="actionBuild_project"/>
+    <addaction name="actionBuild_and_upload_project"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -315,15 +825,6 @@ background-color: rgb(32, 40, 42);</string>
     <addaction name="separator"/>
     <addaction name="actionOpen_Arduino_online_help"/>
    </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionSearch"/>
-    <addaction name="actionFormat_code"/>
-    <addaction name="separator"/>
-    <addaction name="actionPrefereces"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuProject"/>
@@ -333,12 +834,6 @@ background-color: rgb(32, 40, 42);</string>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(32, 40, 42);
 border:none;</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>24</width>
-     <height>24</height>
-    </size>
    </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonFollowStyle</enum>
@@ -352,7 +847,7 @@ border:none;</string>
    <addaction name="actionSelect_workspace"/>
    <addaction name="actionAdd_a_new_project"/>
    <addaction name="actionAdd_a_new_file"/>
-   <addaction name="actionSave_project"/>
+   <addaction name="actionSave_Workspace"/>
    <addaction name="actionProject_configurations"/>
    <addaction name="actionBuild_project"/>
    <addaction name="actionBuild_and_upload_project"/>
@@ -388,19 +883,22 @@ border:none;</string>
   <action name="actionAdd_a_new_file">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/add_file.png</normaloff>:/MainWindow/resources/add_file.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/create_file.png</normaloff>:/MainWindow/resources/toolbar/create_file.png</iconset>
    </property>
    <property name="text">
     <string>Add a new file</string>
    </property>
   </action>
-  <action name="actionSave_project">
+  <action name="actionSave_Workspace">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
      <normaloff>:/MainWindow/resources/save_all.png</normaloff>:/MainWindow/resources/save_all.png</iconset>
    </property>
    <property name="text">
-    <string>Save project</string>
+    <string>Save workspace</string>
+   </property>
+   <property name="toolTip">
+    <string>Save workspace</string>
    </property>
   </action>
   <action name="actionProject_configurations">
@@ -418,7 +916,7 @@ border:none;</string>
      <normaloff>:/MainWindow/resources/compile.png</normaloff>:/MainWindow/resources/compile.png</iconset>
    </property>
    <property name="text">
-    <string>Build project</string>
+    <string>Build current project</string>
    </property>
   </action>
   <action name="actionBuild_and_upload_project">
@@ -427,7 +925,7 @@ border:none;</string>
      <normaloff>:/MainWindow/resources/upload.png</normaloff>:/MainWindow/resources/upload.png</iconset>
    </property>
    <property name="text">
-    <string>Build and upload project</string>
+    <string>Upload current project to board</string>
    </property>
   </action>
   <action name="actionOpen_serial_port">
@@ -442,11 +940,6 @@ border:none;</string>
   <action name="actionSwitch_workspace">
    <property name="text">
     <string>Switch workspace</string>
-   </property>
-  </action>
-  <action name="actionSave_workspace">
-   <property name="text">
-    <string>Save workspace</string>
    </property>
   </action>
   <action name="actionSave_workspace_as">
@@ -539,21 +1032,6 @@ border:none;</string>
     <string>Clean current project</string>
    </property>
   </action>
-  <action name="actionClean_project_and_core_libraries">
-   <property name="text">
-    <string>Clean project and core libraries</string>
-   </property>
-  </action>
-  <action name="actionBuild_current_project">
-   <property name="text">
-    <string>Build current project</string>
-   </property>
-  </action>
-  <action name="actionUpload_to_board">
-   <property name="text">
-    <string>Upload to board</string>
-   </property>
-  </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
@@ -577,11 +1055,6 @@ border:none;</string>
   <action name="actionOpen_Arduino_online_help">
    <property name="text">
     <string>Open Arduino online help</string>
-   </property>
-  </action>
-  <action name="actionSave_File">
-   <property name="text">
-    <string>Save file</string>
    </property>
   </action>
  </widget>

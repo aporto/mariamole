@@ -1,0 +1,115 @@
+<mariamole>
+	<boards>
+		<board name="Arduino Uno">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>32256</upload.maxsize>
+			<upload.speed>115200</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<upload></upload>
+			<upload></upload>
+			<upload></upload>
+			<upload></upload>
+			<bootloader.high_fuses>0xde</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x05</bootloader.extended_fuses>
+			<bootloader.path>optiboot</bootloader.path>
+			<bootloader.file>optiboot_atmega328.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega328p</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>standard</build.variant>
+		</board>
+		
+		<board name="Arduino Duemilanove w/ ATmega328">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>30720</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xda</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x05</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_atmega328.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega328p</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>standard</build.variant>
+		</board>		
+		
+		<board name="Arduino Leonardo">
+			<type>arduino</type>
+			<upload.protocol>avr109</upload.protocol>
+			<upload.maxsize>28672</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<upload.disable_flushing>1</upload.disable_flushing>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
+			<bootloader.extended_fuses>0xcb</bootloader.extended_fuses>
+			<bootloader.path>caterina</bootloader.path>
+			<bootloader.file>Caterina-Leonardo.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega32u4</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>leonardo</build.variant>
+			<build.vid>0x2341</build.vid>
+			<build.pid>0x8036</build.pid>
+		</board>		
+
+	</boards>
+	
+	<programmers>
+		<programmer name="AVR ISP">
+			<communication>serial</communication>
+			<protocol>stk500v1</protocol>
+			<force></force>
+			<delay></delay>
+			<speed></speed>
+		</programmer>
+		
+		<programmer name="USBasp">
+			<communication>usb</communication>
+			<protocol>usbasp</protocol>
+			<force></force>
+			<delay></delay>
+			<speed></speed>
+		</programmer>
+
+		<programmer name="Parallel Programmer">
+			<communication></communication>
+			<protocol>dapa</protocol>
+			<force>true</force>
+			<delay></delay>
+			<speed></speed>
+		</programmer>
+		
+		<programmer name="AVRISP mkII">
+			<communication>usb</communication>
+			<protocol>stk500v2</protocol>
+			<force></force>
+			<delay></delay>
+			<speed></speed>
+		</programmer>
+		
+		<programmer name="USBtinyISP">
+			<communication></communication>
+			<protocol>usbtiny</protocol>
+			<force></force>
+			<delay></delay>
+			<speed></speed>
+		</programmer>
+		
+		<programmer name="Arduino as ISP">
+			<communication>serial</communication>
+			<protocol>stk500v1</protocol>
+			<force></force>
+			<delay></delay>
+			<speed>19200</speed>
+		</programmer>
+	</programmers>
+</mariamole>

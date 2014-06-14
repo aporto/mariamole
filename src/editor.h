@@ -1,25 +1,28 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <Qsci/qsciscintilla.h>
-#include <Qsci/qscilexercpp.h>
-#include <Qsci/qsciapis.h>
+#include <qwidget.h>
+//#include <Qsci/qsciscintilla.h>
+//#include <Qsci/qscilexercpp.h>
+//#include <Qsci/qsciapis.h>
 
 
-class Editor : public QsciScintilla
+class Editor : public QWidget //QsciScintilla
 {
     Q_OBJECT
 
 
 public:
-    Editor(QWidget *parent = 0);
+	// Alex: comentei aqui
+	/* Editor(QWidget *parent = 0);
     Editor(QString &text);
     ~Editor();
+	*/
     void setText(QString &text);
 
 private:
-    QsciAPIs *api;
-    QsciLexerCPP *lexer;
+ //   QsciAPIs *api;
+   // QsciLexerCPP *lexer;
 
 };
 

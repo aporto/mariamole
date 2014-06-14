@@ -3,6 +3,8 @@ using namespace std;
 #include "editortab.h"
 
 
+/*
+// Alex: comentei aqui
 EditorTab::EditorTab(QWidget *parent) : QTabWidget(parent)
 {
     this->setTabsClosable(true);
@@ -11,7 +13,7 @@ EditorTab::EditorTab(QWidget *parent) : QTabWidget(parent)
     this->setTabShape(Triangular);
 }
 
-
+*/
 void EditorTab::closeTab(int index)
 {
 
@@ -23,7 +25,5 @@ void EditorTab::closeTab(int index)
     //delete this->widget(index);
     //delete tabItem; //It does not work, still do not know why...
 }
-
-
 
 

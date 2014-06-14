@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-
-Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
+// Alex: comentei aqui
+/*Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
 {
 
     lexer = new QsciLexerCPP;
@@ -18,19 +18,19 @@ Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
     this->setAutoCompletionSource(QsciScintilla::AcsAll);
 }
 
-
-Editor::Editor(QString &text) : Editor()
+Editor::Editor(QString &text): Editor()
 {
     setText(text);
 }
-
+*/
 
 void Editor::setText(QString &text)
 {
-    QsciScintilla::setText(text);
+  //  QsciScintilla::setText(text);
 }
 
-
+/*
+// Alex: comentei aqui
 Editor::~Editor()
 {
     cout << "Destruindo aba" << endl;
@@ -38,3 +38,4 @@ Editor::~Editor()
     delete api;
 }
 
+*/

@@ -9,5 +9,21 @@
         <file>resources/workspace.png</file>
         <file>resources/save_all.png</file>
         <file>resources/add_file.png</file>
+        <file>resources/build_messages/build_messages_icon_build_error.png</file>
+        <file>resources/build_messages/build_messages_icon_info.png</file>
+        <file>resources/build_messages/build_messages_icon_warning.png</file>
+        <file>resources/toolbar/create_file.png</file>
+        <file>resources/build_messages/build_messages_icon_build_check.png</file>
+        <file>resources/workspace_tree/library.png</file>
+        <file>resources/tree_structure/stylesheet-branch-closed.png</file>
+        <file>resources/tree_structure/stylesheet-branch-end.png</file>
+        <file>resources/tree_structure/stylesheet-branch-more.png</file>
+        <file>resources/tree_structure/stylesheet-branch-open.png</file>
+        <file>resources/tree_structure/stylesheet-vline.png</file>
+        <file>resources/workspace_tree/file1.png</file>
+        <file>resources/workspace_tree/file2.png</file>
+        <file>resources/workspace_tree/external.png</file>
+        <file>resources/workspace_tree/workspace.png</file>
+        <file>resources/workspace_tree/project.png</file>
     </qresource>
 </RCC>

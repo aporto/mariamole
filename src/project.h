@@ -31,6 +31,7 @@ public:
 
 	void Clear(void);
 	bool Load(QString workspace, QString filename);	
+	bool Save(QString workspacePath);
 	void AddPath(QString & pathList, QString newPath);
 
 	QString name;
@@ -42,11 +43,13 @@ public:
 	QString libPaths;
 	QString srcPaths;
 	QString libs;
+	bool isLibrary;
+
 	bool useCodeAutomation;
 	int linkPrintfVersion;
-	QString serialPortSpeed;
-
-	
+	QString serialPortSpeed;	
+private:
+	QString ReadXMLNode(QDomNode xml, QString attribute, QString defaultValue);
 };
 
 //-----------------------------------------------------------------------------

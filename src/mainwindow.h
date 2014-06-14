@@ -8,17 +8,25 @@
 #include <QIcon>
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QDesktopServices>
 
 #include "ui_mainwindow.h"
 
+#include "buildwindow.h"
 #include "config.h"
 #include "workspace.h"
-
-
+#include "setworkspace.h"
+#include "build_message_item.h"
 #include "editor.h"
 #include "editortab.h"
+#include "wizard.h"
+#include "projectproperties.h"
 
 //-----------------------------------------------------------------------------
+
+namespace WorskspaceTree {
+	enum Types {Workspace, Project,ExternalTree, ExternalFile, File};
+};
 
 class MainWindow : public QMainWindow
 {
@@ -27,20 +35,39 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
+    Editor *textEdit;
 
 public slots:
-	void SetWorkspace(void);
+	void SetWorkspacePath(void);
     void open(void);
     void loadFile(const QString &);
-    bool saveFile(const QString &);
+	void update(void);
+	void BuildProject(void);
+	void CleanProject(void);
+	void UploadProgram(void);
+	void OnBuildComplete(void);
+	void SetDefaultProject(void);
+	void EditProjectProperties(void);
+	void OpenWorkspaceFolder(void);
+	void ShowTreeMenu(const QPoint point);
+	void AddNewFile(void);
+	void AddNewProject(void);	
+	void ConfigureCurrentProject(void);
+	void SaveWorkspace(void);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
 
 private:
 	Ui::MainWindowClass ui;
-    EditorTab *tabsEditor;
+	BuildWindow * buildWindow;
+	Wizard * wizard;
+	SetWorkspace * setWorkspace;
+	QMenu * projectContext;
+	
+	//EditorTab *tabsEditor;
 
+	void CreateTreeContextMenu(void);
 	void AdjustWorkspaceTree(void);
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);
