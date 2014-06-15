@@ -5,7 +5,7 @@
 #define MyAppVersion "1.0"
 #define MyAppPublisher "MariaMole"
 #define MyAppURL "http://dalpix.com/mariamole"
-#define MyAppExeName "MyProg.exe"
+#define MyAppExeName "MariaMole"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
