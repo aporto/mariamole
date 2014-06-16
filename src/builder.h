@@ -7,7 +7,16 @@
 #include "workspace.h" 
 #include "message_handler.h"
 
-#include <Windows.h>
+
+#ifdef __linux__ 
+    //linux code goes here
+#elif _WIN32
+   #include <Windows.h>
+   // windows code goes here
+#else
+
+#endif
+
 
 //-----------------------------------------------------------------------------
 
