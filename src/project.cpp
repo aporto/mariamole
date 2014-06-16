@@ -75,11 +75,13 @@ bool Project::Load(QString workspace, QString filename)
 			QDomNode xmlFiles = xml.firstChild();
 			while (xmlFiles.isNull() == false) {
 				QString type = xmlFiles.nodeName();
-				QDomNode xmlFile = xmlFiles.firstChild();
+				QDomNode xmlFile = xmlFiles.firstChild();				
 				while (xmlFile.isNull() == false) {
+					QDomElement fileElem = xmlFile.toElement();
 					ProjectFile f;
-					f.name = ReadXMLNode(xmlFile, "name", "");				
-					f.open = (ReadXMLNode(xmlFile, "OPEN", "") == "yes");
+					f.name = fileElem.attribute("name");				
+					f.open = (fileElem.attribute("open") == "yes");				
+					//f.open = (ReadXMLNode(fileElem, "OPEN", "") == "yes");
 					if (type == "externals") {
 						f.type = ptExternal;
 					} else {
