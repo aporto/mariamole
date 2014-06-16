@@ -1,4 +1,4 @@
-#include "Builder.h"
+#include "builder.h"
 //-----------------------------------------------------------------------------
 
 Builder builder;
@@ -231,7 +231,10 @@ bool Builder::Upload(void)
 	msg.AddOutput(">> " + uploaderPath + " " + arguments, false);
 
 	QProcess uploaderProc;
-	uploaderProc.setNativeArguments(arguments);
+	QStringList arglist;
+	arglist << arguments;
+	uploaderProc.setArguments(arglist);
+	//uploaderProc.setArguments(arguments);
 	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
 	uploaderProc.start(uploaderPath);//QIODevice::ReadWrite);
 	
@@ -308,7 +311,7 @@ qDebug("Done!");*/
 
 
 	/*QProcess uploaderProc;
-	uploaderProc.setNativeArguments(arguments);
+	uploaderProc.setArguments(arguments);
 	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
 	
 	uploaderProc.setStandardErrorFile(tempOutput);
@@ -403,7 +406,7 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 	} else {
 		compilerPath += "avr-gcc";
 	}
-
+	
 	// Add quotes around the file names to enable white-spaces on paths
 	//inputFile = "\"" + inputFile + "\"";
 	//outputFile = "\"" + outputFile + "\"";
@@ -453,8 +456,10 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 	arguments += " -I\"" + config.DecodeMacros("$(ARDUINO_VARIANT)", project) + "\"";
 
 	msg.AddOutput(">> " + compilerPath + " " + arguments, false);
-    QProcess compilerProc;
-	compilerProc.setNativeArguments(arguments);
+  QProcess compilerProc;
+  QStringList arglist;
+	arglist << arguments;
+	compilerProc.setArguments(arglist);
 	compilerProc.setProcessChannelMode(QProcess::MergedChannels);
     compilerProc.start(compilerPath);
 	compilerProc.waitForFinished();	
@@ -494,7 +499,10 @@ void Builder::GetBinarySize(void)
 	arguments += " \"" + binFile + "\"";
 	
 	QProcess linkerProc;
-	linkerProc.setNativeArguments(arguments);
+	QStringList arglist;
+	arglist << arguments;
+	
+	linkerProc.setArguments(arglist);
 	linkerProc.setProcessChannelMode(QProcess::MergedChannels);
     linkerProc.start(linkerPath);
 	linkerProc.waitForFinished();
@@ -553,10 +561,12 @@ bool Builder::Link(void)
 	arguments += " -lm";	
 
 	msg.AddOutput(">> " + linkerPath + " " + arguments, false);
-    QProcess linkerProc;
-	linkerProc.setNativeArguments(arguments);
+  QProcess linkerProc;
+  QStringList arglist;
+  arglist << arguments;
+	linkerProc.setArguments(arglist);
 	linkerProc.setProcessChannelMode(QProcess::MergedChannels);
-    linkerProc.start(linkerPath);
+   linkerProc.start(linkerPath);
 	linkerProc.waitForFinished();
 
 	bool ok = linkerProc.exitStatus() == QProcess::NormalExit;
@@ -581,7 +591,9 @@ bool Builder::Link(void)
 		
 		msg.AddOutput(">> " + linkerPath + " " + arguments, false);
 		QProcess hexProc;
-		hexProc.setNativeArguments(arguments);
+    QStringList arglist;
+    arglist << arguments;
+		hexProc.setArguments(arglist);
 		hexProc.setProcessChannelMode(QProcess::MergedChannels);
 		hexProc.start(linkerPath);
 		hexProc.waitForFinished();
@@ -641,9 +653,14 @@ bool Builder::BuildCoreLib(void)
 			QString arguments = "rcs \"" + coreLib + "\"";
 			arguments += " \"" + outputFile + "\"";
 
+
+			QStringList arglist;
+			arglist << arguments;
+
 			msg.AddOutput(">> " + linkerPath + " " + arguments, false);
 			QProcess linkerProc;
-			linkerProc.setNativeArguments(arguments);
+			linkerProc.setArguments(arglist);
+			//linkerProc.setArguments(arguments);
 			linkerProc.setProcessChannelMode(QProcess::MergedChannels);
 			linkerProc.start(linkerPath);
 			linkerProc.waitForFinished();

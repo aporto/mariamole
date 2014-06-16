@@ -2,7 +2,7 @@
 #define SETWORKSPACE_H
 
 #include <QDialog>
-#include <QFiledialog>
+#include <QFileDialog>
 
 #include "ui_setworkspace.h"
 

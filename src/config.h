@@ -6,6 +6,7 @@
 #include <qsettings.h>
 #include <QDir>
 #include <QtXml/QtXml>
+#include <QtXml/QDomNode>
 
 #include <map>
 

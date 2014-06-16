@@ -4,6 +4,7 @@
 
 #include <QString>
 #include <QtXml/QtXml>
+#include <QtXml/QDomNode>
 #include <QDir>
 #include <vector>
 
