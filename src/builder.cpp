@@ -380,10 +380,12 @@ bool Builder::Compile(int fileIndex)
 
 bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 {
-	// Define the output file 
+	// Define the output file.
+	// Mangle it to avoid conflicting with other files with the same name from other directories
 	QString outputFile = QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
-	//outputFile = QFileInfo(outputFile).baseName();
-	outputFile = buildPath + "/" + outputFile + ".o";
+	QString folder = QFileInfo(inputFile).dir().path();
+	folder = QFileInfo(folder).baseName();
+	outputFile = buildPath + "/" + folder + "_" + outputFile + ".o";
 
 	// Check if the compiled object file is update. 
 	// If yes, we won't compile it again to gain time
@@ -483,6 +485,7 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 
 void Builder::GetBinarySize(void)
 {
+	msg.buildStage = 4;
 	// Define the output file 
 	QString binFile = buildPath + "/" + project->name + ".elf";
 	
@@ -557,7 +560,10 @@ bool Builder::Link(void)
 	for (int i=0; i < project->files.size(); i++) {
 		QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
 		if ( (ext == "CPP") || (ext == "C") ) {
-			QString objFile = buildPath + "/" + project->files.at(i).name + ".o";						
+			QString objFile = project->files.at(i).name + ".o";//QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
+			//QString folder = QFileInfo(project->files.at(i).name).dir().path();
+			//folder = QFileInfo(folder).baseName();
+			objFile = buildPath + "/" +  "source_" + objFile;			
 			arguments += " \"" + objFile + "\"";		
 		}
 	}
@@ -596,7 +602,7 @@ bool Builder::Link(void)
 			"/arduino/avr/bin/avr-objcopy";
 		arguments = " -O ihex -R .eeprom";
 		arguments += " \"" + binFile +"\"";
-		arguments += " " + buildPath + project->name + ".hex\"";
+		arguments += " \"" + buildPath + project->name + ".hex\"";
 		
 		msg.AddOutput(">> " + linkerPath + " " + arguments, false);
 		QProcess hexProc;

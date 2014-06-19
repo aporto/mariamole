@@ -48,13 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.menuBar->setPalette(palette);
 
     buildWindow = new BuildWindow();
-	//buildWindow->hide();
-
-	//wizard = new Wizard();
-	//buildWindow->hide();
-
-	//setWorkspace = new SetWorkspace(this);
-	//buildWindow->hide();
 	
 	ui.buildStatus->setCurrentIndex(0);
 
@@ -413,7 +406,7 @@ void MainWindow::open()
 
 void MainWindow::BuildProject()
 {
-	workspace.Save();
+	SaveWorkspace();
 	ui.buildMessages->clear();
 	buildWindow->Build(false);
 }

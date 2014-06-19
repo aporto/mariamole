@@ -36,6 +36,8 @@ public:
 	void AddPath(QString & pathList, QString newPath);
 	QString FindExternalFile(QString filepath);
 
+	bool current;
+
 	QString name;
 	vector <ProjectFile> files;
 	QString programmer;

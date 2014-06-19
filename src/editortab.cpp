@@ -11,8 +11,10 @@ EditorTab::EditorTab(QWidget *parent)
 	// Load stylesheet
 	QString cssFileName =  qApp->applicationDirPath() + "/config/style.css";
 	QFile cssFile(cssFileName);
-	QTextStream css(&cssFile);
-	setStyleSheet(css.readAll());
+	cssFile.open(QFile::ReadOnly | QFile::Text);
+    QTextStream css(&cssFile);
+	QString styleText = css.readAll();
+	setStyleSheet(styleText);
 
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }
@@ -84,13 +86,19 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		textEdit->setModified(false);
 	
 		addTab(textEdit, QFileInfo(file).fileName());
+		//QString style = styleSheet();
+		//widget(count() - 1)->setStyleSheet(style);
 		setCurrentIndex(count() - 1);		
 		QApplication::restoreOverrideCursor();
 	}
+
+	//highlightLine = 3;
     
-	if (highlightLine >= 0) {
-		textEdit->ensureLineVisible(highlightLine);
-		//textEdit->indica
+	if (highlightLine >= 0) {		
+		//textEdit->setCursorPosition(highlightLine, 0);
+		textEdit->ensureLineVisible(highlightLine-1);		
+		textEdit->markerAdd (highlightLine-1, 0);
+		//textEdit->setCaretLineBackgroundColor(QColor(255, 100, 100));
 	}
 
 	return true;

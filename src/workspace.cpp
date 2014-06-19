@@ -61,9 +61,15 @@ bool Workspace::Open(QString workPath)
 		}        
 	}
 
-	currentProject = "";
-	if (projects.size() > 0) {
-		SetCurrentProject(projects.at(0).name);
+	//currentProject = "";
+	//if (projects.size() > 0) {
+		//SetCurrentProject(projects.at(0).name);
+	//}
+
+	if (GetCurrentProject() == NULL) {
+		if (projects.size() > 0) {
+			SetCurrentProject(projects.at(0).name);
+		}
 	}
 
 	return ok;
@@ -74,28 +80,40 @@ bool Workspace::Open(QString workPath)
 bool Workspace::SetCurrentProject(QString projectName)
 {
 	//vector <Project> projects;
+	bool ok = false;
 	for (int i=0; i < projects.size(); i++) {
 		if (projects.at(i).name == projectName) {
-			currentProject = projectName;
-			modified = true;
-			return true;
+			projects.at(i).current = true;
+			ok = true;
+		} else { 
+			projects.at(i).current = false;
+		}
+
+		//	currentProject = projectName;	
+		//}
+	}
+	
+	if (ok == false) {
+		if (projects.size() > 0) {
+			projects.at(0).current = true;
 		}
 	}
 
-	currentProject = "";
-	return false;
+	modified = true;
+
+	return ok;
 }
 
 //-----------------------------------------------------------------------------
 
 Project * Workspace::GetCurrentProject(void)
 {
-	if (currentProject == "") {
+	/*if (currentProject == "") {
 		return NULL;
-	}
+	}*/
 
 	for (int i=0; i < projects.size(); i++) {
-		if (projects.at(i).name == currentProject) {
+		if (projects.at(i).current) {
 			return &(projects.at(i));
 		}
 	}

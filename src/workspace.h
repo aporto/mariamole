@@ -36,7 +36,7 @@ public:
 private:
 	//QString path;	
 	bool modified;
-	QString currentProject;
+	//QString currentProject;
 	bool CopyFileToProject(QString input, QString outoput, Project &project);
 };
 

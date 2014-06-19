@@ -24,7 +24,7 @@
 
 QWidget {
 	color:rgb(200,200,200);
-	background-color: rgb(28, 36, 38);
+	background-color: rgb(22, 30, 32);
 	selection-background-color: rgb(68, 85, 89);
 }
 </string>
@@ -64,7 +64,7 @@ QWidget {
         </property>
         <property name="styleSheet">
          <string notr="true"> QTreeView {
-	background-color: rgb(32,40,42);
+	background-color: rgb(22, 30, 32);
 	color:rgb(145, 157, 167);
 	outline: 0;
 	border-image: none;
@@ -233,7 +233,7 @@ QWidget {
             <property name="styleSheet">
              <string notr="true">border:none;
 padding: 5px;
-background-color: rgb(28, 36, 38);</string>
+background-color: rgb(22, 30, 32);</string>
             </property>
            </widget>
            <widget class="QStackedWidget" name="buildStatus">
@@ -250,7 +250,7 @@ background-color: rgb(28, 36, 38);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(28, 36, 38);
+             <string notr="true">background-color: rgb(22, 30, 32);
 border-left: 1px solid rgb(55, 60,70);</string>
             </property>
             <property name="currentIndex">
@@ -380,6 +380,12 @@ border-left: 1px solid rgb(55, 60,70);</string>
                 </property>
                 <item>
                  <widget class="QLabel" name="label_3">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -387,7 +393,10 @@ border-left: 1px solid rgb(55, 60,70);</string>
                    </font>
                   </property>
                   <property name="text">
-                   <string> Last build:</string>
+                   <string>   Last build:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                   </property>
                  </widget>
                 </item>
@@ -719,7 +728,7 @@ padding: 5px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">QMenuBar{
-	background-color: rgb(28, 36, 38);
+	background-color: rgb(22, 30, 32);
 	border:0px;
 }
 
@@ -792,7 +801,7 @@ padding: 5px;</string>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(32, 40, 42);
+    <string notr="true">background-color: rgb(22, 30, 32);
 border:none;</string>
    </property>
    <property name="toolButtonStyle">
@@ -816,7 +825,7 @@ border:none;</string>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(28, 36, 38)</string>
+    <string notr="true">background-color: rgb(22, 30, 32);</string>
    </property>
   </widget>
   <action name="actionSelect_workspace">

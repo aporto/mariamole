@@ -9,6 +9,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QApplication>
+#include <QColor>
 
 class Editor : public QsciScintilla
 {
@@ -19,12 +20,17 @@ public:
 	~Editor();
 	void SetFileName(QString filename);
 	QString GetFileName(void);
-	
+	void setEditorStyle (void);
 
+public slots:
+	void onCursorPositionChanged(int line, int index);
+	
 private:
 	QsciAPIs *api;
     QsciLexerCPP *lexer;
 	QString file;
+
+	void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);
 };
 
 #endif // EDITOR_H

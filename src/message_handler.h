@@ -59,6 +59,11 @@ private:
 	float lastBuildProgramPercent;
 	float lastBuildDataPercent;
 	float lastBuildEEPROMPercent;
+
+	void ParseCompilerMessage(QString text, MMBuildMessage &bm);
+	void ParseLinkerMessage(QString text, MMBuildMessage &bm);
+	void ParseUploaderMessage(QString text, MMBuildMessage &bm);
+	void ParseStatisticMessage(QString text, MMBuildMessage &bm);
 };
 
 //-----------------------------------------------------------------------------
