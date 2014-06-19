@@ -54,6 +54,8 @@ public slots:
 	void AddNewProject(void);	
 	void ConfigureCurrentProject(void);
 	void SaveWorkspace(void);
+	void OnTreeDoubleClick (QTreeWidgetItem * item, int column);
+	void OnBuildMessagesDoubleClick(QListWidgetItem* item);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
@@ -65,9 +67,10 @@ private:
 	SetWorkspace * setWorkspace;
 	QMenu * projectContext;
 	
-	//EditorTab *tabsEditor;
+	EditorTab *tabsEditor;
 
 	void CreateTreeContextMenu(void);
+	void OpenWorkspace(void);
 	void AdjustWorkspaceTree(void);
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);

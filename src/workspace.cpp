@@ -202,3 +202,34 @@ bool Workspace::Save(void)
 	}
 	return ok;
 }
+
+//-----------------------------------------------------------------------------
+
+QString Workspace::GetFullFilePath(QString projectName, QString filename)
+{
+	Project * project = NULL;
+	for (int i=0; i < projects.size(); i++) {
+		if (projects.at(i).name == projectName) {
+			project = &(projects.at(i));
+			break;
+		}
+	}
+
+	if (project == NULL) {
+		return "";
+	}
+
+	for (int i=0; i < project->files.size(); i++) {
+		QFileInfo file(project->files.at(i).name);
+		QString nameCheck = file.fileName();
+		if (nameCheck == filename) {
+			if (project->files.at(i).type == ptExternal) {
+				return project->FindExternalFile(file.fileName());
+			} else {
+				return config.workspace + "/" + project->name + 
+					"/source/" + filename;
+			}
+		}
+	}
+	return "";
+}

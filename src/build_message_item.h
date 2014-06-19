@@ -10,12 +10,6 @@
 
 //-----------------------------------------------------------------------------
 
-/*struct BuildMessage {
-	QString text;
-	QString file;
-	int line, column;		
-};*/
-
 class BuildMessageItem : public QListWidgetItem {
 public:  
 	MMBuildMessage bm;     

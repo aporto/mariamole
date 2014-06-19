@@ -69,7 +69,7 @@ void MessageHandler::AddOutput(QString text, bool parseText)
 			// So, we need to check if the first ":" is the driver separator OR the
 			// compiler result separator
 			if (list[0].size() == 1) {
-				list[0] += list[1];
+				list[0] += ":" + list[1];
 				list.erase(list.begin() + 1);
 			}
 			

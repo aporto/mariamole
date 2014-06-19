@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(100);
 
-    ui.editorTabs->clear();  //removes all the previous tabs
+    
 
 	QPalette palette = ui.menuBar->palette();
 	palette.setColor(QPalette::Button,  ui.mainToolBar->palette().color(QPalette::Window));
@@ -62,19 +62,17 @@ MainWindow::MainWindow(QWidget *parent)
 
 	CreateTreeContextMenu();
 
-	if (QDir(config.workspace).exists()){
-		QTreeWidgetItem *root = new QTreeWidgetItem(ui.tree);
-		root->setText(0, tr("Workspace"));	
-		root->setIcon (0, QIcon(":/MainWindow/resources/workspace_tree/workspace.png"));
-		workspace.Open(config.workspace);
-		AdjustWorkspaceTree();
-	}
 
-
-	// Alex comentei aqui
-	//tabsEditor = new EditorTab();
+	// Prepare editor UI
+	//ui.editorTabs->clear();  //removes all the previous tabs
+	tabsEditor = new EditorTab(this);
 	//connect(tabsEditor, SIGNAL(tabCloseRequested(int)), tabsEditor, SLOT(closeTab(int)));
-	//ui.splitter->addWidget(tabsEditor);
+	//ui.tabParent->addWidget(tabsEditor);
+	ui.splitter->addWidget(tabsEditor);
+
+	if (QDir(config.workspace).exists()){
+		OpenWorkspace();	
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -134,12 +132,24 @@ void MainWindow::EditProjectProperties(void)
 
 	QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
 
-	if (item->data(0,0) != WorskspaceTree::Project) {
+	//QString text = item->text(0);
+
+	if (item->data(0,255) != WorskspaceTree::Project) {
 		return;
 	}
 
-	AdjustWorkspaceTree();
+	workspace.SetCurrentProject(item->text(0));
 
+	if (workspace.GetCurrentProject() == NULL) {
+		return;
+	}
+
+	if (workspace.GetCurrentProject()->name == item->text(0)) {
+		ProjectProperties * prop = new ProjectProperties();
+		prop->Edit(workspace.GetCurrentProject());
+		delete prop;
+	}
+	AdjustWorkspaceTree();
 }
 
 //-----------------------------------------------------------------------------
@@ -165,6 +175,8 @@ void MainWindow::update(void)
 		BuildMessageItem * item = new BuildMessageItem;//("", ui.buildMessages);	
 		ui.buildMessages->addItem(item);
 		item->bm = msg.GetBuildMessage(); 
+		item->setToolTip(item->bm.file);
+		
 		//MMBuildMessage bm = msg.GetBuildMessage(); 
 		QString text;
 		if (item->bm.type == mtRegular) {
@@ -262,12 +274,54 @@ void MainWindow::setupActions()
 	// build complete
 	connect (buildWindow, SIGNAL(buildComplete()), this, SLOT(OnBuildComplete()));
 
-	// mouse click on workspace tree
-	//connect (ui.tree, SIGNAL(click(QMouseEvent *)), this, SLOT(MouseClickTree(QMouseEvent *)));	
+	//mouse click on workspace tree	
+	connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
+			this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
+
+	// double click on build error/warning messages
+
+	connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
+			this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
+
+	
+	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
 }
 
 //-----------------------------------------------------------------------------
 
+void MainWindow::OnTreeDoubleClick (QTreeWidgetItem * item, int column)
+{
+	// if it's a file, open it
+	if ( (item->data(0, 255) != WorskspaceTree::File) && (item->data(0, 255) != WorskspaceTree::ExternalFile) ) {
+		return;
+	}
+
+	QString filename = item->text(0);
+	QString projectName = item->parent()->text(0);
+	if (item->data(0, 255) == WorskspaceTree::ExternalFile) {
+		projectName = item->parent()->parent()->text(0);
+	}
+
+	filename = workspace.GetFullFilePath(projectName, filename);
+
+	tabsEditor->openFile(filename);
+}
+
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OnBuildMessagesDoubleClick(QListWidgetItem* item)
+{
+	BuildMessageItem * bmItem = (BuildMessageItem *)item;
+
+	QString filename = bmItem->bm.file;
+
+	if (QFileInfo(filename).exists()) {
+		tabsEditor->openFile(filename, bmItem->bm.line);
+	}
+}
+
+//-----------------------------------------------------------------------------
 void MainWindow::OpenWorkspaceFolder(void)
 {
 	// Open the equivalent of "Windows Explorer" on the current operating
@@ -385,21 +439,24 @@ void MainWindow::UploadProgram()
 
 void MainWindow::loadFile(const QString &fileName)
 {
-    QFile file(fileName);
+    /*QFile file(fileName);
     if (!file.open(QFile::ReadOnly)) {
         QMessageBox::warning(this, tr("Application"),
                              tr("Cannot read file %1:\n%2.")
                              .arg(fileName)
                              .arg(file.errorString()));
         return;
-    }
+    }*/
 
-    QTextStream in(&file);
+	tabsEditor->openFile(fileName);
+//	ui.editorTabs->LoadFile(file);
+
+    /*QTextStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
     QString txt(in.readAll());
 
-    textEdit = new Editor();//txt); // Alex: comentei aqui
+    //textEdit = new Editor(txt); // Alex: comentei aqui
 
     ui.editorTabs->addTab(textEdit, QFileInfo(fileName).fileName());
 
@@ -409,7 +466,7 @@ void MainWindow::loadFile(const QString &fileName)
 
 
 
-    QApplication::restoreOverrideCursor();
+    QApplication::restoreOverrideCursor();*/
 }
 
 //-----------------------------------------------------------------------------
@@ -427,7 +484,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 	float h = height();
 	//ui.tree->resize(0.1 * w, ui.tree->height());
 	ui.messageTabs->resize(w, 0.1 * h);
-	ui.editorTabs->resize(0.90 * w, h * 9);
+	//ui.editorTabs->resize(0.90 * w, h * 9);
+	tabsEditor->resize(0.90 * w, h * 9);
 	ui.tree->resize(0.20 * w, h * 0.9);
 	
 }
@@ -437,16 +495,35 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::SetWorkspacePath(void)
 {
 	SetWorkspace * setWorkspace = new SetWorkspace();
-	if (setWorkspace->Select()) {	
-		ui.tree->clear();
-		QTreeWidgetItem *root = new QTreeWidgetItem(ui.tree);
-		root->setText(0, tr("Workspace"));	
-		root->setIcon (0, QIcon(":/MainWindow/resources/workspace_tree/workspace.png"));
-
-		workspace.Open(config.workspace);
-		AdjustWorkspaceTree();
-	}
+	if (setWorkspace->Select()) {
+		OpenWorkspace();
+	}	
 	delete setWorkspace;	
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OpenWorkspace(void)
+{
+	ui.tree->clear();
+	QTreeWidgetItem *root = new QTreeWidgetItem(ui.tree);
+	root->setText(0, tr("Workspace"));	
+	root->setIcon (0, QIcon(":/MainWindow/resources/workspace_tree/workspace.png"));
+
+	workspace.Open(config.workspace);
+
+	// open all previously open files
+	tabsEditor->closeAll();
+	for (int p=0; p < workspace.projects.size(); p++) {
+		for (int f=0; f < workspace.projects.at(p).files.size(); f++) {
+			QString filename = workspace.projects.at(p).files.at(f).name;
+			filename = workspace.GetFullFilePath(workspace.projects.at(p).name, filename);
+			if (workspace.projects.at(p).files.at(f).open) {
+				tabsEditor->openFile(filename);
+			}
+		}
+	}
+	AdjustWorkspaceTree();
 }
 
 //-----------------------------------------------------------------------------
@@ -564,7 +641,8 @@ void MainWindow::AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode)
 			// source files
 			for (int fti=0; fti < projNode->childCount(); fti++) {
 				QTreeWidgetItem *fileNode = projNode->child(fti);
-				if (project->files.at(fwi).name == projNode->text(0)) {
+				QString nodeName = fileNode->text(0);
+				if (project->files.at(fwi).name == nodeName) {
 					foundAtTree = true;
 					break;
 				}
@@ -655,5 +733,20 @@ void MainWindow::AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode)
 
 void MainWindow::SaveWorkspace(void)
 {
+	// atualize workspace projects with file currently open
+	// Also saves all open files
+	if (tabsEditor->saveAllFiles() == false) {
+		return;
+	}
+	for (int p=0; p < workspace.projects.size(); p++) {
+		for (int f=0; f < workspace.projects.at(p).files.size(); f++) {
+			QString filename = workspace.projects.at(p).files.at(f).name;
+			filename = workspace.GetFullFilePath(workspace.projects.at(p).name, filename);
+			int index = tabsEditor->fileIndex(filename);
+			workspace.projects.at(p).files.at(f).open = (index >= 0);
+		}
+	}
+
+	// Then save all projects on workspaces
 	workspace.Save();
 }

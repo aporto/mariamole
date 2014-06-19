@@ -29,6 +29,7 @@ public:
 	bool AddProject(QString name, QString importExample);
 	bool IsModified(void);
 	Project * GetCurrentProject(void);
+	QString GetFullFilePath(QString projectName, QString filename);
 
 	vector <Project> projects;
 

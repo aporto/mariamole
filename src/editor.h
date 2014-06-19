@@ -1,29 +1,30 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+//#include <QsciScintilla>
 #include <qwidget.h>
-//#include <Qsci/qsciscintilla.h>
-//#include <Qsci/qscilexercpp.h>
-//#include <Qsci/qsciapis.h>
+#include <Qsci/qsciscintilla.h>
+#include <Qsci/qscilexercpp.h>
+#include <Qsci/qsciapis.h>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QApplication>
 
-
-class Editor : public QWidget //QsciScintilla
+class Editor : public QsciScintilla
 {
-    Q_OBJECT
-
+	Q_OBJECT
 
 public:
-	// Alex: comentei aqui
-	/* Editor(QWidget *parent = 0);
-    Editor(QString &text);
-    ~Editor();
-	*/
-    void setText(QString &text);
+	Editor(QWidget *parent);
+	~Editor();
+	void SetFileName(QString filename);
+	QString GetFileName(void);
+	
 
 private:
- //   QsciAPIs *api;
-   // QsciLexerCPP *lexer;
-
+	QsciAPIs *api;
+    QsciLexerCPP *lexer;
+	QString file;
 };
 
 #endif // EDITOR_H

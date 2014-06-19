@@ -1,14 +1,16 @@
 #include "editor.h"
-#include <iostream>
-using namespace std;
 
-// Alex: comentei aqui
-/*Editor::Editor(QWidget *parent) :  QsciScintilla(parent)
+Editor::Editor(QWidget *parent)
+	: QsciScintilla(parent)
 {
+	// identify this widget as a code editor
+	// WindoweIconText is used only for windows widgets. 
+	// So, it's free for us to use it here
+	setWindowIconText("editor");
 
-    lexer = new QsciLexerCPP;
+	lexer = new QsciLexerCPP;
     this->setLexer(lexer);
-
+	
 
     api = new QsciAPIs(lexer);
 
@@ -16,26 +18,23 @@ using namespace std;
 
     this->setAutoCompletionThreshold(1);
     this->setAutoCompletionSource(QsciScintilla::AcsAll);
+
+	setIndicatorForegroundColor (Qt::red, 1);	
 }
 
-Editor::Editor(QString &text): Editor()
-{
-    setText(text);
-}
-*/
 
-void Editor::setText(QString &text)
-{
-  //  QsciScintilla::setText(text);
-}
-
-/*
-// Alex: comentei aqui
 Editor::~Editor()
 {
-    cout << "Destruindo aba" << endl;
-    delete lexer;
-    delete api;
+	delete lexer;
+//    delete api; api parent's (lexer) will delete it
 }
 
-*/
+void Editor::SetFileName(QString filename)
+{
+	file = filename;
+}
+
+QString Editor::GetFileName(void)
+{
+	return file;
+}

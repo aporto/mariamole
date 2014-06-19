@@ -139,46 +139,6 @@ QWidget {
          </property>
         </column>
        </widget>
-       <widget class="QTabWidget" name="editorTabs">
-        <property name="styleSheet">
-         <string notr="true">border-style: 0px solid;
-background-color: rgb(32, 40, 42);
-
-QTabBar::tab:selected, QTabBar::tab:hover {
-background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fafafa, stop: 0.4 #f4f4f4, stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);
-}
-
-QTabBar::tab:selected {
-__border-color: red;
-__border-bottom-color: green; /* same as pane color */
-}
-QTabBar::tab:!selected {
-__margin-top: 2px; /* make non-selected tabs look smaller */
-}</string>
-        </property>
-        <property name="tabShape">
-         <enum>QTabWidget::Triangular</enum>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <property name="tabsClosable">
-         <bool>true</bool>
-        </property>
-        <property name="movable">
-         <bool>false</bool>
-        </property>
-        <widget class="QWidget" name="widget">
-         <attribute name="title">
-          <string> Tab 1</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="tab_4">
-         <attribute name="title">
-          <string>Tab 2</string>
-         </attribute>
-        </widget>
-       </widget>
       </widget>
       <widget class="QTabWidget" name="messageTabs">
        <property name="maximumSize">
@@ -225,7 +185,7 @@ __margin-top: 2px; /* make non-selected tabs look smaller */
         <enum>QTabWidget::Triangular</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>

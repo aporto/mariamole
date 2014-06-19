@@ -359,3 +359,8 @@ bool Project::Save(QString workspacePath)
 
 	return true;		  
 }
+
+QString Project::FindExternalFile(QString filepath)
+{
+	return "";
+}
