@@ -1,4 +1,9 @@
 <mariamole>
+	<builds>
+		<build name="arduino">
+			<core_files>$(ARDUINO_CORE)\WInterrupts.c;$(ARDUINO_CORE)\wiring.c;$(ARDUINO_CORE)\wiring_analog.c;$(ARDUINO_CORE)\wiring_digital.c  	;$(ARDUINO_CORE)\wiring_pulse.c;$(ARDUINO_CORE)\wiring_shift.c;$(ARDUINO_CORE)\CDC.cpp;$(ARDUINO_CORE)\HardwareSerial.cpp;$(ARDUINO_CORE)\HID.cpp;$(ARDUINO_CORE)\IPAddress.cpp;$(ARDUINO_CORE)\main.cpp;$(ARDUINO_CORE)\new.cpp;$(ARDUINO_CORE)\Print.cpp;$(ARDUINO_CORE)\Stream.cpp;$(ARDUINO_CORE)\Tone.cpp;$(ARDUINO_CORE)\USBCore.cpp;$(ARDUINO_CORE)\WMath.cpp;$(ARDUINO_CORE)\WString.cpp</core_files>
+		</build>
+	</builds>
 	<boards>
 		<board name="Arduino Uno">
 			<type>arduino</type>
