@@ -232,12 +232,12 @@ void MainWindow::setupActions()
 
 	//Upload program Action	
 	ui.actionBuild_and_upload_project->setShortcut(tr("Ctrl+U"));
-    ui.actionBuild_and_upload_project->setStatusTip(tr("Upload the current project to the board"));
+    ui.actionBuild_and_upload_project->setStatusTip(tr("Upload the current project to the board, building it if necessary"));
 	connect(ui.actionBuild_and_upload_project, SIGNAL(triggered()), this, SLOT(UploadProgram()));
 
 	// set workspace
-	ui.actionBuild_and_upload_project->setShortcut(tr("Ctrl+W"));
-    ui.actionBuild_and_upload_project->setStatusTip(tr("Select the workspace path"));
+	ui.actionSelect_workspace->setShortcut(tr("Ctrl+W"));
+    ui.actionSelect_workspace->setStatusTip(tr("Select the workspace path"));
 	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspacePath()));
 
 	// open workspace folder
@@ -525,7 +525,7 @@ void MainWindow::AdjustWorkspaceTree(void)
 {	
 	QTreeWidgetItem *root = ui.tree->topLevelItem(0);
 	//root->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-	root->setIcon(0, QIcon(":/MainWindow/resources/workspace_tree/ws2.png"));
+	root->setIcon(0, QIcon(":/MainWindow/resources/workspace_tree/workspace.png"));
 	root->setData(0, 255, WorskspaceTree::Workspace);
 	root->setText(0, "workspace");
 	// First, find projects on workspace that are not yet on the tree, and add them.	

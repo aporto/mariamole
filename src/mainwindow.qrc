@@ -1,14 +1,5 @@
 <RCC>
     <qresource prefix="/MainWindow">
-        <file>resources/our_works_256_on.png</file>
-        <file>resources/add_project.png</file>
-        <file>resources/compile.png</file>
-        <file>resources/project_properties.png</file>
-        <file>resources/terminal.png</file>
-        <file>resources/upload.png</file>
-        <file>resources/workspace.png</file>
-        <file>resources/save_all.png</file>
-        <file>resources/add_file.png</file>
         <file>resources/build_messages/build_messages_icon_build_error.png</file>
         <file>resources/build_messages/build_messages_icon_info.png</file>
         <file>resources/build_messages/build_messages_icon_warning.png</file>
@@ -25,5 +16,13 @@
         <file>resources/workspace_tree/external.png</file>
         <file>resources/workspace_tree/workspace.png</file>
         <file>resources/workspace_tree/project.png</file>
+        <file>resources/toolbar/workspace.png</file>
+        <file>resources/toolbar/gear.png</file>
+        <file>resources/toolbar/save.png</file>
+        <file>resources/toolbar/console.png</file>
+        <file>resources/toolbar/upload.png</file>
+        <file>resources/toolbar/add_file.png</file>
+        <file>resources/toolbar/add_project.png</file>
+        <file>resources/toolbar/build.png</file>
     </qresource>
 </RCC>

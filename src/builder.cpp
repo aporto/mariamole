@@ -423,7 +423,7 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 
     QString arguments;
     arguments = " -c \"" + inputFile + "\" -o \"" + outputFile + "\"";
-	arguments += " -g -Os -Wall -fno-exceptions -ffunction-sections -fdata-sections -MMD -DARDUINO=101";
+	arguments += " -g -Os -Wall -fno-exceptions -ffunction-sections -fdata-sections -MMD -DARDUINO=105";
 	if (board->second.build_vid != "") {
 		arguments += " -DUSB_VID=" + board->second.build_vid;
 	}

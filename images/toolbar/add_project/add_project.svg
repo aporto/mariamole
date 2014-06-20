@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Your_Icon"
+   x="0px"
+   y="0px"
+   width="100px"
+   height="100px"
+   viewBox="0 0 100 100"
+   enable-background="new 0 0 100 100"
+   xml:space="preserve"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="add_project.svg"><metadata
+   id="metadata17"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs15" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1920"
+   inkscape:window-height="1017"
+   id="namedview13"
+   showgrid="false"
+   inkscape:zoom="2.36"
+   inkscape:cx="189.01825"
+   inkscape:cy="5.0925218"
+   inkscape:window-x="1911"
+   inkscape:window-y="-9"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Your_Icon" />
+<g
+   id="g3">
+	<g
+   id="g5">
+		<g
+   id="g7">
+		</g>
+	</g>
+	<g
+   id="g9">
+	</g>
+</g>
+<path
+   style="fill:#d8ebf2;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+   d="m 14.681454,14.907489 0,79.549513 62.321276,0.299621 0.898865,-8.389402 9.138456,-0.749054 -1.048675,-53.033008 -26.965937,-27.4153693 -35.355339,0 -0.898865,9.4380773 z"
+   id="path3769"
+   inkscape:connector-curvature="0"
+   inkscape:export-filename="D:\github\mariamole\src\resources\toolbar\add_project.png"
+   inkscape:export-xdpi="22.93992"
+   inkscape:export-ydpi="22.93992" /><path
+   d="M88.023,31.577c-0.012-0.06-0.034-0.114-0.051-0.171c-0.021-0.068-0.036-0.136-0.063-0.202  c-0.027-0.067-0.065-0.128-0.101-0.192c-0.027-0.051-0.05-0.104-0.083-0.152c-0.073-0.11-0.157-0.213-0.25-0.307L60.431,3.508  c-0.093-0.094-0.196-0.177-0.307-0.251c-0.047-0.032-0.099-0.053-0.148-0.081c-0.064-0.036-0.127-0.075-0.195-0.103  c-0.065-0.027-0.133-0.042-0.2-0.062c-0.058-0.017-0.113-0.04-0.173-0.051c-0.129-0.026-0.261-0.04-0.392-0.04H22.953  c-1.104,0-2,0.896-2,2v7.017h-7.015c-1.104,0-2,0.896-2,2v81.142c0,1.104,0.896,2,2,2h63.109c1.104,0,2-0.896,2-2v-7.018h7.016  c1.104,0,2-0.896,2-2V31.969C88.062,31.837,88.049,31.707,88.023,31.577z M61.016,9.749l20.219,20.22H61.016V9.749z M75.047,93.079  H15.938V15.938h5.015v70.124c0,1.104,0.896,2,2,2h52.094V93.079z M84.062,84.062h-59.11V6.921h32.063v5.017H31.969  c-1.104,0-2,0.896-2,2s0.896,2,2,2h25.047v5.015H31.969c-1.104,0-2,0.896-2,2s0.896,2,2,2h25.047v5.017H31.969c-1.104,0-2,0.896-2,2  s0.896,2,2,2h27.047h25.047V84.062z M31.969,38.983h45.078c1.104,0,2,0.896,2,2s-0.896,2-2,2H31.969c-1.104,0-2-0.896-2-2  S30.864,38.983,31.969,38.983z M79.047,50c0,1.104-0.896,2-2,2H31.969c-1.104,0-2-0.896-2-2s0.896-2,2-2h45.078  C78.151,48,79.047,48.896,79.047,50z M79.047,59.016c0,1.104-0.896,2-2,2H31.969c-1.104,0-2-0.896-2-2s0.896-2,2-2h45.078  C78.151,57.016,79.047,57.911,79.047,59.016z M79.047,68.031c0,1.104-0.896,2-2,2H31.969c-1.104,0-2-0.896-2-2s0.896-2,2-2h45.078  C78.151,66.031,79.047,66.927,79.047,68.031z M61.016,77.047c0,1.104-0.896,2-2,2H31.969c-1.104,0-2-0.896-2-2s0.896-2,2-2h27.047  C60.12,75.047,61.016,75.942,61.016,77.047z"
+   id="path11"
+   style="fill:#489ed0;fill-opacity:1"
+   inkscape:export-filename="D:\github\mariamole\src\resources\toolbar\add_project.png"
+   inkscape:export-xdpi="22.93992"
+   inkscape:export-ydpi="22.93992" />
+<rect
+   style="fill:#d2e8f0;fill-opacity:1;stroke:none"
+   id="rect3773"
+   width="49.788139"
+   height="54.44915"
+   x="-117.47881"
+   y="76.588989"
+   inkscape:export-filename="D:\github\mariamole\src\resources\toolbar\save.png"
+   inkscape:export-xdpi="22.48"
+   inkscape:export-ydpi="22.48" /><path
+   style="fill:#489ed0;fill-opacity:1;stroke:none"
+   d="m 162.13859,14.907991 0,79.54951 62.32128,0.29962 0.89886,-8.3894 9.13846,-0.74905 -1.04868,-53.03301 -26.96593,-27.4153705 -35.35535,0 -0.89886,9.4380805 z"
+   id="path3769-1"
+   inkscape:connector-curvature="0"
+   inkscape:export-filename="D:\github\mariamole\src\resources\toolbar\add_project.png"
+   inkscape:export-xdpi="22.93992"
+   inkscape:export-ydpi="22.93992" /><path
+   inkscape:connector-curvature="0"
+   d="m 236.32759,31.577501 c -0.012,-0.06 -0.034,-0.114 -0.051,-0.171 -0.021,-0.068 -0.036,-0.136 -0.063,-0.202 -0.027,-0.067 -0.065,-0.128 -0.101,-0.192 -0.027,-0.051 -0.05,-0.104 -0.083,-0.152 -0.073,-0.11 -0.157,-0.213 -0.25,-0.307 l -27.044,-27.0450005 c -0.093,-0.094 -0.196,-0.177001 -0.307,-0.251001 -0.047,-0.032 -0.099,-0.053 -0.148,-0.081 -0.064,-0.036 -0.127,-0.075 -0.195,-0.103 -0.065,-0.027 -0.133,-0.042 -0.2,-0.062 -0.058,-0.017 -0.113,-0.04 -0.173,-0.051 -0.129,-0.026 -0.261,-0.04 -0.392,-0.04 h -36.06301 c -1.104,0 -2,0.896001 -2,2.000001 v 7.0170005 h -7.015 c -1.104,0 -2,0.896 -2,2 v 81.142 c 0,1.104 0.896,2 2,2 h 63.10901 c 1.104,0 2,-0.896 2,-2 v -7.018 h 7.016 c 1.104,0 2,-0.896 2,-2 v -54.092 c -0.001,-0.132 -0.014,-0.262 -0.04,-0.392 z m -27.007,-21.8280005 20.219,20.2200005 h -20.219 V 9.7495005 z m 14.031,83.3300005 h -59.10901 v -77.141 h 5.015 v 70.124 c 0,1.104 0.896,2 2,2 h 52.09401 v 5.017 z m 9.015,-9.017 H 173.25658 V 6.9215005 h 32.06301 v 5.0170005 h -25.04601 c -1.104,0 -2,0.896 -2,2 0,1.104 0.896,2 2,2 h 25.04701 v 5.015 h -25.04701 c -1.104,0 -2,0.896 -2,2 0,1.104 0.896,2 2,2 h 25.04701 v 5.017 h -25.04701 c -1.104,0 -2,0.896 -2,2 0,1.104 0.896,2 2,2 h 27.04701 25.047 v 50.092 z m -52.09301,-45.079 h 45.07801 c 1.104,0 2,0.896 2,2 0,1.104 -0.896,2 -2,2 h -45.07801 c -1.104,0 -2,-0.896 -2,-2 0,-1.104 0.895,-2 2,-2 z m 47.07801,11.017 c 0,1.104 -0.896,2 -2,2 h -45.07801 c -1.104,0 -2,-0.896 -2,-2 0,-1.104 0.896,-2 2,-2 h 45.07801 c 1.104,0 2,0.896 2,2 z m 0,9.016 c 0,1.104 -0.896,2 -2,2 h -45.07801 c -1.104,0 -2,-0.896 -2,-2 0,-1.104 0.896,-2 2,-2 h 45.07801 c 1.104,0 2,0.895 2,2 z m 0,9.015 c 0,1.104 -0.896,2 -2,2 h -45.07801 c -1.104,0 -2,-0.896 -2,-2 0,-1.104 0.896,-2 2,-2 h 45.07801 c 1.104,0 2,0.896 2,2 z m -18.031,9.016 c 0,1.104 -0.896,2 -2,2 h -27.04701 c -1.104,0 -2,-0.896 -2,-2 0,-1.104 0.896,-2 2,-2 h 27.04701 c 1.104,0 2,0.895 2,2 z"
+   id="path11-7"
+   style="fill:#1c506e;fill-opacity:1"
+   inkscape:export-filename="D:\github\mariamole\src\resources\toolbar\add_project.png"
+   inkscape:export-xdpi="22.93992"
+   inkscape:export-ydpi="22.93992" /></svg>

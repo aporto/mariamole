@@ -254,7 +254,7 @@ background-color: rgb(22, 30, 32);</string>
 border-left: 1px solid rgb(55, 60,70);</string>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="page_3">
              <widget class="QLabel" name="label_8">
@@ -831,7 +831,7 @@ border:none;</string>
   <action name="actionSelect_workspace">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/workspace.png</normaloff>:/MainWindow/resources/workspace.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/workspace.png</normaloff>:/MainWindow/resources/toolbar/workspace.png</iconset>
    </property>
    <property name="text">
     <string>Select workspace</string>
@@ -843,66 +843,81 @@ border:none;</string>
   <action name="actionAdd_a_new_project">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/add_project.png</normaloff>:/MainWindow/resources/add_project.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/add_project.png</normaloff>:/MainWindow/resources/toolbar/add_project.png</iconset>
    </property>
    <property name="text">
+    <string>Add a new project</string>
+   </property>
+   <property name="toolTip">
     <string>Add a new project</string>
    </property>
   </action>
   <action name="actionAdd_a_new_file">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/toolbar/create_file.png</normaloff>:/MainWindow/resources/toolbar/create_file.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/add_file.png</normaloff>:/MainWindow/resources/toolbar/add_file.png</iconset>
    </property>
    <property name="text">
+    <string>Add a new file</string>
+   </property>
+   <property name="toolTip">
     <string>Add a new file</string>
    </property>
   </action>
   <action name="actionSave_Workspace">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/save_all.png</normaloff>:/MainWindow/resources/save_all.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/save.png</normaloff>:/MainWindow/resources/toolbar/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save workspace</string>
-   </property>
-   <property name="toolTip">
-    <string>Save workspace</string>
+    <string>actionSave_Workspace</string>
    </property>
   </action>
   <action name="actionProject_configurations">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/project_properties.png</normaloff>:/MainWindow/resources/project_properties.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/gear.png</normaloff>:/MainWindow/resources/toolbar/gear.png</iconset>
    </property>
    <property name="text">
+    <string>Project configurations</string>
+   </property>
+   <property name="toolTip">
     <string>Project configurations</string>
    </property>
   </action>
   <action name="actionBuild_project">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/compile.png</normaloff>:/MainWindow/resources/compile.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/build.png</normaloff>:/MainWindow/resources/toolbar/build.png</iconset>
    </property>
    <property name="text">
+    <string>Build current project</string>
+   </property>
+   <property name="toolTip">
     <string>Build current project</string>
    </property>
   </action>
   <action name="actionBuild_and_upload_project">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/upload.png</normaloff>:/MainWindow/resources/upload.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/upload.png</normaloff>:/MainWindow/resources/toolbar/upload.png</iconset>
    </property>
    <property name="text">
+    <string>Upload current project to board</string>
+   </property>
+   <property name="toolTip">
     <string>Upload current project to board</string>
    </property>
   </action>
   <action name="actionOpen_serial_port">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/terminal.png</normaloff>:/MainWindow/resources/terminal.png</iconset>
+     <normaloff>:/MainWindow/resources/toolbar/console.png</normaloff>:/MainWindow/resources/toolbar/console.png</iconset>
    </property>
    <property name="text">
+    <string>Open serial port</string>
+   </property>
+   <property name="toolTip">
     <string>Open serial port</string>
    </property>
   </action>

@@ -65,7 +65,78 @@
 			<build.vid>0x2341</build.vid>
 			<build.pid>0x8036</build.pid>
 		</board>		
-
+		
+		<board name="Arduino Diecimila or Duemilanove w/ ATmega168">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>14336</upload.maxsize>
+			<upload.speed>19200</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xdd</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x00</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_diecimila.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega168</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>standard</build.variant>			
+		</board>		
+		
+		<board name="Arduino Nano w/ ATmega328">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>30720</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xda</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x05</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_atmega328.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega328p</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>eightanaloginputs</build.variant>			
+		</board>		
+		
+		<board name="Arduino Nano w/ ATmega168">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>14336</upload.maxsize>
+			<upload.speed>19200</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xdd</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x00</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_diecimila.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega168</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>eightanaloginputs</build.variant>			
+		</board>	
+		
+		<board name="Arduino Mega 2560 or Mega ADK">
+			<type>arduino</type>
+			<upload.protocol>wiring</upload.protocol>
+			<upload.maxsize>258048</upload.maxsize>
+			<upload.speed>115200</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
+			<bootloader.extended_fuses>0xfd</bootloader.extended_fuses>
+			<bootloader.path>stk500v2</bootloader.path>
+			<bootloader.file>stk500boot_v2_mega2560.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega2560</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>mega</build.variant>			
+		</board>	
 	</boards>
 	
 	<programmers>

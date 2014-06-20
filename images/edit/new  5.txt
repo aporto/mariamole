@@ -1,8 +1,0 @@
-avr-ar rcs core.a wiring.c.o
-
-avr-gcc -Os -Wl,--gc-sections -mmcu=atmega328p -o Blink.cpp.elf Blink.cpp.o core.a -Lbuild4596417947914393739.tmp -lm
-
-avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 
-Blink.cpp.elf Blink.cpp.eep
-
-avr-objcopy -O ihex -R .eeprom Blink.cpp.elf Blink.cpp.hex

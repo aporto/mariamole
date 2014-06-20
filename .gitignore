@@ -19,4 +19,8 @@
 *.exe
 *.out
 *.app
+*.sdf
 build
+projects/msvc10/Debug
+projects/msvc10/ipch
+projects/msvc10/GeneratedFiles
