@@ -743,7 +743,7 @@ bool Builder::BuildCoreLib(void)
 #ifdef Q_OS_WIN
 			linkerProc.setNativeArguments(arguments);
 #else
-			QStringList arglist; arglist << arguments; linkerProc.setArguments(arglist);
+			arglist << arguments; linkerProc.setArguments(arglist);
 #endif
 			linkerProc.setProcessChannelMode(QProcess::MergedChannels);
 			linkerProc.start(linkerPath);
