@@ -108,27 +108,11 @@ void Wizard::btnCancelClicked(void)
 
 //-----------------------------------------------------------------------------
 
-bool Wizard::ImportLibrary(void)
-{
-	ui.stackedWidget->setCurrentIndex(1);
-	ui.btnCancel->setEnabled(true);
-	ui.btnFinish->setEnabled(false);
-	ui.btnPrevious->setEnabled(false);
-	ui.btnNext->setEnabled(false);
-
-	PopulateLibrariesList();
-
-	return Display();	
-}
-
-//-----------------------------------------------------------------------------
-
 bool Wizard::Display(void)
 {
-	int top=(QDesktopWidget().screenGeometry().height()/2)-(size().height()/2);
-	int left=(QDesktopWidget().screenGeometry().width()/2)-(size().width()/2);
-	
-	move(left, top);
+	//int top=(QDesktopWidget().screenGeometry().height()/2)-(size().height()/2);
+	//int left=(QDesktopWidget().screenGeometry().width()/2)-(size().width()/2);	
+	//move(left, top);
 
 	ok = false;
 	exec();	
@@ -152,8 +136,9 @@ bool Wizard::NewProject(void)
 	
 	PopulateExamplesTree();
 		
-	ok = false;
-	exec();
+	//ok = false;
+	ok = Display(); 
+	//exec();
 
 	if (ok) {
 		QString path = "";
@@ -168,7 +153,22 @@ bool Wizard::NewProject(void)
 
 //-----------------------------------------------------------------------------
 
-QString Wizard::GetLibraryPath(void)
+bool Wizard::ImportLibrary(void)
+{
+	ui.stackedWidget->setCurrentIndex(1);
+	ui.btnCancel->setEnabled(true);
+	ui.btnFinish->setEnabled(false);
+	ui.btnPrevious->setEnabled(false);
+	ui.btnNext->setEnabled(false);
+
+	PopulateLibrariesList();
+
+	return Display();	
+}
+
+//-----------------------------------------------------------------------------
+
+QString Wizard::GetLibraryName(void)
 {
 	QList <QListWidgetItem *> selection = ui.listLibs->selectedItems();
 	if (selection.count() == 0) {

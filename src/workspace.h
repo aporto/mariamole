@@ -30,6 +30,7 @@ public:
 	bool IsModified(void);
 	Project * GetCurrentProject(void);
 	QString GetFullFilePath(QString projectName, QString filename);
+	bool ImportLibrary(Project * project, QString libPath, QString prefixPath = "");
 
 	vector <Project> projects;
 
@@ -37,7 +38,8 @@ private:
 	//QString path;	
 	bool modified;
 	//QString currentProject;
-	bool CopyFileToProject(QString input, QString outoput, Project &project);
+	bool CopyFileToProject(QString input, QString outoput, Project &project);	
+	void ImportLibraryFilesRecursively(Project * project, QString path, QString libPath);
 };
 
 //-----------------------------------------------------------------------------

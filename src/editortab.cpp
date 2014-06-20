@@ -9,7 +9,7 @@ EditorTab::EditorTab(QWidget *parent)
     this->setTabShape(Triangular);
 
 	// Load stylesheet
-	QString cssFileName =  qApp->applicationDirPath() + "/config/style.css";
+	QString cssFileName =  qApp->applicationDirPath() + "/config/style_tabwidget.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream css(&cssFile);
@@ -140,7 +140,7 @@ bool EditorTab::saveFile(int index)
 	// saving those files
 
 	QFile file(filename);
-	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	file.open(QIODevice::WriteOnly);// | QIODevice::Text);
 	if (file.error() != 0) {		
 		QMessageBox::warning(NULL, tr("Application"),
 								tr("Error while saving file %1:\n%2.")

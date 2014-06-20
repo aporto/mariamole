@@ -145,12 +145,16 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 
 	QString boardName = "";
 	QString buildCore = "";
+	QString projectLibPaths = "";
+	QString projectIncludePaths = "";
 	map <QString, BoardDef>::const_iterator board = boards.end();
 	map <QString, BuildDef>::const_iterator build = builds.end();
 
 	if (project != NULL) {
 		board = boards.find(project->boardName);
 		build = builds.find(board->second.build_core);
+		projectLibPaths = project->libPaths;
+		projectIncludePaths = project->includePaths;
 	}
 
 	map <QString, QString> dictionary;
@@ -169,6 +173,10 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 
 	//QString qApp->applicationDirPath() + ;
 	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", appPath + "/arduino/arduino/libraries"));
+
+	dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", appPath + "/arduino/arduino/libraries;" + libPaths + ";" + projectLibPaths));
+
+	dictionary.insert (pair <QString, QString> ("$(INCLUDES)", includePaths + ";" + projectIncludePaths));
 
 	map <QString, QString>::iterator dict;
 	for (dict = dictionary.begin(); dict != dictionary.end(); dict++) {
@@ -241,6 +249,78 @@ bool Config::Save(void)
 	settings.endGroup();
 	
 	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+// decode a lib path in the format "$(XXXX)\path1\...\path_n" to  "full_path\path_n"
+QString Config::DecodeLibraryPath(QString libPath)
+{
+	int pos = libPath.indexOf("$(");
+	if (pos < 0) {
+		return libPath;
+	}
+
+	QString macro = libPath;
+	QString path1 = libPath;
+	path1 = path1.remove(pos, libPath.length());
+	macro = macro.remove(0, pos);
+	pos = macro.indexOf(")");
+	if (pos < 0) {
+		return libPath;
+	}
+	QString path2 = macro;
+	path2 = path2.remove(0, pos+1);
+	macro = macro.remove(pos+1, macro.length());	
+
+	macro = DecodeMacros(macro, NULL);
+	QStringList list = macro.split(";");
+	
+	for (int i=0; i < list.count(); i++) {
+		QString dirPath = list[i].trimmed();
+		if (dirPath.length() < 2) {
+			continue;
+		}
+		if ( (dirPath.at(dirPath.length()-1) == "/") || (dirPath.at(dirPath.length()-1) == "\\")) {
+			dirPath = dirPath.left(dirPath.length()-1);
+		}
+		dirPath = path1 + dirPath + path2;
+		if (QDir(dirPath).exists()) {
+			return dirPath;
+		}
+	}
+
+	return "";
+}
+
+//-----------------------------------------------------------------------------
+
+QString Config::LocateFileUsingSearchPaths(QString filename, QString searchPaths, bool isDir)
+{
+	QStringList list = DecodeMacros(searchPaths, NULL).split(";");
+	
+	for (int i=0; i < list.count(); i++) {
+		QString dirPath = list[i].trimmed();
+		if (dirPath.length() < 2) {
+			continue;
+		}
+		if ( (dirPath.at(dirPath.length()-1) == "/") || (dirPath.at(dirPath.length()-1) == "\\")) {
+			dirPath = dirPath.left(dirPath.length()-1);
+		}
+		dirPath += "/" + filename;
+		bool exists = false;
+		if (isDir) {
+			exists = QDir(dirPath).exists();
+		} else {
+			exists = QFileInfo(dirPath).exists();
+		}
+		
+		if (exists) {
+			return dirPath;
+		}
+	}
+
+	return "";
 }
 
 //-----------------------------------------------------------------------------

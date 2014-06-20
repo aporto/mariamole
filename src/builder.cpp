@@ -369,7 +369,7 @@ bool Builder::Compile(int fileIndex)
 
 		case ptExternal: 
 		case ptExtra:
-			inputFile = project->name;
+			inputFile = config.LocateFileUsingSearchPaths(inputFile, "$(LIBRARIES)", false);			
 		break; 
 	}
 
@@ -378,15 +378,24 @@ bool Builder::Compile(int fileIndex)
 
 //-----------------------------------------------------------------------------
 
-bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
+QString Builder::MangleFileName(QString inputFile)
 {
-	// Define the output file.
 	// Mangle it to avoid conflicting with other files with the same name from other directories
+	// filename shall be a fullpath file name
 	QString outputFile = QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
 	QString folder = QFileInfo(inputFile).dir().path();
 	folder = QFileInfo(folder).baseName();
 	outputFile = buildPath + "/" + folder + "_" + outputFile + ".o";
+	return outputFile;
+}
 
+//-----------------------------------------------------------------------------
+
+bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
+{
+	// Define the output file.	
+	QString outputFile = MangleFileName(inputFile);
+	
 	// Check if the compiled object file is update. 
 	// If yes, we won't compile it again to gain time
 	/////testDate = false;
@@ -438,11 +447,49 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 	// Add the include paths
 	arguments += " -I\"" + QFileInfo(inputFile).path() + "\"";
 
-	QStringList includes = project->includePaths.split(";");		
+	// Add the include to board core files
+	arguments += " -I\"" + qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core + "\"";
+	//arguments += " -I\"" + config.DecodeMacros("$(ARDUINO_CORE)", project) + "\"";
+	arguments += " -I\"" + config.DecodeMacros("$(ARDUINO_VARIANT)", project) + "\"";
+
+
+	// add all include paths from the project configurations
+	QStringList projectIncludes = project->includePaths.split(";");	
+	QStringList includes;
+	for (int l=0; l < projectIncludes.count(); l++) {
+		projectIncludes[l] = projectIncludes[l].trimmed();
+		if (projectIncludes[l].length() < 2) {
+			continue;
+		}
+		if (projectIncludes[l].indexOf("/") > 0) {
+			QString path = config.DecodeLibraryPath(projectIncludes[l]).trimmed();
+			if (path.length() > 1) {
+				includes.append(path);
+			}
+		} else {
+			QString includePaths = config.DecodeMacros(projectIncludes[l], project).trimmed();
+			QStringList tempInc = includePaths.split(";");
+			for (int i=0; i < tempInc.size(); i++) {
+				tempInc[i] = tempInc[i].trimmed();				
+				if (tempInc[i].length() > 1) {
+					includes.append(tempInc[i]);
+				}
+			}
+		}
+	}
+
 	for (int i=0; i < includes.size(); i++) {
-		includes[i] = includes.at(i).trimmed();
+		arguments += " -I\"" + includes[i] + "\"";
+	}
+
+	/*QString includePaths = config.DecodeMacros(projectIncludes[i], project).trimmed();
+	QString includePaths = config.DecodeMacros(project->includePaths, project).trimmed();
+	QStringList includes = includePaths.split(";");		
+	for (int i=0; i < includes.size(); i++) {
+		includes[i] = includes[i].trimmed();
+		includes[i] = config.DecodeLibraryPath(includes[i]);
 		if (includes[i] != "") {
-			arguments += " -I\"" + includes.at(i) + "\"";
+			arguments += " -I\"" + includes[i] + "\"";
 		}
 	}
 	includes = config.includePaths.split(";");		
@@ -451,11 +498,9 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 		if (includes[i] != "") {
 			arguments += " -I\"" + includes.at(i) + "\"";
 		}
-	}
+	}*/
 
-	arguments += " -I\"" + config.DecodeMacros("$(ARDUINO_CORE)", project) + "\"";
-	arguments += " -I\"" + config.DecodeMacros("$(ARDUINO_VARIANT)", project) + "\"";
-
+	
 	msg.AddOutput(">> " + compilerPath + " " + arguments, false);
 
 	QProcess compilerProc;
@@ -560,11 +605,20 @@ bool Builder::Link(void)
 	for (int i=0; i < project->files.size(); i++) {
 		QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
 		if ( (ext == "CPP") || (ext == "C") ) {
-			QString objFile = project->files.at(i).name + ".o";//QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
+			QString objFile = MangleFileName(workspace.GetFullFilePath(project->name, project->files.at(i).name));
+			arguments += " \"" + objFile + "\"";		
+
+			//QString objFile = project->files.at(i).name + ".o";//QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
 			//QString folder = QFileInfo(project->files.at(i).name).dir().path();
 			//folder = QFileInfo(folder).baseName();
-			objFile = buildPath + "/" +  "source_" + objFile;			
-			arguments += " \"" + objFile + "\"";		
+			
+			
+			//QString outputFile = QFileInfo(project->files.at(i).name).fileName(); //project->files.at(fileIndex).name;
+			//QString folder = QFileInfo(inputFile).dir().path();
+			//folder = QFileInfo(folder).baseName();
+			//outputFile = buildPath + "/" + folder + "_" + outputFile + ".o";			
+			//objFile = buildPath + "/" +  "source_" + objFile;			
+			//arguments += " \"" + objFile + "\"";		
 		}
 	}
 
@@ -602,7 +656,7 @@ bool Builder::Link(void)
 			"/arduino/avr/bin/avr-objcopy";
 		arguments = " -O ihex -R .eeprom";
 		arguments += " \"" + binFile +"\"";
-		arguments += " \"" + buildPath + project->name + ".hex\"";
+		arguments += " \"" + buildPath + "/" + project->name + ".hex\"";
 		
 		msg.AddOutput(">> " + linkerPath + " " + arguments, false);
 		QProcess hexProc;
@@ -667,7 +721,16 @@ bool Builder::BuildCoreLib(void)
 		QString inputFile = config.DecodeMacros(coreFiles.at(i), project);	
 		ok = ok && CompileFile (inputFile, false, true);
 		if (ok) {
-			QString outputFile = buildPath + "/" + QFileInfo(inputFile).fileName() + ".o";
+
+			//ALEX 
+			QString outputFile = MangleFileName(inputFile);
+			// Define the output file.
+			// Mangle it to avoid conflicting with other files with the same name from other directories
+			//QString outputFile = QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
+			//QString folder = QFileInfo(inputFile).dir().path();
+			//folder = QFileInfo(folder).baseName();
+			//outputFile = buildPath + "/" + folder + "_" + outputFile + ".o";
+			//outputFile = buildPath + "/" + QFileInfo(inputFile).fileName() + ".o";
 			QString arguments = "rcs \"" + coreLib + "\"";
 			arguments += " \"" + outputFile + "\"";
 

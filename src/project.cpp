@@ -154,7 +154,7 @@ bool Project::Save(QString workspacePath)
 	} else {
 		xmlWriter->writeAttribute("useCodeAutomation", "0");
 	}
-	xmlWriter->writeAttribute("linkPrintfVersion", QString::number(linkPrintfVersion));
+	xmlWriter->writeAttribute("linkPrintfVersion", QString::number((int)linkPrintfVersion));
 	xmlWriter->writeAttribute("serialPortSpeed", serialPortSpeed);
 	xmlWriter->writeAttribute("isLibrary", QString::number((int)isLibrary));
 
@@ -195,7 +195,3 @@ bool Project::Save(QString workspacePath)
 	return true;		  
 }
 
-QString Project::FindExternalFile(QString filepath)
-{
-	return "";
-}

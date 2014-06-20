@@ -8,7 +8,7 @@
 #include "message_handler.h"
 
 
-#ifdef __linux__ 
+/*#ifdef __linux__ 
     //linux code goes here
 #elif _WIN32
    #include <Windows.h>
@@ -17,7 +17,7 @@
 
 #endif
 
-
+   */
 //-----------------------------------------------------------------------------
 
 class Builder
@@ -48,6 +48,7 @@ private:
 	bool BuildCoreLib(void);
 	bool Upload(void);
 	QString GetLeonardoSerialPort(QString defaultPort);
+	QString MangleFileName(QString inputFile);
 };
 
 //-----------------------------------------------------------------------------

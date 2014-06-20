@@ -50,7 +50,8 @@ QWidget {
       </property>
       <widget class="QSplitter" name="splitter">
        <property name="styleSheet">
-        <string notr="true">border: 0px solid;</string>
+        <string notr="true">border: 0px solid;
+background-color: rgb(14, 22, 24);</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -185,14 +186,14 @@ QWidget {
         <enum>QTabWidget::Triangular</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
        </property>
        <widget class="QWidget" name="tabBuildMessages">
         <attribute name="title">
-         <string>Build</string>
+         <string>Messages</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_3">
          <property name="topMargin">

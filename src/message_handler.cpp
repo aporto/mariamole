@@ -113,16 +113,17 @@ void MessageHandler::ParseCompilerMessage(QString text, MMBuildMessage &bm)
 
 	QString num1 = QString::number(list[0].toInt());
 	QString num2 = QString::number(list[1].toInt());
-	if (num1 == list[0]) {
-		bm.line = num1.toInt();
+	if (num1 == list[0]) {		
 		if (num2 == list[1]) {
+			bm.line = num1.toInt();
 			bm.column = num2.toInt();
-			list.removeAt(1);
+			list.removeAt(0);
+			list.removeAt(0);
 		} else {
 			bm.column = -1;
-			
-		}
-		list.removeAt(0);
+			bm.line = num1.toInt();			
+			list.removeAt(0);
+		}		
 	} else {
 		bm.line = -1;
 	}
@@ -170,11 +171,11 @@ void MessageHandler::ParseCompilerMessage(QString text, MMBuildMessage &bm)
 
 void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 {
-	QString subText = text.right(text.length() - 3);
-	int pos = subText.indexOf(":") + 3;
-	QString part1 = text.left(pos);
-	QString part2 = text.right(text.length() - part1.length() - 1);
-	QStringList list = part1.split(":");
+	//QString subText = text.right(text.length() - 3);
+	//int pos = subText.indexOf(":") + 3;
+	//QString part1 = text.left(pos);
+	//QString part2 = text.right(text.length() - part1.length() - 1);
+	QStringList list = text.split(":");
 			
 	// in windows, paths have a ":" for separating the drive letter. 
 	// So, we need to check if the first ":" is the driver separator OR the
@@ -183,8 +184,46 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 		list[0] += ":" + list[1];
 		list.erase(list.begin() + 1);
 	}
+
+	if (list.count() < 2) {
+		return;
+	}
+
+	bm.file = list[0];
+	list.removeAt(0);
+
+	QString num1 = QString::number(list[0].toInt());
+	QString num2 = QString::number(list[1].toInt());
+	if (num1 == list[0]) {		
+		if (num2 == list[1]) {
+			bm.line = num1.toInt();
+			bm.column = num2.toInt();
+			list.removeAt(0);
+			list.removeAt(0);
+		} else {
+			bm.column = -1;
+			bm.line = num1.toInt();			
+			list.removeAt(0);
+		}		
+	} else {
+		bm.line = -1;
+	}
+
+	QString type = list[0]; //part2.left(pos);
+	if (type == " error") {
+		bm.type = mtError;
+	} else if (type == " warning") {
+		bm.type = mtWarning;
+	}
+
+	list.removeAt(0);
+	bm.text = list[0];
+	while (list.count() > 1) {
+		list.removeAt(0);
+		bm.text = bm.text + ":" + list[0];
+	}
 			
-	bm.file = list[0];			
+	/*bm.file = list[0];			
 	if (list.size() > 1) {
 		bm.line = list[1].toInt();
 		if (list.count() > 2) {
@@ -196,8 +235,8 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 		bm.line = -1;
 		bm.column = -1;
 	}
-
-	list = part2.split(":");
+	*/
+	/*list = part2.split(":");
 	int i=0;
 	while (i < list.count()) {
 		if (list[i].trimmed() == "") {
@@ -215,7 +254,7 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 			bm.text += ":" + list[k];
 		}
 						
-	}
+	}*/
 }
 
 //-----------------------------------------------------------------------------

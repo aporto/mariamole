@@ -7,7 +7,7 @@ Editor::Editor(QWidget *parent)
 	// WindoweIconText is used only for windows widgets. 
 	// So, it's free for us to use it here
 	setWindowIconText("editor");
-	setEolMode(QsciScintilla::EolUnix);
+	//setEolMode(QsciScintilla::EolUnix);
 
 	lexer = new QsciLexerCPP;
     this->setLexer(lexer);
@@ -43,7 +43,7 @@ QString Editor::GetFileName(void)
 
 void Editor::setEditorStyle (void)
 {
-	QFont font("Inconsolata", -1, QFont::Normal);
+	QFont font("Inconsolata", 14, QFont::Normal);
 	//font.setWeight(72);
 	QFontMetrics fontMetrics(font);
 	

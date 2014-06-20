@@ -55,13 +55,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 	CreateTreeContextMenu();
 
-
 	// Prepare editor UI
 	//ui.editorTabs->clear();  //removes all the previous tabs
 	tabsEditor = new EditorTab(this);
 	//connect(tabsEditor, SIGNAL(tabCloseRequested(int)), tabsEditor, SLOT(closeTab(int)));
 	//ui.tabParent->addWidget(tabsEditor);
 	ui.splitter->addWidget(tabsEditor);
+
+	// Load stylesheet
+	QString cssFileName =  qApp->applicationDirPath() + "/config/style_tabwidget.css";
+	QFile cssFile(cssFileName);
+	cssFile.open(QFile::ReadOnly | QFile::Text);
+    QTextStream css(&cssFile);
+	QString styleText = css.readAll();
+	ui.messageTabs->setStyleSheet(styleText);
 
 	if (QDir(config.workspace).exists()){
 		OpenWorkspace();	
@@ -272,9 +279,8 @@ void MainWindow::setupActions()
 			this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
 
 	// double click on build error/warning messages
-
-	connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
-			this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
+	//connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
+			//this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
 
 	
 	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
@@ -296,7 +302,7 @@ void MainWindow::OnTreeDoubleClick (QTreeWidgetItem * item, int column)
 	}
 
 	filename = workspace.GetFullFilePath(projectName, filename);
-
+	
 	tabsEditor->openFile(filename);
 }
 
@@ -328,7 +334,22 @@ void MainWindow::OpenWorkspaceFolder(void)
 
 void MainWindow::AddNewFile(void)
 {	
-	//wizard->NewProject();
+	if (workspace.GetCurrentProject() == NULL) {
+		return;
+	}
+
+	Wizard * wizard = new Wizard();
+	bool ok = wizard->ImportLibrary();	
+	
+	if (ok) {
+		QString libName = wizard->GetLibraryName();
+		if (libName != "") {
+			workspace.ImportLibrary(workspace.GetCurrentProject(), libName);
+		}
+		AdjustWorkspaceTree();
+	}
+
+	delete wizard;	
 }
 
 //-----------------------------------------------------------------------------

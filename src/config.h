@@ -58,6 +58,8 @@ public:
 	int Load(void);
 	bool Save(void);
 	QString DecodeMacros(QString inputText, Project const * const project);
+	QString LocateFileUsingSearchPaths(QString filename, QString searchPaths, bool isDir);
+	QString DecodeLibraryPath(QString libPath);
 
 	QString workspace;
 	QString includePaths;

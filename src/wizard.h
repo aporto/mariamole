@@ -25,6 +25,7 @@ public:
 
 	bool ImportLibrary(void);
 	bool NewProject(void);	
+	QString GetLibraryName(void);
 
 private:
 	Ui::Wizard ui;
@@ -37,7 +38,7 @@ private:
 	void GetExamplesDirectoriesRecursivelly(QString path, QStringList &examples);
 	void GetExamplesNamesRecursivelly(QString hierarchy, QString path, QStringList &examples);
 	bool CreateTheSelectedProject(void);
-	QString GetLibraryPath(void);	
+	
 	QString GetSelectedExamplePath(void);
 
 private slots:

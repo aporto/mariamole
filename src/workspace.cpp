@@ -126,22 +126,24 @@ Project * Workspace::GetCurrentProject(void)
 bool Workspace::AddProject(QString name, QString importExample) 
 {
 	QString path = config.workspace;
-	//QString name = ui.projectName.text();
-	path = path + "/" + name;
+
+	// Force renaming the project name if another project with the same name already exists
 	int aux = 0;	
-	QString auxPath = path;
+	QString auxName = name;
 	bool ok = true;
 	do {		
-		ok = QDir().mkdir(path);
+		ok = QDir().mkdir(path + "/" + auxName);
 		if (ok == false) {
 			aux++;
-			auxPath = path + "_" + QString::number(aux);
+			auxName = name + "_" + QString::number(aux);
 		}
-	} while ((ok == false) && (aux < 50));
-	
+	} while ((ok == false) && (aux < 50));	
 	if (aux >= 50) {
 		return false;
 	}
+
+	name = auxName;
+	path = path + "/" + name;
 
 	QDir().mkdir(path + "/source");
 	Project project;
@@ -150,39 +152,143 @@ bool Workspace::AddProject(QString name, QString importExample)
 	if (importExample == "") {		
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.cpp", "main.cpp", project);
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
+		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
 	} else {
+		QString examplePath = config.LocateFileUsingSearchPaths(importExample, "$(LIBRARIES)", true);
 		QString exampleName = QFileInfo(importExample).fileName();
-		QString mainFile = importExample + "/" + exampleName + ".ino";		
+		QString mainFile = examplePath + "/" + exampleName + ".ino";		
 		CopyFileToProject(mainFile, "main.cpp", project);
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
-		//QFile::copy(mainFile, path + "/main.cpp");
-		//QFile::copy(qApp->applicationDirPath() + "/templates/main.h", path + "/main.h");
+		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
 
 		//if example comes from a lib, add the lib files as external
-		QString libPath = importExample;
-		if (libPath.toUpper().indexOf("/EXAMPLES/") > 0) {
-			libPath = libPath.left(libPath.toUpper().indexOf("/EXAMPLES/"));
-			QDir dir(libPath);                            
-			QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries); 
-			for (int f=0; f < files.size(); f++) {	
-				if (files.at(f).isDir() == false) {
-					QString fileName = QFileInfo(files.at(f).absoluteFilePath()).fileName();
-					QString ext = QFileInfo(files.at(f).absoluteFilePath()).suffix().toUpper();
-					if ( ( (ext == "CPP") || (ext == "C") ) || (ext == "H") ) {
-						ProjectFile file;
-						file.name = "$(LIBRARIES)/" + fileName;
-						file.type = ptExternal;
-						project.files.push_back(file);
-					}
-				}
-			}		
-		}
+		if (importExample.toUpper().indexOf("/EXAMPLES/") > 0) {
+			QString libName = importExample;
+			libName = libName.left(libName.toUpper().indexOf("/EXAMPLES/"));
+			libName = QFileInfo(libName).fileName();
+			ImportLibrary(&project, libName);
+		}		
 	}
 	projects.push_back(project);
 
 	modified = true;
 
+	if (ok) {
+		SetCurrentProject(project.name);
+	}
+
 	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefixPath)
+{
+	// first, find the library path
+	if (libPath.indexOf("/") < 0) {
+		QString libName = libPath;
+		libPath = config.LocateFileUsingSearchPaths(libPath, "$(LIBRARIES)", true);
+		if (libPath == "") {
+			msg.Add("Error importing library '" + libName + "' to project. Please add it manually from toobar button", mtError);
+			return false;
+		}
+	}
+
+	ImportLibraryFilesRecursively(project, libPath, libPath);
+
+	// Add the list of all .h files to the automatically generated header file	
+	QString autoFileName = qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h";// config.workspace + "/" + project->name + "/source/mariamole_auto_generated.h";
+	QFile autoFile(autoFileName);
+	autoFile.open(QFile::ReadOnly | QFile::Text);
+    QTextStream stream(&autoFile);
+	QString fileContent = stream.readAll();
+	autoFile.close();
+
+	// Remove the last #endif from the file
+	while (fileContent.at(fileContent.length()-1) != '#') {
+		fileContent.remove(fileContent.length()-1, 1);
+	}
+	fileContent.remove(fileContent.length()-1, 1);
+	//fileContent; += "\n\n";
+
+	// add all header files
+	for (int i=0; i < project->files.size(); i++) {
+		if (project->files.at(i).type == ptExternal) {
+			QString name = QFileInfo(project->files.at(i).name).fileName();
+			QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
+			if ( (ext == "H") || (ext == "HPPC") ) {
+				fileContent += "#include <" + name + ">\n";
+			}
+		}
+	}
+	fileContent += "\n#endif\n";
+
+	autoFileName = config.workspace + "/" + project->name + "/source/mariamole_auto_generated.h";
+	QFile autoFileOutput(autoFileName);	
+	autoFileOutput.open(QFile::WriteOnly);
+	//autoFileOutput.setlin
+	//setEolMode(QsciScintilla::EolUnix);
+    QTextStream streamOutput(&autoFileOutput);	
+	streamOutput << fileContent;
+	autoFileOutput.close();
+
+	modified = true;
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, QString libPath)
+{
+	QString libName = QFileInfo(libPath).fileName();
+
+	int pathLen = path.length() - libPath.length();				
+	QString pref;
+	if (pathLen > 0) {
+		pref = path.right(pathLen);
+	}
+
+	project->includePaths += ";$(LIBRARIES)/" + libName;
+	if (pref != "") {
+		project->includePaths += pref;
+	}
+
+	QDir dir(path);                            
+	QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries); 
+	for (int f=0; f < files.size(); f++) {	
+		if (files.at(f).isDir()) {
+			QString pref = files.at(f).fileName();
+			if (pref.toUpper() != "EXAMPLES") {
+				ImportLibraryFilesRecursively(project, path + "/" + pref, libPath);
+				//ok = ok & ImportLibrary(project, libPath + "/" + pref, pref + "/");
+			}
+		} else {
+			QString fileName = QFileInfo(files.at(f).absoluteFilePath()).fileName();
+			QString ext = QFileInfo(files.at(f).absoluteFilePath()).suffix().toUpper();
+			if ( ( (ext == "CPP") || (ext == "C") ) || (ext == "H") ) {
+				ProjectFile file;				
+				if (pref == "") {
+					file.name = libName + "/" + fileName;
+				} else {
+					file.name = libName + "/" + pref + "/" + fileName;
+				}
+				file.type = ptExternal;
+
+				//Only add this file if its wasn't yet preset at the project
+				bool found = false;
+				for (int i=0; i < project->files.size(); i++) {
+					if (project->files.at(i).name == file.name) {
+						found = true;
+						break;
+					}
+				}
+				if (found == false) {
+					project->files.push_back(file);
+				}
+			}
+		}
+	}		
 }
 
 //-----------------------------------------------------------------------------
@@ -238,14 +344,13 @@ QString Workspace::GetFullFilePath(QString projectName, QString filename)
 	}
 
 	for (int i=0; i < project->files.size(); i++) {
-		QFileInfo file(project->files.at(i).name);
-		QString nameCheck = file.fileName();
-		if (nameCheck == filename) {
-			if (project->files.at(i).type == ptExternal) {
-				return project->FindExternalFile(file.fileName());
+		//QFileInfo file(project->files.at(i).name);
+		//QString nameCheck = file.fileName();
+		if (project->files.at(i).name == filename) {
+			if (project->files.at(i).type == ptSource) {
+				return config.workspace + "/" + project->name + "/source/" + filename;
 			} else {
-				return config.workspace + "/" + project->name + 
-					"/source/" + filename;
+				return config.LocateFileUsingSearchPaths(filename, "$(LIBRARIES)", false);			
 			}
 		}
 	}
