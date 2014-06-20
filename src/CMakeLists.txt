@@ -19,8 +19,9 @@ endif()
 
 file(GLOB_RECURSE UI_FILES *.ui)
 file(GLOB_RECURSE CODE_FILES builder.cpp build_message_item.cpp config.cpp editortab.cpp  mainwindow.cpp project.cpp setworkspace.cpp
-                             workspace.cpp builderthread.cpp buildwindow.cpp editor.cpp  main.cpp message_handler.cpp projectproperties.cpp
-                                                                                                                                 wizard.cpp)
+                             workspace.cpp builderthread.cpp buildwindow.cpp editor.cpp  main.cpp message_handler.cpp projectproperties.cpp 
+														    mm_utils.cpp wizard.cpp)
+
 
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 qt5_add_resources(RESOURCE_FILES mainwindow.qrc)
