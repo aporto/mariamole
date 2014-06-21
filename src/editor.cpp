@@ -64,18 +64,18 @@ void Editor::setEditorStyle (void)
     setMarkerBackgroundColor(Qt::red, 1);
 	ensureCursorVisible();
 
-	lexer->setColor(Qt::yellow, -1);
-	lexer->setFont(font, -1);
-	lexer->setPaper(QColor(14, 22, 24), -1);
-
-	setCaretForegroundColor(QColor(220, 200, 200));
-	setCaretLineBackgroundColor(QColor(16, 24, 26));
-	setCaretLineVisible(true);
-	setCaretWidth(1);
-
+	//lexer->setColor(Qt::yellow, -1);
+	
+	//setCaretLineVisible(true);
+	setCaretWidth(2);
 	markerDefine(QsciScintilla::Circle, 0);
 	setMarkerBackgroundColor(Qt::red, 0);
 	setMarkerForegroundColor(Qt::white, 0);
+
+	lexer->setFont(font, -1);
+	lexer->setPaper(QColor(14, 22, 24), -1);
+	setCaretForegroundColor(QColor(220, 200, 200));
+	setCaretLineBackgroundColor(QColor(16, 24, 26));
 
 	setLexerStyle(QsciLexerCPP::Default, QColor (190, 190, 190), QColor(14, 22, 24));
 	setLexerStyle(QsciLexerCPP::Comment, QColor (80, 80, 80), QColor(14, 22, 24));
@@ -103,6 +103,7 @@ void Editor::setEditorStyle (void)
 	setLexerStyle(QsciLexerCPP::HashQuotedString, QColor (150, 150, 150), QColor(14, 22, 24));
 	setLexerStyle(QsciLexerCPP::PreProcessorComment, QColor (150, 150, 150), QColor(14, 22, 24));
 	setLexerStyle(QsciLexerCPP::PreProcessorCommentLineDoc, QColor (150, 150, 150), QColor(14, 22, 24)); 	
+	
 }
 
 void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool bold, bool italic, bool underline)

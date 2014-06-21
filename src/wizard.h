@@ -9,11 +9,14 @@
 #include <QFileInfo>
 #include <QListWidgetItem>
 #include <QDesktopWidget>
+#include <QFileDialog>
+#include <QFileInfo>
 
 #include "ui_wizard.h"
 
 #include "config.h"
 #include "workspace.h"
+#include "mm_utils.h"
 
 class Wizard : public QDialog
 {
@@ -50,6 +53,7 @@ private slots:
 	void rbEmptyProject(void);
 	void listLibsClicked (QListWidgetItem * item);
 	void examplesTreeClicked (QTreeWidgetItem * item, int column);
+	void OnSelectSketchFile(void);
 
 };
 

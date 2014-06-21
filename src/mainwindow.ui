@@ -27,6 +27,32 @@ QWidget {
 	background-color: rgb(22, 30, 32);
 	selection-background-color: rgb(68, 85, 89);
 }
+
+QScrollBar:horizontal {
+     border: 2px solid grey;
+     background: #32CC99;
+     height: 15px;
+     margin: 0px 20px 0 20px;
+ }
+ QScrollBar::handle:horizontal {
+     background: white;
+     min-width: 20px;
+ }
+ QScrollBar::add-line:horizontal {
+     border: 2px solid grey;
+     background: #32CC99;
+     width: 20px;
+     subcontrol-position: right;
+     subcontrol-origin: margin;
+ }
+
+ QScrollBar::sub-line:horizontal {
+     border: 2px solid grey;
+     background: #32CC99;
+     width: 20px;
+     subcontrol-position: left;
+     subcontrol-origin: margin;
+ }
 </string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -802,8 +828,10 @@ padding: 5px;</string>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(22, 30, 32);
-border:none;</string>
+    <string notr="true">color: white;
+background-color: rgb(22, 30, 32);
+border:none;
+</string>
    </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonFollowStyle</enum>
@@ -872,6 +900,9 @@ border:none;</string>
    </property>
    <property name="text">
     <string>actionSave_Workspace</string>
+   </property>
+   <property name="toolTip">
+    <string>Save all projects and their corresponding files</string>
    </property>
   </action>
   <action name="actionProject_configurations">

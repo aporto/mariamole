@@ -208,6 +208,10 @@ void MainWindow::update(void)
 			QFont font = item->font();
 			font.setBold(true);
 			item->setFont(font);
+			//// Turn serialports open again
+			if (item->bm.text.indexOf("successfully uploaded to board") > 0) {
+				tabsEditor->EnableAllSerialPorts(true);
+			}
 		} else {
 			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_info.png"));
 		}
@@ -278,12 +282,19 @@ void MainWindow::setupActions()
 	connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
 			this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
 
+	// open serial port
+	ui.actionOpen_serial_port->setShortcut(tr("Ctrl+I"));
+    ui.actionOpen_serial_port->setStatusTip(tr("Open the serial port for the current project"));
+	connect (ui.actionOpen_serial_port, SIGNAL(triggered()), this, SLOT(OpenSerialPort()));
+
+
 	// double click on build error/warning messages
+	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
 	//connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
 			//this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
 
 	
-	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -429,7 +440,9 @@ void MainWindow::BuildProject()
 {
 	SaveWorkspace();
 	ui.buildMessages->clear();
+	//tabsEditor->EnableAllSerialPorts(false);
 	buildWindow->Build(false);
+	//tabsEditor->EnableAllSerialPorts(true);
 }
 
 //-----------------------------------------------------------------------------
@@ -446,7 +459,8 @@ void MainWindow::CleanProject()
 void MainWindow::UploadProgram()
 {
 	ui.buildMessages->clear();
-	buildWindow->Build(true);
+	tabsEditor->EnableAllSerialPorts(false);
+	buildWindow->Build(true);	
 }
 
 //-----------------------------------------------------------------------------
@@ -764,3 +778,20 @@ void MainWindow::SaveWorkspace(void)
 	// Then save all projects on workspaces
 	workspace.Save();
 }
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OpenSerialPort(void)
+{
+	if (workspace.GetCurrentProject() == NULL) {
+		return;
+	}
+	QString port = workspace.GetCurrentProject()->serialPort;
+	if ( (port != "") && (port != "N/A")) {
+		tabsEditor->openSerialPort(port, workspace.GetCurrentProject()->serialPortSpeed);
+	} else {
+		ErrorMessage("There's no serial port associated with the current project");
+	}
+}
+
+//-----------------------------------------------------------------------------

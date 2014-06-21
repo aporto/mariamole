@@ -58,6 +58,53 @@ int EditorTab::fileIndex(QString filename)
 	return -1;
 }
 
+int EditorTab::portIndex(QString port)
+// returns the tab index that holds the requested serila port
+{
+	for (int i=0;  i < count(); i++) {
+		QWidget * w = widget(i);
+		// Check if the widget is a code editor
+		if (tabType(i) == MM::serialTab) {		
+			SerialMonitor * monitor = (SerialMonitor *)(widget(i));
+			if (monitor->GetPort() == port) {
+				return i;
+			}
+		}		
+	}
+
+	return -1;
+}
+
+void EditorTab::EnableAllSerialPorts(bool enable)
+{
+	for (int i=0; i < count(); i++) {
+		if (tabType(i) == MM::serialTab) {		
+			SerialMonitor * serial = (SerialMonitor *)widget(i);
+			if (enable) {
+				serial->OpenPort();
+			} else {
+				serial->ClosePort();				
+			}
+		}
+	}
+}
+
+bool EditorTab::openSerialPort(QString port, QString speed)
+{	
+	int index = portIndex(port);
+	if (index >= 0) {
+		setCurrentIndex(index);		
+	} else {		
+		SerialMonitor * monitor = new SerialMonitor(this);
+		addTab(monitor, port);
+		monitor->OpenPort(port, speed);		
+		setCurrentIndex(count() - 1);		
+		QApplication::restoreOverrideCursor();
+	}
+
+	return true;
+}
+
 bool EditorTab::openFile(QString filename, int highlightLine)
 {
 	// First, check if the file isn't already loaded
@@ -70,9 +117,7 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		// File wasn't already open, So, let's create a new editor and load the file on it
 		QFile file(filename);
 		if (!file.open(QFile::ReadOnly)) {
-			ErrorMessage(tr("Application"), tr("Cannot read file %1:\n%2.")
-								 .arg(filename)
-								 .arg(file.errorString()));			
+			ErrorMessage(tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()));			
 			return false;
 		}
 		QTextStream in(&file);
@@ -92,8 +137,6 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		QApplication::restoreOverrideCursor();
 	}
 
-	//highlightLine = 3;
-    
 	if (highlightLine >= 0) {		
 		//textEdit->setCursorPosition(highlightLine, 0);
 		textEdit->ensureLineVisible(highlightLine-1);		
@@ -109,7 +152,7 @@ void EditorTab::closeTab(int index)
 	if (tabType(index) == MM::codeTab) {
 		Editor * editor = (Editor *)widget(index);
 		if (editor->isModified()) {
-			if (GetUserConfirmation("File modified", "File was modified. Do you want to save it?\n" + editor->GetFileName())) {
+			if (GetUserConfirmation("File was modified. Do you want to save it?\n" + editor->GetFileName())) {
 			/*QMessageBox::StandardButton reply;
 			reply = QMessageBox::question(this, "File modified", "File was modified. Do you want to save it?\n" + editor->GetFileName(),
                                 QMessageBox::Yes|QMessageBox::No);
@@ -118,8 +161,12 @@ void EditorTab::closeTab(int index)
 			}
 		}
 	}
-
+	
+	// removeTab doesnt delete the widget
+	QWidget * w = widget(index);
 	this->removeTab(index);
+	delete w;
+
 	//delete widget(index);
    // cout << "Index to remove == "  << index << endl;
     //QWidget* tabItem = this->widget(index);

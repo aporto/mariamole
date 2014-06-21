@@ -6,6 +6,7 @@
 #include <QTextStream>
 
 #include "editor.h"
+#include "serialmonitor.h"
 #include "mm_utils.h"
 
 namespace MM {
@@ -20,9 +21,12 @@ public:
 	EditorTab(QWidget *parent);
 	~EditorTab();
 	int fileIndex(QString filename);
+	int portIndex(QString port);
 	bool openFile(QString filename, int highlightLine=-1);	
+	bool openSerialPort(QString port, QString speed);	
 	bool saveAllFiles(void);	
 	void closeAll(void);	
+	void EnableAllSerialPorts(bool enable);
 
 public slots:
     void closeTab(int);

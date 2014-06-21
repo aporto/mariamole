@@ -103,7 +103,7 @@
             </rect>
            </property>
            <property name="text">
-            <string>Yes. Use the following externa programmer</string>
+            <string>Yes. Use the following external programmer</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_2">

@@ -17,9 +17,12 @@ Wizard::Wizard(QWidget *parent)
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(btnCancelClicked()));	
 
 	connect(ui.rbEmptyProject, SIGNAL(clicked()), this, SLOT(rbEmptyProject()));	
+	connect(ui.rbImportSketch, SIGNAL(clicked()), this, SLOT(rbEmptyProject()));	
 	connect(ui.rbImportExample, SIGNAL(clicked()), this, SLOT(rbImportExample()));	
 
 	connect(ui.listLibs, SIGNAL(itemClicked (QListWidgetItem *)), this, SLOT(listLibsClicked(QListWidgetItem *)));		
+
+	connect (ui.pbSketchFile, SIGNAL(clicked()), this, SLOT(OnSelectSketchFile()));	
 }
 
 //-----------------------------------------------------------------------------
@@ -27,6 +30,19 @@ Wizard::Wizard(QWidget *parent)
 Wizard::~Wizard()
 {
 
+}
+
+//-----------------------------------------------------------------------------
+
+void Wizard::OnSelectSketchFile(void)
+{
+	QString path = "";
+	path = QFileDialog::getOpenFileName(this, tr("Select sketch file"), 
+		ui.ebSketchName->text(), tr("Arduino sketches(*.ino)"));
+
+	if (QFileInfo(path).exists()) {
+		ui.ebSketchName->setText(path);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -41,12 +57,31 @@ void Wizard::listLibsClicked (QListWidgetItem * item)
 void Wizard::btnNextClicked(void)
 {
 	if (ui.stackedWidget->currentIndex() == 0) {
-		ui.stackedWidget->setCurrentIndex(2);
-		ui.btnFinish->setEnabled(true);
-		ui.btnNext->setEnabled(false);
-		ui.btnPrevious->setEnabled(true);
-		if (ui.projectName->text() == "") {
-			ui.projectName->setText("New project");
+		if (ui.rbImportSketch->isChecked()) {
+			ui.stackedWidget->setCurrentIndex(4);
+			ui.btnFinish->setEnabled(false);
+			ui.btnNext->setEnabled(true);
+			ui.btnPrevious->setEnabled(true);
+		} else {
+			ui.stackedWidget->setCurrentIndex(2);
+			ui.btnFinish->setEnabled(true);
+			ui.btnNext->setEnabled(false);
+			ui.btnPrevious->setEnabled(true);
+			if (ui.projectName->text() == "") {
+				ui.projectName->setText("New project");
+			}
+		}
+	} else if (ui.stackedWidget->currentIndex() == 4) {
+		if (QFileInfo(ui.ebSketchName->text()).exists() == false) {
+			ErrorMessage("Sketch file doesn't exists!\n" + ui.ebSketchName->text());
+		} else {
+			ui.stackedWidget->setCurrentIndex(2);
+			ui.btnFinish->setEnabled(true);
+			ui.btnNext->setEnabled(false);
+			ui.btnPrevious->setEnabled(true);
+			if (ui.projectName->text() == "") {
+				ui.projectName->setText("New project");
+			}
 		}
 	}
 }
@@ -56,6 +91,18 @@ void Wizard::btnNextClicked(void)
 void Wizard::btnPreviousClicked(void)
 {
 	if (ui.stackedWidget->currentIndex() == 2) {
+		if (ui.rbImportSketch->isChecked()) {
+			ui.stackedWidget->setCurrentIndex(4);
+			ui.btnFinish->setEnabled(false);
+			ui.btnNext->setEnabled(true);
+			ui.btnPrevious->setEnabled(true);		
+		} else {
+			ui.stackedWidget->setCurrentIndex(0);
+			ui.btnFinish->setEnabled(false);
+			ui.btnNext->setEnabled(true);
+			ui.btnPrevious->setEnabled(false);		
+		}
+	} else if (ui.stackedWidget->currentIndex() == 4) {
 		ui.stackedWidget->setCurrentIndex(0);
 		ui.btnFinish->setEnabled(false);
 		ui.btnNext->setEnabled(true);
@@ -144,6 +191,8 @@ bool Wizard::NewProject(void)
 		QString path = "";
 		if (ui.rbImportExample->isChecked()) {
 			path = GetSelectedExamplePath();
+		} else if (ui.rbImportSketch->isChecked()) {
+			path = ui.ebSketchName->text();
 		}
 		ok = workspace.AddProject(ui.projectName->text(), path);
 	}
@@ -275,6 +324,8 @@ QString Wizard::GetSelectedExamplePath(void)
 	}
 	QTreeWidgetItem * selected = selection.at(0);
 
+	QString name = selected->text(0);
+
 	if (selected->childCount() > 0) {
 		return "";
 	}
@@ -288,7 +339,16 @@ QString Wizard::GetSelectedExamplePath(void)
 		path = selected->text(0) + "/" + path;
 		selected = selected->parent();		
 	}
-	path = selected->text(0) + "/examples/" + path;
+
+	if (selected->text(0) == "arduino") {
+		path = qApp->applicationDirPath() + "/arduino/arduino/examples/" + path;
+		path = path + "/" + QFileInfo(path).fileName() + ".ino";
+	} else {
+		path = selected->text(0) + "/examples/" + path + "/" + path + ".ino";
+		path = config.LocateFileUsingSearchPaths(path, "$(LIBRARIES)", false);
+	}
+
+	//path = qApp->applicationDirPath() + "/arduino/" + path + "/" + name + ".ino";
 
 	return path;
 }

@@ -5,9 +5,9 @@
 #include <QApplication>
 #include <QString>
 
-bool GetUserConfirmation(QString title, QString msg);
+bool GetUserConfirmation(QString msg);
 
-void ErrorMessage(QString title, QString msg);
+void ErrorMessage(QString msg);
 
 
 #endif

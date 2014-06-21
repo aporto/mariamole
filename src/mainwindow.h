@@ -54,6 +54,7 @@ public slots:
 	void AddNewProject(void);	
 	void ConfigureCurrentProject(void);
 	void SaveWorkspace(void);
+	void OpenSerialPort(void);
 	void OnTreeDoubleClick (QTreeWidgetItem * item, int column);
 	void OnBuildMessagesDoubleClick(QListWidgetItem* item);
 

@@ -123,7 +123,7 @@ Project * Workspace::GetCurrentProject(void)
 
 //-----------------------------------------------------------------------------
 
-bool Workspace::AddProject(QString name, QString importExample) 
+bool Workspace::AddProject(QString name, QString importSketch) 
 {
 	QString path = config.workspace;
 
@@ -149,15 +149,34 @@ bool Workspace::AddProject(QString name, QString importExample)
 	Project project;
 	project.name = name;	
 
-	if (importExample == "") {		
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.cpp", "main.cpp", project);
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
+	if (importSketch == "") {		
+		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.cpp", "main.cpp", &project);
+		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", &project);		
+		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", &project);		
 	} else {
-		QString examplePath = config.LocateFileUsingSearchPaths(importExample, "$(LIBRARIES)", true);
+
+		if (ImportSketch(&project, importSketch) == false) {
+			return false;
+		}
+		/*QString examplePath = config.LocateFileUsingSearchPaths(importExample, "$(LIBRARIES)", true);
 		QString exampleName = QFileInfo(importExample).fileName();
-		QString mainFile = examplePath + "/" + exampleName + ".ino";		
+		
+		QString mainFile = examplePath + "/" + exampleName + ".ino";				
 		CopyFileToProject(mainFile, "main.cpp", project);
+		
+		// Add #include <main.h> to main.cpp
+		QFile autoFile(config.workspace + "/" + project.name + "/source/main.cpp");
+		autoFile.open(QFile::ReadOnly | QFile::Text);
+		QTextStream stream(&autoFile);
+		QString fileContent = stream.readAll();
+		autoFile.close();
+		fileContent = "#include \"main.h\"\n" + fileContent;
+		autoFile.open(QFile::WriteOnly);
+		QTextStream streamOut(&autoFile);
+		streamOut << fileContent;
+		autoFile.close();
+		
+		// copy templates to project source path
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
 
@@ -167,7 +186,7 @@ bool Workspace::AddProject(QString name, QString importExample)
 			libName = libName.left(libName.toUpper().indexOf("/EXAMPLES/"));
 			libName = QFileInfo(libName).fileName();
 			ImportLibrary(&project, libName);
-		}		
+		}	*/	
 	}
 	projects.push_back(project);
 
@@ -178,6 +197,82 @@ bool Workspace::AddProject(QString name, QString importExample)
 	}
 
 	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+bool Workspace::ImportSketch(Project * project, QString sketchFullPath) 
+{
+	QString name = QFileInfo(sketchFullPath).fileName();
+	QString path = QFileInfo(sketchFullPath).absolutePath();
+
+	// Copy main sketch file to project source folder, 
+	// adjusting the code as necessary
+
+	QStringList importLibs;
+	
+	QFile file(sketchFullPath);
+	file.open(QFile::ReadOnly | QFile::Text);
+	QTextStream streamIn(&file);
+	QString fileContent = streamIn.readAll();
+	file.close();
+	QStringList list = fileContent.split("\n");
+	for (int i=0; i<list.count(); i++) {
+		if (list[i].indexOf("#include") >= 0) {
+			QString text = list[i];
+			text.remove(0, text.indexOf("#include") +  8);
+			text = text.trimmed();
+			text = text.remove(0, 1); //remove first quote or "<"
+			int p = text.indexOf(".h");
+			if (p > 0) {
+				text = text.left(p);
+				importLibs.append(text);
+			}
+		}
+	}
+
+	fileContent = "#include \"main.h\"\n" + fileContent;
+	QFile outFile(config.workspace + "/" + project->name + "/source/main.cpp");
+	outFile.open(QFile::WriteOnly);
+	QTextStream streamOut(&outFile);
+	streamOut << fileContent;
+	outFile.close();
+	ProjectFile pfile;
+	pfile.name = "main.cpp";
+	pfile.open = false;
+	pfile.type = ptSource;
+	project->files.push_back(pfile);
+
+	CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
+	CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
+
+	ImportFilesFromSketchDirectory(project, path);
+
+	for (int i=0; i < importLibs.count(); i++) {
+		ImportLibrary(project, importLibs[i], "");
+	}
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+void Workspace::ImportFilesFromSketchDirectory(Project * project, QString sketchPath)
+{
+	QString projectPath = config.workspace + "/" + project->name + "/source";
+	
+	QDir dir(sketchPath);                            
+	QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries); 
+	// to do: Import these files recursivelly
+	for (int f=0; f < files.size(); f++) {	
+		if (files.at(f).isDir() == false) {
+			QString fileName = QFileInfo(files.at(f).absoluteFilePath()).fileName();		
+			QString ext = QFileInfo(files.at(f)).suffix().toUpper();
+			if ( (ext != "INO") && (ext != "PDE") ) {
+				CopyFileToProject(files.at(f).absoluteFilePath(), fileName, project);		
+			}
+		} 		
+	}	
 }
 
 //-----------------------------------------------------------------------------
@@ -293,9 +388,9 @@ void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, Q
 
 //-----------------------------------------------------------------------------
 
-bool Workspace::CopyFileToProject(QString input, QString output, Project &project)
+bool Workspace::CopyFileToProject(QString input, QString output, Project * project)
 {
-	QString path = config.workspace + "/" + project.name + "/source/";
+	QString path = config.workspace + "/" + project->name + "/source/";
 	bool ok = QFile::copy(input, path + output);
 	
 	if (ok) {
@@ -303,7 +398,7 @@ bool Workspace::CopyFileToProject(QString input, QString output, Project &projec
 		projectFile.name = output;
 		projectFile.open = false;
 		projectFile.type = ptSource;
-		project.files.push_back(projectFile);
+		project->files.push_back(projectFile);
 	}
 
 	return ok;

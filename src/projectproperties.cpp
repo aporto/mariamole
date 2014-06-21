@@ -97,15 +97,22 @@ bool ProjectProperties::Edit(Project * project)
 
 	// get list of serial ports
 	// to do: use QSerialPort
+
 	ui.cbSerialPort->clear();
 	ui.cbSerialPort->addItem("N/A");
-	ui.cbSerialPort->addItem("COM 1");
+
+	QSerialPortInfo serial;
+	for (int i=0; i < serial.availablePorts().count();i++) {
+		ui.cbSerialPort->addItem(serial.availablePorts().at(i).portName());
+	}
+	
+	/*ui.cbSerialPort->addItem("COM 1");
 	ui.cbSerialPort->addItem("COM 2");
 	ui.cbSerialPort->addItem("COM 3");
 	ui.cbSerialPort->addItem("COM 4");
 	ui.cbSerialPort->addItem("COM 5");
 	ui.cbSerialPort->addItem("COM 6");
-
+	*/
 	ui.cbSerialPort->setCurrentIndex(0);
 	for (int i=0; i < ui.cbSerialPort->count(); i++) {
 		if (project->serialPort == ui.cbSerialPort->itemText(i)) {

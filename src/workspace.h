@@ -26,11 +26,12 @@ public:
 	bool Open(QString workPath);
 	bool Save(void);
 	bool SetCurrentProject(QString projectName);
-	bool AddProject(QString name, QString importExample);
+	bool AddProject(QString name, QString importSketch);
 	bool IsModified(void);
 	Project * GetCurrentProject(void);
 	QString GetFullFilePath(QString projectName, QString filename);
 	bool ImportLibrary(Project * project, QString libPath, QString prefixPath = "");
+	bool ImportSketch(Project * project, QString sketchFullPath) ;
 
 	vector <Project> projects;
 
@@ -38,8 +39,9 @@ private:
 	//QString path;	
 	bool modified;
 	//QString currentProject;
-	bool CopyFileToProject(QString input, QString outoput, Project &project);	
+	bool CopyFileToProject(QString input, QString outoput, Project * project);	
 	void ImportLibraryFilesRecursively(Project * project, QString path, QString libPath);
+	void ImportFilesFromSketchDirectory(Project * project, QString sketchPath);
 };
 
 //-----------------------------------------------------------------------------
