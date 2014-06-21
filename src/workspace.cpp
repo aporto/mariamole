@@ -451,3 +451,46 @@ QString Workspace::GetFullFilePath(QString projectName, QString filename)
 	}
 	return "";
 }
+
+bool Workspace::AddNewFile(QString fullPath)
+{
+	Project * project = GetCurrentProject();
+	if (project == NULL) {
+		return false;
+	}
+
+	if (QFileInfo(fullPath).exists()) {
+		ErrorMessage("File already exists: \n" + fullPath);
+		return false;
+	}
+
+	QString path = QFileInfo(fullPath).absoluteDir().absolutePath();
+	if (path != config.workspace + "/" + project->name + "/source") {
+		ErrorMessage("Invalid file name/path: \n" + fullPath);
+		return false;
+	}
+
+	QString name = QFileInfo(fullPath).fileName();
+	QString ext = QFileInfo(fullPath).suffix().toUpper();
+	
+	// create the file
+	QFile autoFileOutput(fullPath);	
+	bool ok = autoFileOutput.open(QFile::WriteOnly);
+	if (ok == false) {
+		ErrorMessage("Error creating the file: \n" + fullPath);
+		return false;
+	}
+	QTextStream streamOutput(&autoFileOutput);	
+	streamOutput << "/* File automatically created by MariaMole */ \n";
+	autoFileOutput.close();
+
+	modified = true;
+
+	ProjectFile pfile;
+	pfile.name = name;
+	pfile.open = false;
+	pfile.type = ptSource;
+	project->files.push_back(pfile);
+
+	return true;
+}

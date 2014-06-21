@@ -30,6 +30,10 @@ public:
 
 public slots:
     void closeTab(int);
+	void onEditorTextChanged(void);
+
+signals:
+     void codeChanged(void);
 
 private:
 	MM::TabType tabType(int index);

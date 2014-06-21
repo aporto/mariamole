@@ -10,6 +10,7 @@
 #include "project.h"
 #include "message_handler.h"
 #include "config.h" 
+#include "mm_utils.h" 
 
 //-----------------------------------------------------------------------------
 
@@ -27,6 +28,7 @@ public:
 	bool Save(void);
 	bool SetCurrentProject(QString projectName);
 	bool AddProject(QString name, QString importSketch);
+	bool AddNewFile(QString fullPath);
 	bool IsModified(void);
 	Project * GetCurrentProject(void);
 	QString GetFullFilePath(QString projectName, QString filename);

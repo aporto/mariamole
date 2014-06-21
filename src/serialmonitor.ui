@@ -16,7 +16,8 @@
   <property name="styleSheet">
    <string notr="true">QWidget {
 	color:rgb(150,150,150);
-	background-color: rgb(14, 22, 24);
+	background-color: rgb(24, 30, 32);
+	bl: rgb(14, 22, 24);
 	selection-background-color: rgb(50, 150, 50);
 	selection-color: rgb(0,0,0);
 }
@@ -25,7 +26,7 @@ QLineEdit {
  }
 
 QPlainTextEdit {
-	color:rgb(150, 255, 150);
+	color:rgb(50, 140, 70);
 	font-family:&quot;Courier&quot;;
      border: 1px solid rgb(32, 40, 42);     
  }

@@ -23,36 +23,64 @@
  }
 
 QWidget {
-	color:rgb(200,200,200);
+	color:rgb(140, 140, 140);
+	bbbe: rgb(200,200,200);
 	background-color: rgb(22, 30, 32);
 	selection-background-color: rgb(68, 85, 89);
 }
 
 QScrollBar:horizontal {
-     border: 2px solid grey;
-     background: #32CC99;
-     height: 15px;
+     border: 1px solid rgb(34, 30, 32);
+	min-height: 15px;
+     _background: rgb(20, 26, 18);
      margin: 0px 20px 0 20px;
  }
- QScrollBar::handle:horizontal {
-     background: white;
-     min-width: 20px;
+ QScrollBar:vertical {
+     border: 1px solid rgb(34, 30, 32);
+	min-height: 15px;
+     _background: rgb(20, 26, 18);
+     margin: 20px 0px 20px 0px;
  }
- QScrollBar::add-line:horizontal {
-     border: 2px solid grey;
-     background: #32CC99;
+ QScrollBar::handle {
+     background: rgb(44, 50, 52);     
+	 min-width: 20px;
+ }
+  QScrollBar::add-line:horizontal {
+     border: 1px solid rgb(34, 30, 32);
+     background: rgb(74, 90, 92);
      width: 20px;
      subcontrol-position: right;
      subcontrol-origin: margin;
  }
+ QScrollBar::add-line:vertical {
+     border: 1px solid rgb(34, 30, 32);
+     background: rgb(74, 90, 92);
+     height: 20px;
+     subcontrol-position: top;
+     subcontrol-origin: margin;
+ }
 
  QScrollBar::sub-line:horizontal {
-     border: 2px solid grey;
-     background: #32CC99;
+     border: 1px solid rgb(34, 30, 32);
+     background: rgb(74, 90, 92);
      width: 20px;
      subcontrol-position: left;
      subcontrol-origin: margin;
  }
+ QScrollBar::sub-line:vertical {
+     border: 1px solid rgb(34, 30, 32);
+     background: rgb(74, 90, 92);
+     height: 20px;
+     subcontrol-position: bottom;
+     subcontrol-origin: margin;
+ }
+
+ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+    }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    }
 </string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -77,7 +105,8 @@ QScrollBar:horizontal {
       <widget class="QSplitter" name="splitter">
        <property name="styleSheet">
         <string notr="true">border: 0px solid;
-background-color: rgb(14, 22, 24);</string>
+background-color: rgb(22, 30, 32);
+aaa: rgb(14, 22, 24);</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -212,7 +241,7 @@ background-color: rgb(14, 22, 24);</string>
         <enum>QTabWidget::Triangular</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
@@ -260,7 +289,8 @@ background-color: rgb(14, 22, 24);</string>
             <property name="styleSheet">
              <string notr="true">border:none;
 padding: 5px;
-background-color: rgb(22, 30, 32);</string>
+background-color: rgb(22, 30, 32);
+color:rgb(140,140,140);</string>
             </property>
            </widget>
            <widget class="QStackedWidget" name="buildStatus">
@@ -844,7 +874,7 @@ border:none;
    </attribute>
    <addaction name="actionSelect_workspace"/>
    <addaction name="actionAdd_a_new_project"/>
-   <addaction name="actionAdd_a_new_file"/>
+   <addaction name="actionImport_arduino_library"/>
    <addaction name="actionSave_Workspace"/>
    <addaction name="actionProject_configurations"/>
    <addaction name="actionBuild_project"/>
@@ -881,16 +911,16 @@ border:none;
     <string>Add a new project</string>
    </property>
   </action>
-  <action name="actionAdd_a_new_file">
+  <action name="actionImport_arduino_library">
    <property name="icon">
     <iconset resource="mainwindow.qrc">
      <normaloff>:/MainWindow/resources/toolbar/add_file.png</normaloff>:/MainWindow/resources/toolbar/add_file.png</iconset>
    </property>
    <property name="text">
-    <string>Add a new file</string>
+    <string>Import an Arduino library</string>
    </property>
    <property name="toolTip">
-    <string>Add a new file</string>
+    <string>Import an Arduino library</string>
    </property>
   </action>
   <action name="actionSave_Workspace">

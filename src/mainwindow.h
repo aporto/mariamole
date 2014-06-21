@@ -50,13 +50,15 @@ public slots:
 	void EditProjectProperties(void);
 	void OpenWorkspaceFolder(void);
 	void ShowTreeMenu(const QPoint point);
-	void AddNewFile(void);
+	void ImportLibrary(void);
 	void AddNewProject(void);	
 	void ConfigureCurrentProject(void);
 	void SaveWorkspace(void);
 	void OpenSerialPort(void);
 	void OnTreeDoubleClick (QTreeWidgetItem * item, int column);
 	void OnBuildMessagesDoubleClick(QListWidgetItem* item);
+	void AddNewFileToProject(void);
+	void OnProjectModified(void);
 
 protected:
 	void resizeEvent(QResizeEvent *event);

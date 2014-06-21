@@ -26,12 +26,15 @@ public:
 	Wizard(QWidget *parent = 0);
 	~Wizard();
 
+	bool NewFile(void);
+	QString GetNewFileName(void);
 	bool ImportLibrary(void);
 	bool NewProject(void);	
 	QString GetLibraryName(void);
 
 private:
 	Ui::Wizard ui;
+	QString newFile;
 
 	bool ok;
 	bool Display(void);

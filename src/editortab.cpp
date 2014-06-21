@@ -4,12 +4,10 @@ EditorTab::EditorTab(QWidget *parent)
 	: QTabWidget(parent)
 {
 	this->setTabsClosable(true);
-    //this->setStyleSheet("border-style: solid");
-    //this->setStyleSheet("background-color: rgb(32, 40, 42)");
     this->setTabShape(Triangular);
 
 	// Load stylesheet
-	QString cssFileName =  qApp->applicationDirPath() + "/config/style_tabwidget.css";
+	QString cssFileName =  qApp->applicationDirPath() + "/config/style_code_editor.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream css(&cssFile);
@@ -129,10 +127,10 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		textEdit->setText(txt);
 		textEdit->SetFileName(filename);
 		textEdit->setModified(false);
+
+		connect(textEdit, SIGNAL(textChanged()), this, SLOT(onEditorTextChanged()));
 	
 		addTab(textEdit, QFileInfo(file).fileName());
-		//QString style = styleSheet();
-		//widget(count() - 1)->setStyleSheet(style);
 		setCurrentIndex(count() - 1);		
 		QApplication::restoreOverrideCursor();
 	}
@@ -145,6 +143,11 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 	}
 
 	return true;
+}
+
+void EditorTab::onEditorTextChanged(void)
+{
+	emit codeChanged();
 }
 
 void EditorTab::closeTab(int index)

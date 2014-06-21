@@ -24,5 +24,10 @@
         <file>resources/toolbar/add_file.png</file>
         <file>resources/toolbar/add_project.png</file>
         <file>resources/toolbar/build.png</file>
+        <file>resources/file_types/arduino_icon.png</file>
+        <file>resources/file_types/c_icon_48.png</file>
+        <file>resources/file_types/cpp_icon_48.png</file>
+        <file>resources/file_types/h_icon_48.png</file>
+        <file>resources/toolbar/save2.png</file>
     </qresource>
 </RCC>

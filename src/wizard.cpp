@@ -58,7 +58,7 @@ void Wizard::btnNextClicked(void)
 {
 	if (ui.stackedWidget->currentIndex() == 0) {
 		if (ui.rbImportSketch->isChecked()) {
-			ui.stackedWidget->setCurrentIndex(4);
+			ui.stackedWidget->setCurrentIndex(4);			
 			ui.btnFinish->setEnabled(false);
 			ui.btnNext->setEnabled(true);
 			ui.btnPrevious->setEnabled(true);
@@ -142,7 +142,27 @@ void Wizard::btnFinishClicked(void)
 	} else if (ui.stackedWidget->currentIndex() == 2) {
 		ok = ui.projectName->text() != "";
 		close();
-	}
+	} else if (ui.stackedWidget->currentIndex() == 5) { // add file
+		newFile = config.workspace + "/" + workspace.GetCurrentProject()->name + "/source/" + ui.ebNewFile->text();
+		if (ui.rbCppFile->isChecked() ) {
+			newFile += ".cpp";
+		} else if (ui.rbCFile->isChecked() ) {
+			newFile += ".c";
+		} else {
+			newFile += ".h";
+		}
+		if (workspace.AddNewFile(newFile)) {
+			ok = true;
+			close();			
+		}
+	}	
+}
+
+//-----------------------------------------------------------------------------
+
+QString Wizard::GetNewFileName(void)
+{
+	return newFile;
 }
 
 //-----------------------------------------------------------------------------
@@ -168,8 +188,31 @@ bool Wizard::Display(void)
 
 //-----------------------------------------------------------------------------
 
+bool Wizard::NewFile(void)
+{
+	ui.lblTitle->setText("Create a new file:");
+	
+	ui.stackedWidget->setCurrentIndex(5);
+	ui.btnCancel->setEnabled(true);
+	ui.btnFinish->setEnabled(true);
+	ui.btnPrevious->setEnabled(false);
+	ui.btnNext->setEnabled(false);
+
+	ui.rbCppFile->setChecked(true);
+
+	ok = Display(); 
+
+	return ok;
+	/*if (ok) {
+		
+	}*/
+}
+//-----------------------------------------------------------------------------
+
+
 bool Wizard::NewProject(void)
 {
+	ui.lblTitle->setText("Create a new project:");
 	ui.stackedWidget->setCurrentIndex(0);
 	ui.btnCancel->setEnabled(true);
 	ui.btnFinish->setEnabled(false);
@@ -209,6 +252,7 @@ bool Wizard::ImportLibrary(void)
 	ui.btnFinish->setEnabled(false);
 	ui.btnPrevious->setEnabled(false);
 	ui.btnNext->setEnabled(false);
+	ui.lblTitle->setText("Import library:");
 
 	PopulateLibrariesList();
 

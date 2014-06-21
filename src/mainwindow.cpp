@@ -41,9 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(100);
 
-    
-
-	QPalette palette = ui.menuBar->palette();
+    QPalette palette = ui.menuBar->palette();
 	palette.setColor(QPalette::Button,  ui.mainToolBar->palette().color(QPalette::Window));
 	ui.menuBar->setPalette(palette);
 
@@ -58,18 +56,18 @@ MainWindow::MainWindow(QWidget *parent)
 	// Prepare editor UI
 	//ui.editorTabs->clear();  //removes all the previous tabs
 	tabsEditor = new EditorTab(this);
-	//connect(tabsEditor, SIGNAL(tabCloseRequested(int)), tabsEditor, SLOT(closeTab(int)));
+	connect(tabsEditor, SIGNAL(codeChanged()), this, SLOT(OnProjectModified()));
 	//ui.tabParent->addWidget(tabsEditor);
 	ui.splitter->addWidget(tabsEditor);
 
 	// Load stylesheet
-	QString cssFileName =  qApp->applicationDirPath() + "/config/style_tabwidget.css";
+	QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream css(&cssFile);
 	QString styleText = css.readAll();
 	ui.messageTabs->setStyleSheet(styleText);
-
+	ui.actionSave_Workspace->setData(0);
 	if (QDir(config.workspace).exists()){
 		OpenWorkspace();	
 	}
@@ -89,19 +87,27 @@ void MainWindow::CreateTreeContextMenu(void)
 	connect(action, SIGNAL(triggered()), this, SLOT(SetDefaultProject()));
 	projectContext->addAction(action);
 
+	//action = projectContext->addAction("Import library");
+	//connect(action, SIGNAL(triggered()), this, SLOT(ImportLibrary()));
+	projectContext->addAction(ui.actionAdd_file);	
+
 	action = projectContext->addAction("Properties");
 	connect(action, SIGNAL(triggered()), this, SLOT(EditProjectProperties()));
-	projectContext->addAction(action);	
-
-	//ui.tree->setconte
-
+	projectContext->addAction(action);
 }
 
 //-----------------------------------------------------------------------------
 
 void MainWindow::ShowTreeMenu(const QPoint point)
 {
-	projectContext->popup(ui.tree->viewport()->mapToGlobal(point));
+	QTreeWidgetItem * item = ui.tree->itemAt(point);
+	if (item == NULL) {
+		return;
+	}
+
+	if (item->data(0,255) == WorskspaceTree::Project) {
+		projectContext->popup(ui.tree->viewport()->mapToGlobal(point));
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -194,9 +200,9 @@ void MainWindow::update(void)
 			text += item->bm.text;
 		}
 		item->setText(text);
-
+				
 		//QListWidgetItem * item = new QListWidgetItem(text, ui.buildMessages);		
-		QFont font = item->font();			
+		QFont font = item->font();		
 		if (item->bm.type == mtError) {
 			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_error.png"));
 			//item->setForeground(Qt::red);
@@ -204,10 +210,9 @@ void MainWindow::update(void)
 			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_warning.png"));
 			//item->setForeground(Qt::white);
 		} else if (item->bm.type == mtSuccess) {
-			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_check.png"));
-			QFont font = item->font();
+			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_check.png"));		
 			font.setBold(true);
-			item->setFont(font);
+			
 			//// Turn serialports open again
 			if (item->bm.text.indexOf("successfully uploaded to board") > 0) {
 				tabsEditor->EnableAllSerialPorts(true);
@@ -215,6 +220,7 @@ void MainWindow::update(void)
 		} else {
 			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_info.png"));
 		}
+		item->setFont(font);
 	}
 
 	qApp->processEvents();
@@ -261,9 +267,13 @@ void MainWindow::setupActions()
 	connect (ui.actionAdd_a_new_project, SIGNAL(triggered()), this, SLOT(AddNewProject()));
 
 	// Add new file
-	ui.actionAdd_a_new_file->setShortcut(tr("Ctrl+N"));
-    ui.actionAdd_a_new_file->setStatusTip(tr("Add a new file to the current project"));
-	connect (ui.actionAdd_a_new_file, SIGNAL(triggered()), this, SLOT(AddNewFile()));
+	//ui.actionAdd_a_new_file->setShortcut(tr("Ctrl+N"));
+    ui.actionImport_arduino_library->setStatusTip(tr("Import Arduino library"));
+	connect (ui.actionImport_arduino_library, SIGNAL(triggered()), this, SLOT(ImportLibrary()));
+
+	//action = projectContext->addAction("Import library");
+	connect(ui.actionAdd_file, SIGNAL(triggered()), this, SLOT(AddNewFileToProject()));
+	//projectContext->addAction(ui.actionAdd_a_new_file);	
 
 	// edit properties
 	//ui.actionEdit_configuration->setShortcut();
@@ -343,7 +353,7 @@ void MainWindow::OpenWorkspaceFolder(void)
 
 //-----------------------------------------------------------------------------
 
-void MainWindow::AddNewFile(void)
+void MainWindow::ImportLibrary(void)
 {	
 	if (workspace.GetCurrentProject() == NULL) {
 		return;
@@ -357,6 +367,23 @@ void MainWindow::AddNewFile(void)
 		if (libName != "") {
 			workspace.ImportLibrary(workspace.GetCurrentProject(), libName);
 		}
+		AdjustWorkspaceTree();
+	}
+
+	delete wizard;	
+}
+
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::AddNewFileToProject(void)
+{
+	Wizard * wizard = new Wizard();
+	bool ok = wizard->NewFile();	
+	
+	if (ok) {
+		QString file = wizard->GetNewFileName();
+		tabsEditor->openFile(file);		
 		AdjustWorkspaceTree();
 	}
 
@@ -777,6 +804,10 @@ void MainWindow::SaveWorkspace(void)
 
 	// Then save all projects on workspaces
 	workspace.Save();
+	if (workspace.IsModified() == false) {
+		ui.actionSave_Workspace->setData(0);
+		ui.actionSave_Workspace->setIcon(QIcon(":/MainWindow/resources/toolbar/save.png"));
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -794,4 +825,13 @@ void MainWindow::OpenSerialPort(void)
 	}
 }
 
+
 //-----------------------------------------------------------------------------
+
+void MainWindow::OnProjectModified(void)
+{
+	if (ui.actionSave_Workspace->data() == 0) {
+		ui.actionSave_Workspace->setData(1);
+		ui.actionSave_Workspace->setIcon(QIcon(":/MainWindow/resources/toolbar/save2.png"));
+	}
+}
