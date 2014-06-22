@@ -61,6 +61,7 @@ public slots:
 	void AddNewFileToProject(void);
 	void OnProjectModified(void);
 	void ShowAboutWindow(void);
+	void ShowMainMenu(void);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
@@ -71,9 +72,11 @@ private:
 	Wizard * wizard;
 	SetWorkspace * setWorkspace;
 	QMenu * projectContext;
+	QMenu * mainMenu;
 	
 	EditorTab *tabsEditor;
 
+	void CreateMainMenuContext(void);
 	void CreateTreeContextMenu(void);
 	void OpenWorkspace(void);
 	void AdjustWorkspaceTree(void);

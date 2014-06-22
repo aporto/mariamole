@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	setupActions();
 
+	CreateMainMenuContext();
 	CreateTreeContextMenu();
 
 	// Prepare editor UI
@@ -75,11 +76,51 @@ MainWindow::MainWindow(QWidget *parent)
 
 //-----------------------------------------------------------------------------
 
+void MainWindow::CreateMainMenuContext(void)
+{
+	if (config.useMenuButton) {
+		mainMenu = new QMenu(this);
+		LoadStyleSheet(mainMenu, "style_menu.css");
+
+		//ui.actionMainMenuButton->setMenu(mainMenu);
+		//ui.actionMainMenuButton->set
+		//ui.actionMainMenuButton->popsetPopupMode(QToolButton::InstantPopup);
+		//mainMenu->setStyleSheet(ui.menuBar->styleSheet());			
+		//ui.mainToolBar->insertSeparator(ui.actionSelect_workspace);
+		ui.menuBar->setVisible(false);	
+		ui.actionMainMenuButton->setVisible(true);		
+		connect(ui.actionMainMenuButton, SIGNAL(triggered()), this,SLOT(ShowMainMenu()));
+		connect(ui.actionSeparator, SIGNAL(triggered()), this,SLOT(ShowMainMenu()));
+		mainMenu->addMenu(ui.menuFile);
+		mainMenu->addMenu(ui.menuEdit);
+		mainMenu->addMenu(ui.menuProject);
+		mainMenu->addMenu(ui.menuHelp);
+		mainMenu->addSeparator();
+		mainMenu->addAction(ui.actionExit);
+	} else {
+		ui.actionMainMenuButton->setVisible(false);		
+		ui.menuBar->setVisible(true);	
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::ShowMainMenu(void)
+{
+	QPoint point = ui.mainToolBar->mapToGlobal(ui.mainToolBar->pos());
+	point.setX(point.x() + 20);
+	point.setY(point.y() + ui.mainToolBar->size().height());
+	mainMenu->popup(point);
+}
+
+//-----------------------------------------------------------------------------
+
 void MainWindow::CreateTreeContextMenu(void)
 {
-	projectContext = new QMenu(this);
+	projectContext = new QMenu(this);	
 	ui.tree->setContextMenuPolicy(Qt::CustomContextMenu);
-	projectContext->setStyleSheet(ui.menuBar->styleSheet());
+	LoadStyleSheet(projectContext, "style_menu.css");
+	//projectContext->setStyleSheet(ui.menuBar->styleSheet());
 	bool ok = connect(ui.tree, SIGNAL(customContextMenuRequested(const QPoint &)),
 		this,SLOT(ShowTreeMenu(const QPoint )));
 
@@ -542,7 +583,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 	ui.messageTabs->resize(w, 0.1 * h);
 	//ui.editorTabs->resize(0.90 * w, h * 9);
 	tabsEditor->resize(0.90 * w, h * 9);
-	ui.tree->resize(0.20 * w, h * 0.9);
+	ui.tree->resize(0.10 * w, h * 0.9);
 	
 }
 

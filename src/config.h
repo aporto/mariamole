@@ -61,6 +61,7 @@ public:
 	QString LocateFileUsingSearchPaths(QString filename, QString searchPaths, bool isDir);
 	QString DecodeLibraryPath(QString libPath);
 
+	bool useMenuButton;
 	QString workspace;
 	QString includePaths;
 	QString libPaths;

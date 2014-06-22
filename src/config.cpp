@@ -29,6 +29,7 @@ int Config::Load(void)
 
 	settings.beginGroup("main");
 	workspace = settings.value("workspace", "").toString();
+	useMenuButton= settings.value("useMenuButton", "1").toBool();
     settings.endGroup();
 
 	settings.beginGroup("build");
@@ -234,6 +235,8 @@ bool Config::Save(void)
 
 	settings.beginGroup("main");
     settings.setValue("workspace", workspace);
+	settings.setValue("useMenuButton", useMenuButton);
+	
     settings.endGroup();
 	
 	settings.beginGroup("build");

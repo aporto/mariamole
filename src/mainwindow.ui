@@ -17,16 +17,29 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true"> QMenu {
-     background-color: red; /* sets background of the menu */
+   <string notr="true">QMenu {
+     background-color: blue;
+	fdfdf: rgb(52, 60, 62); 
+	color:red;
      border: 1px solid black;
  }
 
 QWidget {
+color:blue;
 	color:rgb(140, 140, 140);
 	bbbe: rgb(200,200,200);
 	background-color: rgb(22, 30, 32);
 	selection-background-color: rgb(68, 85, 89);
+}
+
+QMainWindow::separator {
+color:white;
+background-color:blue;
+}
+
+QToolBar {
+	border: 10px solid red;
+
 }
 
 QScrollBar:horizontal {
@@ -131,6 +144,7 @@ aaa: rgb(14, 22, 24);</string>
 	outline: 0;
 	border-image: none;
 	border-right: 2px solid rgb(30, 38, 40);
+	border-top: 5px solid rgb(24, 32, 34);
 }
 
  QTreeView::branch:has-siblings:!adjoins-item {
@@ -187,6 +201,9 @@ aaa: rgb(14, 22, 24);</string>
         <property name="headerHidden">
          <bool>true</bool>
         </property>
+        <attribute name="headerVisible">
+         <bool>false</bool>
+        </attribute>
         <attribute name="headerCascadingSectionResizes">
          <bool>false</bool>
         </attribute>
@@ -198,7 +215,7 @@ aaa: rgb(14, 22, 24);</string>
         </attribute>
         <column>
          <property name="text">
-          <string notr="true">1</string>
+          <string notr="true"/>
          </property>
         </column>
        </widget>
@@ -791,16 +808,7 @@ padding: 5px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QMenuBar{
-	background-color: rgb(22, 30, 32);
-	border:0px;
-}
-
- QMenu {
-     background-color: rgb(52, 60, 62); 
-     border: 1px solid black;
- }
-</string>
+    <string notr="true"/>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="styleSheet">
@@ -865,9 +873,22 @@ padding: 5px;</string>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="styleSheet">
-    <string notr="true">color: white;
-background-color: rgb(22, 30, 32);
-border:none;
+    <string notr="true">QToolBar {
+	color: white;
+	_background-color: rgb(22, 30, 32);
+	border:none;
+	border-bottom: 1px solid rgb(57, 65, 67);
+	font:bold;
+	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                 stop:0 rgb(52, 60, 62),  stop:1 rgb(32, 40, 42));
+}
+
+QToolButton {
+	border: none;
+	font:bold;
+	color:white;
+	background-color:rgba(0,0,0,0);
+}
 </string>
    </property>
    <property name="toolButtonStyle">
@@ -879,6 +900,9 @@ border:none;
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionMainMenuButton"/>
+   <addaction name="actionSeparator"/>
+   <addaction name="separator"/>
    <addaction name="actionSelect_workspace"/>
    <addaction name="actionAdd_a_new_project"/>
    <addaction name="actionImport_arduino_library"/>
@@ -887,7 +911,6 @@ border:none;
    <addaction name="actionBuild_project"/>
    <addaction name="actionBuild_and_upload_project"/>
    <addaction name="actionOpen_serial_port"/>
-   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
@@ -900,6 +923,9 @@ border:none;
      <normaloff>:/MainWindow/resources/toolbar/workspace.png</normaloff>:/MainWindow/resources/toolbar/workspace.png</iconset>
    </property>
    <property name="text">
+    <string>Select workspace</string>
+   </property>
+   <property name="iconText">
     <string>Select workspace</string>
    </property>
    <property name="toolTip">
@@ -1108,6 +1134,26 @@ border:none;
   <action name="actionOpen_Arduino_online_help">
    <property name="text">
     <string>Open Arduino online help</string>
+   </property>
+  </action>
+  <action name="actionMainMenuButton">
+   <property name="text">
+    <string>Menu</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionSeparator">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/scrollbars/arrow_down.png</normaloff>:/MainWindow/resources/scrollbars/arrow_down.png</iconset>
+   </property>
+   <property name="text">
+    <string>separator</string>
    </property>
   </action>
  </widget>
