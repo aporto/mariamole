@@ -452,6 +452,8 @@ QString Workspace::GetFullFilePath(QString projectName, QString filename)
 	return "";
 }
 
+//-----------------------------------------------------------------------------
+
 bool Workspace::AddNewFile(QString fullPath)
 {
 	Project * project = GetCurrentProject();
@@ -494,3 +496,187 @@ bool Workspace::AddNewFile(QString fullPath)
 
 	return true;
 }
+
+//-----------------------------------------------------------------------------
+
+void Workspace::RemoveFile(QString projectName, QString file, bool isExternal)
+{
+	Project * project = FindProject(projectName);
+	if (project == NULL) {
+		return;
+	}
+
+	QString msg;
+	QString fullPath = GetFullFilePath(projectName, file);
+	if (isExternal) {
+		msg = "Confirm removing reference to this external file?\nThe file will NOT be deleted!\n\n"
+			+ file;
+	} else {
+		msg = "Confirm deleting this file: \n\n" + fullPath;
+	}
+	
+	if (GetUserConfirmation(msg) == false) {
+		return;
+	}
+
+	int index = -1;
+	for (int i=0; i < project->files.size(); i++) {
+		if (isExternal) {
+			if ( (project->files.at(i).type == ptExternal) && (project->files.at(i).name == file) ) {
+				index = i;
+				break;
+			}
+		} else {
+			if ( (project->files.at(i).type == ptSource) && (project->files.at(i).name == file) ) {
+				index = i;
+				break;
+			}
+		}
+	}
+
+	if (index < 0 ) {
+		ErrorMessage("Could not delete the file!\n");
+		return;
+	}
+
+	if (isExternal == false) {
+		bool ok = QFile(fullPath).remove();
+		if (ok == false) {
+			ErrorMessage("Error deleting the file!\n");
+			return;
+		}		
+	}
+
+	project->files.erase(project->files.begin() + index);
+	modified = true;
+}
+
+//-----------------------------------------------------------------------------
+
+void Workspace::RenameFile(QString projectName, QString file)
+{
+	Project * project = FindProject(projectName);
+	if (project == NULL) {
+		return;
+	}
+
+	int index = -1;
+	for (int i=0; i < project->files.size(); i++) {
+		if ( (project->files.at(i).type != ptExternal) && (project->files.at(i).name == file) ) {
+			index = i;
+			break;
+		}
+	}
+
+	if (index < 0 ) {
+		ErrorMessage("Could not rename the file!\n");
+		return;
+	}
+
+	GetUserString * user = new GetUserString();
+	QString newName = user->GetNewName(QFileInfo(file).baseName(), true);
+	if (newName == "") {
+		return;
+	}
+
+	QString ext = QFileInfo(file).suffix();
+	newName = QFileInfo(newName).baseName();
+	newName = config.workspace + "/" + project->name + "/source/" + newName + "." + ext;
+
+	QString oldName = GetFullFilePath(projectName, file);
+
+	if (QFile(oldName).rename(newName) == false) {
+		ErrorMessage("Error while renaming the file!\n");
+		return;
+	}
+
+	project->files.at(index).name = QFileInfo(newName).fileName();
+	modified = true;
+}
+
+//-----------------------------------------------------------------------------
+
+void Workspace::RemoveProject(QString projectName)
+{
+
+	Project * project = FindProject(projectName);
+	if (project == NULL) {
+		return;
+	}
+
+	if (GetUserConfirmation("Confirm deleting this whole project?\n\n" + projectName) == false) {
+		return;
+	}
+
+	QString path = config.workspace + "/" + projectName;
+	QDir(path).removeRecursively();
+
+	if (QDir(path).exists()) {
+		ErrorMessage("Could not remove the project files. Please delete them manually.");
+		return;
+	}
+
+	for (int i=0; i < projects.size(); i++) {
+		if (projects.at(i).name == projectName) {
+			projects.erase(projects.begin() + i);
+			break;
+		}
+	}
+
+	if (projects.size() > 0) {
+		SetCurrentProject(projects.at(0).name);
+	}
+	
+	modified = true;
+}
+
+//-----------------------------------------------------------------------------
+
+void Workspace::RenameProject(QString projectName)
+{
+	Project * project = FindProject(projectName);
+	if (project == NULL) {
+		return;
+	}
+
+	GetUserString * user = new GetUserString();
+	QString newName = user->GetNewName(projectName, false);
+	if (newName == "") {
+		return;
+	}
+	newName = QFileInfo(newName).baseName();
+
+	QString newPath = QFileInfo(newName).baseName();
+	QString oldPath = config.workspace + "/" + projectName;
+
+	if (QDir().rename(oldPath, config.workspace + "/" + newPath) == false) {
+		ErrorMessage("Error while renaming the project!\n");
+		return;
+	}
+
+	oldPath = config.workspace + "/" + newPath + "/" + projectName + ".mmproj";
+	newPath = config.workspace + "/" + newPath + "/" + newName + ".mmproj";
+	
+
+	if (QFile(oldPath).rename(newPath) == false) {
+		ErrorMessage("Error while renaming the project definiton file. You'll need to do that manually.\n\nYou won't be able to load this project while this is not fixed");		
+	}
+
+	project->name = newName;
+	SetCurrentProject(newName);
+	modified = true;
+}
+
+//-----------------------------------------------------------------------------
+
+Project * Workspace::FindProject(QString name)
+{
+	for (int i=0; i < projects.size(); i++) {
+		if (projects.at(i).name == name) {
+			return &(projects.at(i));
+		}
+	} 
+	return NULL;
+}
+	
+//-----------------------------------------------------------------------------

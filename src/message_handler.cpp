@@ -212,11 +212,16 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 	QString type = list[0]; //part2.left(pos);
 	if (type == " error") {
 		bm.type = mtError;
+		list.removeAt(0);
 	} else if (type == " warning") {
 		bm.type = mtWarning;
+		list.removeAt(0);
+	} else {
+		if (bm.line >= 0) {
+			bm.type = mtError;
+		}
 	}
 
-	list.removeAt(0);
 	bm.text = list[0];
 	while (list.count() > 1) {
 		list.removeAt(0);

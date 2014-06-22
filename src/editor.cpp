@@ -24,6 +24,8 @@ Editor::Editor(QWidget *parent)
 	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
 
 	setEditorStyle();
+
+	lastModifiedTime = QDateTime::currentDateTime();
 }
 
 
@@ -136,4 +138,29 @@ void Editor::onCursorPositionChanged(int line, int index)
 {
 	//setCaretLineBackgroundColor(QColor(16, 24, 26));
 	markerDeleteAll();
+}
+
+
+void Editor::focusInEvent ( QFocusEvent * event )
+{
+	QsciScintilla::focusInEvent(event);
+
+	// Check if file was modified
+	QDateTime fileTime = QFileInfo(file).lastModified();
+	if (lastModifiedTime < fileTime) {
+		lastModifiedTime = QDateTime::currentDateTime();
+		if (GetUserConfirmation("File was modified outsite editor. Do you want to reload it?\n" +file))  {
+			QFile inFile(file);
+			if (!inFile.open(QFile::ReadOnly)) {
+				ErrorMessage(tr("Cannot read file %1:\n%2.").arg(file).arg(inFile.errorString()));			
+				return;
+			}
+			QTextStream in(&inFile);
+			QApplication::setOverrideCursor(Qt::WaitCursor);
+			QString txt(in.readAll());
+			setText(txt);				
+			setModified(false);
+			QApplication::restoreOverrideCursor();
+		}
+	}
 }

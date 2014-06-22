@@ -62,6 +62,14 @@ public slots:
 	void OnProjectModified(void);
 	void ShowAboutWindow(void);
 	void ShowMainMenu(void);
+	void ExitSoftware(void);
+	void ReportABug(void);
+	void VisitMariaMoleWebsite(void);
+	void VisitArduinoHelp(void);
+	void RenameFile(void);
+	void RemoveFile(void);
+	void RenameProject(void);
+	void RemoveProject(void);
 
 protected:
 	void resizeEvent(QResizeEvent *event);
@@ -71,7 +79,7 @@ private:
 	BuildWindow * buildWindow;
 	Wizard * wizard;
 	SetWorkspace * setWorkspace;
-	QMenu * projectContext;
+	QMenu * projectContext, * fileContext, * wsContext;
 	QMenu * mainMenu;
 	
 	EditorTab *tabsEditor;
@@ -82,6 +90,7 @@ private:
 	void AdjustWorkspaceTree(void);
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);
+	void SetProjectModified(void);
 };
 
 #endif // MAINWINDOW_H

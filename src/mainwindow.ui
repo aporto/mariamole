@@ -819,7 +819,6 @@ padding: 5px;</string>
     </property>
     <addaction name="actionSwitch_workspace"/>
     <addaction name="actionSave_Workspace"/>
-    <addaction name="actionSave_workspace_as"/>
     <addaction name="actionReload_workspace"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_file"/>
@@ -845,8 +844,8 @@ padding: 5px;</string>
      <string>Project</string>
     </property>
     <addaction name="actionAdd"/>
-    <addaction name="actionRename"/>
-    <addaction name="actionRemove"/>
+    <addaction name="actionRename_project"/>
+    <addaction name="actionRemove_project"/>
     <addaction name="separator"/>
     <addaction name="actionProject_configurations"/>
     <addaction name="separator"/>
@@ -861,7 +860,6 @@ padding: 5px;</string>
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionVisit_MariaMole_website"/>
-    <addaction name="actionView_software_licence"/>
     <addaction name="actionReport_a_bug"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_Arduino_online_help"/>
@@ -904,8 +902,6 @@ QToolButton {
    <addaction name="actionSeparator"/>
    <addaction name="separator"/>
    <addaction name="actionSelect_workspace"/>
-   <addaction name="actionAdd_a_new_project"/>
-   <addaction name="actionImport_arduino_library"/>
    <addaction name="actionSave_Workspace"/>
    <addaction name="actionProject_configurations"/>
    <addaction name="actionBuild_project"/>
@@ -931,6 +927,9 @@ QToolButton {
    <property name="toolTip">
     <string>Select workspace</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionAdd_a_new_project">
    <property name="icon">
@@ -942,6 +941,9 @@ QToolButton {
    </property>
    <property name="toolTip">
     <string>Add a new project</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionImport_arduino_library">
@@ -955,6 +957,9 @@ QToolButton {
    <property name="toolTip">
     <string>Import an Arduino library</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionSave_Workspace">
    <property name="icon">
@@ -966,6 +971,9 @@ QToolButton {
    </property>
    <property name="toolTip">
     <string>Save all projects and their corresponding files</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionProject_configurations">
@@ -979,6 +987,9 @@ QToolButton {
    <property name="toolTip">
     <string>Project configurations</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionBuild_project">
    <property name="icon">
@@ -990,6 +1001,9 @@ QToolButton {
    </property>
    <property name="toolTip">
     <string>Build current project</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionBuild_and_upload_project">
@@ -1003,6 +1017,9 @@ QToolButton {
    <property name="toolTip">
     <string>Upload current project to board</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionOpen_serial_port">
    <property name="icon">
@@ -1014,6 +1031,9 @@ QToolButton {
    </property>
    <property name="toolTip">
     <string>Open serial port</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionSwitch_workspace">
@@ -1033,7 +1053,10 @@ QToolButton {
   </action>
   <action name="actionAdd_file">
    <property name="text">
-    <string>Add file</string>
+    <string>Add a new file</string>
+   </property>
+   <property name="toolTip">
+    <string>Add a new file</string>
    </property>
   </action>
   <action name="actionRename_file">
@@ -1086,14 +1109,14 @@ QToolButton {
     <string>Add</string>
    </property>
   </action>
-  <action name="actionRename">
+  <action name="actionRename_project">
    <property name="text">
-    <string>Rename</string>
+    <string>Rename project</string>
    </property>
   </action>
-  <action name="actionRemove">
+  <action name="actionRemove_project">
    <property name="text">
-    <string>Remove</string>
+    <string>Remove project</string>
    </property>
   </action>
   <action name="actionEdit_configuration">

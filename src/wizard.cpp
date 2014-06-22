@@ -67,6 +67,12 @@ void Wizard::btnNextClicked(void)
 			ui.btnFinish->setEnabled(true);
 			ui.btnNext->setEnabled(false);
 			ui.btnPrevious->setEnabled(true);
+			if (ui.rbImportExample->isChecked()) {
+				QList<QTreeWidgetItem *> selection = ui.examplesTree->selectedItems();
+				if (selection.size() != 0) {
+					ui.projectName->setText(selection.at(0)->text(0));
+				}
+			}
 			if (ui.projectName->text() == "") {
 				ui.projectName->setText("New project");
 			}
@@ -143,6 +149,12 @@ void Wizard::btnFinishClicked(void)
 		ok = ui.projectName->text() != "";
 		close();
 	} else if (ui.stackedWidget->currentIndex() == 5) { // add file
+		if (ui.ebNewFile->text().trimmed() == "") {
+			return;
+		}
+		if (ui.ebNewFile->text().trimmed().at(0) == '.') {
+			return;
+		}
 		newFile = config.workspace + "/" + workspace.GetCurrentProject()->name + "/source/" + ui.ebNewFile->text();
 		if (ui.rbCppFile->isChecked() ) {
 			newFile += ".cpp";

@@ -116,7 +116,6 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		QApplication::setOverrideCursor(Qt::WaitCursor);
 
 		QString txt(in.readAll());
-
 		textEdit = new Editor(this);
 		textEdit->setText(txt);
 		textEdit->SetFileName(filename);
@@ -149,7 +148,7 @@ void EditorTab::closeTab(int index)
 	if (tabType(index) == MM::codeTab) {
 		Editor * editor = (Editor *)widget(index);
 		if (editor->isModified()) {
-			if (GetUserConfirmation("File was modified. Do you want to save it?\n" + editor->GetFileName())) {
+			if (GetUserConfirmation("This file is being closed, but has unsaved changes. Do you want to save it?\n" + editor->GetFileName())) {
 			/*QMessageBox::StandardButton reply;
 			reply = QMessageBox::question(this, "File modified", "File was modified. Do you want to save it?\n" + editor->GetFileName(),
                                 QMessageBox::Yes|QMessageBox::No);

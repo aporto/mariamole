@@ -127,14 +127,42 @@ void MainWindow::CreateTreeContextMenu(void)
 	QAction * action = projectContext->addAction("Set default project");
 	connect(action, SIGNAL(triggered()), this, SLOT(SetDefaultProject()));
 	projectContext->addAction(action);
+	projectContext->addSeparator();
+	
+	projectContext->addAction(ui.actionClean_current_project);
+	projectContext->addAction(ui.actionBuild_project);
+	projectContext->addAction(ui.actionBuild_and_upload_project);
+	projectContext->addAction(ui.actionOpen_serial_port);
+	projectContext->addSeparator();
 
-	//action = projectContext->addAction("Import library");
-	//connect(action, SIGNAL(triggered()), this, SLOT(ImportLibrary()));
+	projectContext->addAction(ui.actionRename_project);
+	projectContext->addAction(ui.actionRemove_project);	
+	
+	projectContext->addSeparator();
 	projectContext->addAction(ui.actionAdd_file);	
-
+	projectContext->addAction(ui.actionImport_arduino_library);
+	
+	projectContext->addSeparator();
 	action = projectContext->addAction("Properties");
 	connect(action, SIGNAL(triggered()), this, SLOT(EditProjectProperties()));
 	projectContext->addAction(action);
+
+
+	// files
+	fileContext = new QMenu(this);	
+	LoadStyleSheet(fileContext, "style_menu.css");
+	fileContext->addAction(ui.actionRename_file);
+	fileContext->addAction(ui.actionRemove_file);
+	projectContext->addSeparator();
+	fileContext->addAction(ui.actionFormat_code);
+
+	// workspace
+	wsContext = new QMenu(this);
+	LoadStyleSheet(wsContext, "style_menu.css");
+	wsContext->addAction(ui.actionSelect_workspace);
+	wsContext->addAction(ui.actionReload_workspace);
+	projectContext->addSeparator();
+	wsContext->addAction(ui.actionAdd_a_new_project);	
 }
 
 //-----------------------------------------------------------------------------
@@ -144,6 +172,14 @@ void MainWindow::ShowTreeMenu(const QPoint point)
 	QTreeWidgetItem * item = ui.tree->itemAt(point);
 	if (item == NULL) {
 		return;
+	}
+
+	if (item->data(0,255) == WorskspaceTree::Workspace) {
+		wsContext->popup(ui.tree->viewport()->mapToGlobal(point));
+	}
+
+	if ((item->data(0,255) == WorskspaceTree::ExternalFile) || (item->data(0,255) == WorskspaceTree::File)) {
+		fileContext->popup(ui.tree->viewport()->mapToGlobal(point));
 	}
 
 	if (item->data(0,255) == WorskspaceTree::Project) {
@@ -341,12 +377,22 @@ void MainWindow::setupActions()
 	// menu about
 	connect (ui.actionAbout, SIGNAL(triggered()), this, SLOT(ShowAboutWindow()));
 
+	// exit mariamole
+	connect (ui.actionExit, SIGNAL(triggered()), this, SLOT(ExitSoftware()));
 
+	// help webistes
+	connect (ui.actionReport_a_bug, SIGNAL(triggered()), this, SLOT(ReportABug()));
+	connect (ui.actionVisit_MariaMole_website, SIGNAL(triggered()), this, SLOT(VisitMariaMoleWebsite()));
+	connect (ui.actionOpen_Arduino_online_help, SIGNAL(triggered()), this, SLOT(VisitArduinoHelp()));
+		
+	// rename and remove
+	connect (ui.actionRename_file, SIGNAL(triggered()), this, SLOT(RenameFile()));
+	connect (ui.actionRemove_file, SIGNAL(triggered()), this, SLOT(RemoveFile()));
+	connect (ui.actionRename_project, SIGNAL(triggered()), this, SLOT(RenameProject()));
+	connect (ui.actionRemove_project, SIGNAL(triggered()), this, SLOT(RemoveProject()));
+	
 	// double click on build error/warning messages
 	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
-	//connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
-			//this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
-
 }
 
 //-----------------------------------------------------------------------------
@@ -409,6 +455,7 @@ void MainWindow::ImportLibrary(void)
 		if (libName != "") {
 			workspace.ImportLibrary(workspace.GetCurrentProject(), libName);
 		}
+		SetProjectModified();
 		AdjustWorkspaceTree();
 	}
 
@@ -426,6 +473,7 @@ void MainWindow::AddNewFileToProject(void)
 	if (ok) {
 		QString file = wizard->GetNewFileName();
 		tabsEditor->openFile(file);		
+		SetProjectModified();
 		AdjustWorkspaceTree();
 	}
 
@@ -443,6 +491,7 @@ void MainWindow::AddNewProject(void)
 		ProjectProperties * prop = new ProjectProperties();
 		prop->Edit(workspace.GetCurrentProject());
 		delete prop;
+		SetProjectModified();
 		AdjustWorkspaceTree();
 	}	
 }
@@ -635,6 +684,9 @@ void MainWindow::AdjustWorkspaceTree(void)
 	// First, find projects on workspace that are not yet on the tree, and add them.	
 
 	if (workspace.GetCurrentProject() == NULL) {
+		while (root->childCount() > 0) {
+			root->removeChild(root->child(0));
+		}
 		return;
 	}
         
@@ -858,6 +910,14 @@ void MainWindow::OpenSerialPort(void)
 
 //-----------------------------------------------------------------------------
 
+void MainWindow::SetProjectModified(void)
+{
+	ui.actionSave_Workspace->setData(0);
+	OnProjectModified();
+}
+
+//-----------------------------------------------------------------------------
+
 void MainWindow::OnProjectModified(void)
 {
 	if (ui.actionSave_Workspace->data() == 0) {
@@ -874,4 +934,140 @@ void MainWindow::ShowAboutWindow(void)
 	about->Display();	
 }
 
+//-----------------------------------------------------------------------------
 
+void MainWindow::ExitSoftware(void)
+{
+	if (GetUserConfirmation("Exit MariaMole ?"))  {
+		tabsEditor->closeAll();
+		QCoreApplication::exit(0);
+	}
+		
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::VisitMariaMoleWebsite(void)
+{
+	QString path = 
+	QDesktopServices::openUrl(QUrl("http://dalpix.com/mariamole"));
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::VisitArduinoHelp(void)
+{
+	QString path = 
+	QDesktopServices::openUrl(QUrl("http://arduino.cc/en/Reference/HomePage"));
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::ReportABug(void)
+{
+	QString path = 
+	QDesktopServices::openUrl(QUrl("http://github.com/aporto/mariamole/issues/new"));
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::RenameFile(void)
+{
+	if (ui.tree->selectedItems().count() != 1) {
+		return;
+	}
+
+	QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
+
+	if (item->data(0,255) != WorskspaceTree::File) {
+		return;
+	}
+
+	QString projectName = item->parent()->text(0);
+	QString fileName = item->text(0);
+
+	QString fullPath = workspace.GetFullFilePath(projectName, fileName);
+	if (tabsEditor->fileIndex(fullPath) >= 0) {
+		tabsEditor->closeTab(tabsEditor->fileIndex(fullPath));
+	}
+
+	workspace.RenameFile(item->parent()->text(0), item->text(0));
+	
+	SetProjectModified();
+	AdjustWorkspaceTree();
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::RemoveFile(void)
+{
+	if (ui.tree->selectedItems().count() != 1) {
+		return;
+	}
+
+	QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
+
+	if ( (item->data(0,255) != WorskspaceTree::ExternalFile) && (item->data(0,255) != WorskspaceTree::File) ) {
+		return;
+	}
+
+	QString projectName = item->parent()->text(0);
+	QString fileName = item->text(0);
+
+	if (item->data(0,255) == WorskspaceTree::ExternalFile) {
+		projectName = item->parent()->parent()->text(0);
+	}
+
+	QString fullPath = workspace.GetFullFilePath(projectName, fileName);
+	if (tabsEditor->fileIndex(fullPath) >= 0) {
+		tabsEditor->closeTab(tabsEditor->fileIndex(fullPath));
+	}
+
+	workspace.RemoveFile(projectName, fileName, item->data(0,255) == WorskspaceTree::ExternalFile);
+	
+	SetProjectModified();
+	AdjustWorkspaceTree();
+}		
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::RenameProject(void)
+{
+	if (ui.tree->selectedItems().count() != 1) {
+		return;
+	}
+
+	QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
+
+	if (item->data(0,255) != WorskspaceTree::Project) {
+		return;
+	}
+
+
+	workspace.RenameProject(item->text(0));
+	
+	SetProjectModified();
+	AdjustWorkspaceTree();
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::RemoveProject(void)
+{
+	if (ui.tree->selectedItems().count() != 1) {
+		return;
+	}
+
+	QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
+
+	if (item->data(0,255) != WorskspaceTree::Project) {
+		return;
+	}
+
+	workspace.RemoveProject(item->text(0));
+	
+	SetProjectModified();
+	AdjustWorkspaceTree();
+}
+
+//-----------------------------------------------------------------------------

@@ -10,7 +10,9 @@
 #include "project.h"
 #include "message_handler.h"
 #include "config.h" 
+#include "getuserstring.h" 
 #include "mm_utils.h" 
+#include "getuserstring.h"
 
 //-----------------------------------------------------------------------------
 
@@ -34,6 +36,10 @@ public:
 	QString GetFullFilePath(QString projectName, QString filename);
 	bool ImportLibrary(Project * project, QString libPath, QString prefixPath = "");
 	bool ImportSketch(Project * project, QString sketchFullPath) ;
+	void RemoveFile(QString projectName, QString file, bool isExternal);
+	void RenameFile(QString projectName, QString file);
+	void RemoveProject(QString projectName);
+	void RenameProject(QString projectName);
 
 	vector <Project> projects;
 
@@ -44,6 +50,8 @@ private:
 	bool CopyFileToProject(QString input, QString outoput, Project * project);	
 	void ImportLibraryFilesRecursively(Project * project, QString path, QString libPath);
 	void ImportFilesFromSketchDirectory(Project * project, QString sketchPath);
+	Project * FindProject(QString name);	
+	
 };
 
 //-----------------------------------------------------------------------------

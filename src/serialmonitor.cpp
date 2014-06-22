@@ -94,7 +94,7 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 	ui.cbSpeed->setCurrentText(portSpeed);
 
 	if (PrepareSerialPort() == false) {
-		CRT(">> Failed to open Serial port [" + portId + "] at " + portSpeed + "!\n\r");		
+		CRT(">> Failed to open serial port [" + portId + "] at " + portSpeed + "!\n\r");		
 		return false;
 	}
 
@@ -110,7 +110,7 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 		CRT(">> Serial port [" + portId + "] open at " + portSpeed + "!\n\r");		
 		return true;
 	} else {
-		CRT(">> Failed to open Serial port [" + portId + "] at " + portSpeed + "!\n\r");		
+		CRT(">> Failed to open serial port [" + portId + "] at " + portSpeed + "!\n\r");		
 		return false;
 	}
 }
