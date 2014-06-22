@@ -4,10 +4,13 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QString>
+#include <QFile>
+#include <QTextStream>
 
 bool GetUserConfirmation(QString msg);
 
 void ErrorMessage(QString msg);
 
+void LoadStyleSheet(QWidget * widget, QString file);
 
 #endif

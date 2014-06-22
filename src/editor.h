@@ -11,6 +11,8 @@
 #include <QApplication>
 #include <QColor>
 
+#include "mm_utils.h"
+
 class Editor : public QsciScintilla
 {
 	Q_OBJECT

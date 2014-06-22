@@ -29,5 +29,11 @@
         <file>resources/file_types/cpp_icon_48.png</file>
         <file>resources/file_types/h_icon_48.png</file>
         <file>resources/toolbar/save2.png</file>
+        <file>resources/scrollbars/arrow_down.png</file>
+        <file>resources/scrollbars/arrow_left.png</file>
+        <file>resources/scrollbars/arrow_right.png</file>
+        <file>resources/scrollbars/arrow_up.png</file>
+        <file>resources/logos/maria_mole_logo.png</file>
+        <file>resources/logos/mariamole_icone.png</file>
     </qresource>
 </RCC>

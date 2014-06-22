@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">QWidget {
 	color:rgb(150,150,150);
-	background-color: rgb(24, 30, 32);
+	background-color: rgb(22, 30, 32);
 	bl: rgb(14, 22, 24);
 	selection-background-color: rgb(50, 150, 50);
 	selection-color: rgb(0,0,0);
@@ -37,7 +37,7 @@ QPushButton {
  }
 
 QPushButton:checked {
-     background-color: rgb(32, 40, 42);     
+     background-color: rgb(52, 60, 62);     
  }
 
 QComboBox {

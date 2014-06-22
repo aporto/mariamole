@@ -11,13 +11,15 @@ Editor::Editor(QWidget *parent)
 
 	lexer = new QsciLexerCPP;
     this->setLexer(lexer);
-
+	//setAutoCompletionThreshold(0);
+	
     api = new QsciAPIs(lexer);
-
     api->prepare();
 
-    this->setAutoCompletionThreshold(1);
-    this->setAutoCompletionSource(QsciScintilla::AcsAll);
+	LoadStyleSheet(this, "style_code_editor.css");
+	
+    setAutoCompletionThreshold(1);
+    setAutoCompletionSource(QsciScintilla::AcsAll);
 
 	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
 
@@ -43,9 +45,7 @@ QString Editor::GetFileName(void)
 
 void Editor::setEditorStyle (void)
 {
-	//QFont font("Inconsolata", 14, QFont::Normal);
 	QFont font ("Consolas", 14, QFont::Normal, false);
-	//font.setWeight(72);
 	QFontMetrics fontMetrics(font);
 
 	QColor backColor = QColor(22, 30, 32);
@@ -53,57 +53,60 @@ void Editor::setEditorStyle (void)
 	// margin
 	setMarginLineNumbers(100, true);
 	setMarginsFont(font);
-	setMarginsBackgroundColor(QColor(24,32,34));//QColor(20,28,30));
+	setMarginsBackgroundColor(backColor);//QColor(24,32,34));//QColor(20,28,30));
 	setMarginsForegroundColor(QColor(42,50,52));
-	setMarginWidth(0, fontMetrics.width("00000") + 6);
-	setIndicatorForegroundColor (Qt::red, 1);	
-	setTabWidth(4);
+	setMarginWidth(0, fontMetrics.width("00000") + 6);	
 	
-	// brace matching
-	setBraceMatching(QsciScintilla::SloppyBraceMatch);
-
-	// error line marker
-	markerDefine(QsciScintilla::RightArrow, 1); 
-    setMarkerBackgroundColor(Qt::red, 1);
+	// General editor things
+	setTabWidth(4);	
 	ensureCursorVisible();
+	setIndicatorForegroundColor (Qt::red, 1);	
 
-	//lexer->setColor(Qt::yellow, -1);
-	
-	//setCaretLineVisible(true);
-	setCaretWidth(2);
+	// compile error/warning mark
+	markerDefine(QsciScintilla::RightArrow, 1); 
+    setMarkerBackgroundColor(Qt::red, 1);	
 	markerDefine(QsciScintilla::Circle, 0);
 	setMarkerBackgroundColor(Qt::red, 0);
 	setMarkerForegroundColor(Qt::white, 0);
 
-	
-
-	//lexer->setFont(font, -1);
-	//lexer->setPaper(QColor(backColor), -1);
+	// caret
+	setCaretLineVisible(true);
+	setCaretWidth(2);
 	setCaretForegroundColor(QColor(220, 200, 200));
-	setCaretLineBackgroundColor(QColor(36, 42, 44));
+	setCaretLineBackgroundColor(QColor(24, 32, 34));
 
-	SendScintilla (SCI_SETBUFFEREDDRAW, 0);
-	SendScintilla (SCI_SETTWOPHASEDRAW, 0);
-	SendScintilla (SCI_SETFONTQUALITY, SC_EFF_QUALITY_DEFAULT);	
+	//SendScintilla (SC_TECHNOLOGY_DIRECTWRITE, 1);
+	//SendScintilla (SCI_SETBUFFEREDDRAW, 1);
+	//SendScintilla (SCI_SETTWOPHASEDRAW, 1);
+	//SendScintilla (SCI_SETFONTQUALITY,  SC_EFF_QUALITY_NON_ANTIALIASED);//SC_EFF_QUALITY_DEFAULT);	
 
+	// matched and unmatched braces coloring
+	setBraceMatching(QsciScintilla::SloppyBraceMatch);
 	setMatchedBraceBackgroundColor(backColor);
-	setMatchedBraceForegroundColor(QColor(255, 0, 0));
+	setMatchedBraceForegroundColor(QColor(220, 220, 50));
+	setUnmatchedBraceBackgroundColor(QColor(0,0,0));
+	setUnmatchedBraceForegroundColor(QColor(255, 0, 0));
 
-	setLexerStyle(-1, QColor (120, 120, 120),backColor);
+	// maim cpp styles
+	setLexerStyle(-1, QColor (120, 120, 120),backColor);	
+	//setLexerStyle(-1, Qt::red, Qt::blue);	
+	//setLexerStyle(QsciLexerCPP::Default, Qt::blue, Qt::yellow);
 	setLexerStyle(QsciLexerCPP::Default, QColor (0, 0, 120),backColor);
+	//setLexerStyle(QsciLexerCPP::callSTYLE_CALLTIP, QColor (255,0,0), QColor(255,255,255));
+	
 	setLexerStyle(QsciLexerCPP::Comment, QColor (80, 80, 80),backColor);
 	setLexerStyle(QsciLexerCPP::CommentDoc, QColor (80, 80, 80),backColor);		
 	setLexerStyle(QsciLexerCPP::CommentLine, QColor (80, 80, 80),backColor);
 	setLexerStyle(QsciLexerCPP::Number, QColor (0, 120, 0),backColor);
-	setLexerStyle(QsciLexerCPP::Keyword, QColor (120, 120, 0),backColor);
+	setLexerStyle(QsciLexerCPP::Keyword, QColor (140, 100, 0),backColor);
 	setLexerStyle(QsciLexerCPP::DoubleQuotedString, QColor (0, 120, 120),backColor);
 	setLexerStyle(QsciLexerCPP::SingleQuotedString, QColor (0, 120, 120),backColor);
 	setLexerStyle(QsciLexerCPP::PreProcessor, QColor (110, 80, 140),backColor);
-	setLexerStyle(QsciLexerCPP::Operator, QColor (140, 140, 140),backColor);
+	setLexerStyle(QsciLexerCPP::Operator, QColor (140, 140, 50),backColor);
 	setLexerStyle(QsciLexerCPP::Identifier, QColor (140, 140, 140),backColor);
 	setLexerStyle(QsciLexerCPP::UnclosedString, QColor (0, 255, 255),backColor);
 	
-	
+	// secondary styles
 	setLexerStyle(QsciLexerCPP::UUID, QColor (150, 150, 150),backColor);	
 	setLexerStyle(QsciLexerCPP::VerbatimString, QColor (150, 150, 150),backColor);
 	setLexerStyle(QsciLexerCPP::Regex, QColor (150, 150, 150),backColor);
@@ -131,6 +134,6 @@ void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool
 
 void Editor::onCursorPositionChanged(int line, int index)
 {
-	setCaretLineBackgroundColor(QColor(16, 24, 26));
+	//setCaretLineBackgroundColor(QColor(16, 24, 26));
 	markerDeleteAll();
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="15.839192"
+     inkscape:cx="158.62011"
+     inkscape:cy="509.19612"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1671"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#6b3600;fill-opacity:0;stroke:#000000;stroke-opacity:1"
+       id="rect3802"
+       width="61.114227"
+       height="47.414036"
+       x="135.17104"
+       y="520.20117"
+       ry="0.0053610154" />
+    <rect
+       style="fill:#6e3800;fill-opacity:0;stroke:none"
+       id="rect2985"
+       width="16"
+       height="16"
+       x="145.29285"
+       y="525.5835"
+       ry="0.0053610154" />
+    <path
+       style="fill:#ffffff;fill-opacity:0.45581396;stroke:none"
+       d="m 149.07104,527.40452 0.0334,12.35795 8.41021,-6.25282 z"
+       id="path3761"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\github\mariamole\src\resources\scrollbars\arrow_right.png"
+       inkscape:export-xdpi="92.910004"
+       inkscape:export-ydpi="92.910004" />
+    <rect
+       style="fill:#6e3800;fill-opacity:0;stroke:none"
+       id="rect2985-1"
+       width="16"
+       height="16"
+       x="144.59616"
+       y="549.95569"
+       ry="0.0053610154" />
+    <path
+       style="fill:#ffffff;fill-opacity:0.45581396;stroke:none"
+       d="m 156.81798,564.13461 -0.0334,-12.35795 -8.41021,6.25282 z"
+       id="path3761-7"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\github\mariamole\src\resources\scrollbars\arrow_left.png"
+       inkscape:export-xdpi="92.910004"
+       inkscape:export-ydpi="92.910004" />
+    <rect
+       style="fill:#6e3800;fill-opacity:0;stroke:none"
+       id="rect2985-4"
+       width="16"
+       height="16"
+       x="170.10251"
+       y="549.64001"
+       ry="0.0053610154" />
+    <path
+       style="fill:#ffffff;fill-opacity:0.45581396;stroke:none"
+       d="m 184.28151,553.41816 -12.35795,0.0334 6.25282,8.41021 z"
+       id="path3761-0"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\github\mariamole\src\resources\scrollbars\arrow_down.png"
+       inkscape:export-xdpi="92.910004"
+       inkscape:export-ydpi="92.910004" />
+    <rect
+       style="fill:#6e3800;fill-opacity:0;stroke:none"
+       id="rect2985-9"
+       width="16"
+       height="16"
+       x="170.92326"
+       y="525.64886"
+       ry="0.0053610154" />
+    <path
+       style="fill:#ffffff;fill-opacity:0.45581396;stroke:none"
+       d="m 172.7443,537.87065 12.35795,-0.0334 -6.25282,-8.41021 z"
+       id="path3761-4"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\github\mariamole\src\resources\scrollbars\arrow_up.png"
+       inkscape:export-xdpi="92.910004"
+       inkscape:export-ydpi="92.910004" />
+  </g>
+</svg>

@@ -6,13 +6,7 @@ EditorTab::EditorTab(QWidget *parent)
 	this->setTabsClosable(true);
     this->setTabShape(Triangular);
 
-	// Load stylesheet
-	QString cssFileName =  qApp->applicationDirPath() + "/config/style_code_editor.css";
-	QFile cssFile(cssFileName);
-	cssFile.open(QFile::ReadOnly | QFile::Text);
-    QTextStream css(&cssFile);
-	QString styleText = css.readAll();
-	setStyleSheet(styleText);
+	LoadStyleSheet(this, "style_code_tab.css");
 
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }

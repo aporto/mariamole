@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>About</class>
+ <widget class="QWidget" name="About">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>650</width>
+    <height>421</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>About</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	border: 5px solid rgb(70, 85, 100);
+	background-color: rgb(22, 30, 32);
+	color: rgb(180,180,180);
+}
+
+QLabel {
+	border: 0px solid #ffffff;
+}
+
+QPushButton {	
+	border: 2px solid rgb(40, 60, 60);
+}
+
+QTreeWidget {	
+	border: 0px solid #ffffff;
+
+}
+
+QScrollBar:vertical {
+	border: 0px solid #ffffff;
+}
+
+QScrollBar::handle {
+     border: 0px solid #ffffff;
+ }</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>171</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="mainwindow.qrc">:/MainWindow/resources/logos/mariamole_icone.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnClose">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>380</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>20</y>
+     <width>301</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="mainwindow.qrc">:/MainWindow/resources/logos/maria_mole_logo.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>90</y>
+     <width>331</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>An advanced IDE for Arduino programmers</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>230</y>
+     <width>251</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Credits:</string>
+   </property>
+  </widget>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>260</y>
+     <width>611</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <attribute name="headerVisible">
+    <bool>false</bool>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Credits</string>
+    </property>
+   </column>
+   <item>
+    <property name="text">
+     <string>Alex Porto</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Main code, UI, Windows port</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>Gabriel Duarte</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Scintilla code, Linux port, Mac port</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>Graphics:</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Alex Porto (Main icon and logo - CC-NC-SA)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Agnese Ragucci (Import library icon - Creative Commons attribuition)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Lucas Almeida (Add project icon - Creative Commons attribuition)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Austin Andrews (Serial port icon - Creative Commons attribuition) </string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Michael Zenaty (Project properties icon - Creative Commons attribuition)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Cris Dobbins (Save icon, select workspace icon - Creative Commons attribuition)</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Joe Harrison (Upload icon - Creative Commons attribuition)</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>MariaMole is based on Qt 5.x and QScintilla 2.8</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>160</y>
+     <width>331</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>website:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>180</y>
+     <width>331</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+     <underline>true</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(110, 150, 250);</string>
+   </property>
+   <property name="text">
+    <string>http://dalpix.com/mariamole</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>120</y>
+     <width>331</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Version: 0.6 (Alpha)</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="mainwindow.qrc"/>
+ </resources>
+ <connections/>
+</ui>

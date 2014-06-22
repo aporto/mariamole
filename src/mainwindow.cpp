@@ -297,14 +297,15 @@ void MainWindow::setupActions()
     ui.actionOpen_serial_port->setStatusTip(tr("Open the serial port for the current project"));
 	connect (ui.actionOpen_serial_port, SIGNAL(triggered()), this, SLOT(OpenSerialPort()));
 
+	// menu about
+	connect (ui.actionAbout, SIGNAL(triggered()), this, SLOT(ShowAboutWindow()));
+
 
 	// double click on build error/warning messages
 	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
 	//connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
 			//this, SLOT (OnTreeDoubleClick(QTreeWidgetItem *, int)));	
 
-	
-	
 }
 
 //-----------------------------------------------------------------------------
@@ -595,7 +596,6 @@ void MainWindow::AdjustWorkspaceTree(void)
 	if (workspace.GetCurrentProject() == NULL) {
 		return;
 	}
-
         
 	for (int pwi=0; pwi < workspace.projects.size(); pwi++) {
 		bool foundAtTree = false;
@@ -609,33 +609,23 @@ void MainWindow::AdjustWorkspaceTree(void)
 		if (foundAtTree == false) {
 			QTreeWidgetItem *projNode = new QTreeWidgetItem(root);
 			projNode->setText(0, workspace.projects.at(pwi).name);			
-			//QString txt = projNode->text(0);
-			//QString txt2 = ui.tree->topLevelItem(0)->child(0)->text(0);
-			//int kkk= root->childCount();
 			projNode->setIcon(0, QIcon(":/MainWindow/resources/workspace_tree/project.png"));
 			projNode->setData(0, 255, WorskspaceTree::Project);
 	
 			QTreeWidgetItem *extNode = new QTreeWidgetItem(projNode);
 			extNode->setText(0, "External files");			
-			//txt = extNode->text(0);
 			extNode->setIcon(0, QIcon(":/MainWindow/resources/workspace_tree/external.png"));
 			extNode->setData(0, 255, WorskspaceTree::ExternalTree);
-			//txt = ui.tree->topLevelItem(0)->child(0)->text(0);
-	
 		}
 	}
 
-	//QString txt = ui.tree->topLevelItem(0)->child(0)->text(0);
-	
 	// Then Update the tree with all projects on workspace
 	int pti = 0;
 	while (pti < root->childCount()) {
 		QTreeWidgetItem *projNode = root->child(pti);		
-	//for (int pti=0; pti < root->childCount(); pti++) {		
 		bool foundAtWorkspace = false;
 		for (int pwi=0; pwi < workspace.projects.size(); pwi++) {
 			QString projectName = projNode->text(0);
-			//int kkk= root->childCount();
 			if (workspace.projects.at(pwi).name == projectName) {
 				foundAtWorkspace = true;
 				AdjustProjectFilesOnTree(pwi, projNode);				
@@ -644,7 +634,6 @@ void MainWindow::AdjustWorkspaceTree(void)
 		// If project no longer exists on workspace, remove it from the tree
 		if (foundAtWorkspace == false) {
 			delete projNode;
-			//ui.tree->removeItemWidget(projNode, 0);
 		} else {
 			pti++;
 		}
@@ -652,21 +641,21 @@ void MainWindow::AdjustWorkspaceTree(void)
 
 	ui.tree->expandItem(root);
 	ui.tree->setRootIsDecorated(false);
-	//root->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicator);
 	for (int i=0; i < root->childCount(); i++) {
 		QTreeWidgetItem *projNode = root->child(i);
-		//QFont f = projNode->font(0);
 		if (projNode->text(0) == workspace.GetCurrentProject()->name) {			
-			//f.setBold(true);
-			//f.setWeight(30);
-			projNode->setForeground(0, Qt::white);
-			//projNode->setCheckState(0, Qt::Checked);
-			//projNode->setstyle			
-		} else {			
-			projNode->setForeground(0, QColor(200,200,200));
-			//f.setBold(false);
+			//projNode->setForeground(0, QColor(180, 180, 180);//Qt::white);
+			projNode->setForeground(0, QColor(165, 177, 187));
+			QFont font;
+			font.setBold(true);
+			projNode->setFont(0, font);//font(0).setBold(true);
+		} else {						
+			QFont font;
+			font.setBold(false);
+			projNode->setFont(0, font);//font(0).setBold(true);
+			projNode->setForeground(0, QColor(145, 157, 167));
+			//projNode->setForeground(0, QColor(140,140,140));
 		}
-		//projNode->setFont(0, f);
 	}
 	int i0 = ui.tree->children().count();
 	int i = root->childCount();
@@ -835,3 +824,13 @@ void MainWindow::OnProjectModified(void)
 		ui.actionSave_Workspace->setIcon(QIcon(":/MainWindow/resources/toolbar/save2.png"));
 	}
 }
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::ShowAboutWindow(void)
+{
+	About * about = new About(this);
+	about->Display();	
+}
+
+

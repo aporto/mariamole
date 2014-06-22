@@ -21,6 +21,7 @@
 #include "editortab.h"
 #include "wizard.h"
 #include "projectproperties.h"
+#include "about.h"
 
 //-----------------------------------------------------------------------------
 
@@ -59,6 +60,7 @@ public slots:
 	void OnBuildMessagesDoubleClick(QListWidgetItem* item);
 	void AddNewFileToProject(void);
 	void OnProjectModified(void);
+	void ShowAboutWindow(void);
 
 protected:
 	void resizeEvent(QResizeEvent *event);

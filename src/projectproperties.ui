@@ -32,21 +32,6 @@
          <string>General</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Directories</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Compiler</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Linker</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item>
