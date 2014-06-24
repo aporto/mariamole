@@ -49,6 +49,7 @@ private:
 	bool Upload(void);
 	QString GetLeonardoSerialPort(QString defaultPort);
 	QString MangleFileName(QString inputFile);
+	void ImportDeclarations(void);
 };
 
 //-----------------------------------------------------------------------------

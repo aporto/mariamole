@@ -49,17 +49,17 @@ MainWindow::MainWindow(QWidget *parent)
 	
 	ui.buildStatus->setCurrentIndex(0);
 
-	setupActions();
-
-	CreateMainMenuContext();
-	CreateTreeContextMenu();
-
+	
 	// Prepare editor UI
 	//ui.editorTabs->clear();  //removes all the previous tabs
 	tabsEditor = new EditorTab(this);
 	connect(tabsEditor, SIGNAL(codeChanged()), this, SLOT(OnProjectModified()));
 	//ui.tabParent->addWidget(tabsEditor);
 	ui.splitter->addWidget(tabsEditor);
+
+	setupActions();
+	CreateMainMenuContext();
+	CreateTreeContextMenu();
 
 	// Load stylesheet
 	QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
@@ -390,6 +390,9 @@ void MainWindow::setupActions()
 	connect (ui.actionRemove_file, SIGNAL(triggered()), this, SLOT(RemoveFile()));
 	connect (ui.actionRename_project, SIGNAL(triggered()), this, SLOT(RenameProject()));
 	connect (ui.actionRemove_project, SIGNAL(triggered()), this, SLOT(RemoveProject()));
+
+
+	connect (ui.actionFormat_code, SIGNAL(triggered()), tabsEditor, SLOT(FormatCode()));
 	
 	// double click on build error/warning messages
 	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));

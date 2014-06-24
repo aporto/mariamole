@@ -106,6 +106,10 @@ int Builder::Build(bool upload)
 	coreLib = buildPath + "/arduino_core_" + board->second.build_variant+".a";
 	
 	msg.ClearBuildInfo();
+
+	msg.AddOutput("Detecting undeclared functions in main.cpp...", false);
+
+	ImportDeclarations();
 	bool ok = true;
 	for (int i=0; i < project->files.size(); i++) {
 		QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
@@ -782,3 +786,132 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 	return defaultPort;
 }
 
+//-----------------------------------------------------------------------------
+
+void Builder::ImportDeclarations(void)
+{
+	QString inFileName = config.workspace + "/" + project->name + "/source/main.cpp";
+
+	if (QFileInfo(inFileName).exists() == false) {
+		return;
+	}
+
+	QFile inFile(inFileName);
+	inFile.open(QFile::ReadOnly | QFile::Text);
+	QTextStream in(&inFile);
+	QString code = in.readAll();
+
+	int p1 = code.indexOf("/*");
+	while (p1 >= 0) {
+		QString left = code.left(p1);
+		code = code.right(code.length() - p1);
+		int p2 = code.indexOf("*/");
+		if (p2 >=0) {			
+			QString right = code.right(code.length() - p2 - 2);
+			code = left + right;
+		}
+		p1 = code.indexOf("/*");
+	}
+
+	QStringList lines = code.split("\n");
+	QStringList list;
+
+	int i=1;
+	while (i < lines.count()) {
+		if (lines[i].trimmed().indexOf("{") == 0) {
+			lines[i-1] += " " + lines[i];
+			lines.erase(lines.begin()+i);
+		} else {
+			i++;
+		}
+	}
+
+	for (int i=0; i < lines.count(); i++) {
+		QStringList words = lines[i].trimmed().split(" ");
+		int w = 0;
+		while (w < words.count()) {
+			words[w] = words[w].trimmed().toUpper();
+			if (words[w] == "") {
+				words.erase(words.begin() + w);
+			} else {
+				w++;
+			}
+		}
+
+		bool ignore = false;
+		ignore = ignore | (words.indexOf("IF") > 0);
+		ignore = ignore | (words.indexOf("ELSE") > 0);
+		ignore = ignore | (words.indexOf("WHILE") > 0);
+		ignore = ignore | (words.indexOf("DO") > 0);
+		ignore = ignore | (words.indexOf("SWITCH") > 0);
+		ignore = ignore | (lines[i].indexOf(";") > 0);
+		ignore = ignore | (lines[i].indexOf(".") > 0);
+		ignore = ignore | (lines[i].indexOf("->") > 0);
+		ignore = ignore | (lines[i].indexOf("=") > 0);
+		ignore = ignore | (lines[i].indexOf("==") > 0);
+
+		if (lines[i].indexOf("//") >= 0) {
+			lines[i] = lines[i].left(lines[i].indexOf("//"));
+		}
+
+		if (ignore) {
+			continue;
+		}
+
+		int p1 = lines[i].indexOf("(");
+		int p2 = lines[i].indexOf(")");
+		if ((p1 > 0) && (p2 > p1)) {
+			QString def = lines[i].trimmed();
+			int p = def.lastIndexOf(")");
+			if (p >= 0) {
+				def = def.left(p+1) + ";";
+				list.append(def);
+			}
+		}
+	}
+
+	QString outFileName = config.workspace + "/" + project->name + "/source/mariamole_auto_generated.h";
+
+	if (QFileInfo(outFileName).exists() == false) {
+		return;
+	}
+
+	QFile inFile2(outFileName);
+	inFile2.open(QFile::ReadOnly | QFile::Text);
+	QTextStream in2(&inFile2);
+	code = in2.readAll();
+
+	QStringList header = code.split("\n");
+	//QStringList alreadyAdded;
+	int index = -1;// = header.count() - 2;
+	bool foundBegin = false;
+	int k=0;
+	while (k < header.count()) {
+		QString line = header[k].trimmed();
+		if (line == "/*--MARIMOLE-DEF_END--*/") {
+			foundBegin = false;
+		}
+		if (foundBegin) {
+			header.erase(header.begin() + k);
+		} else {
+			++k;
+		}
+		if (line == "/*--MARIMOLE-DEF_BEGIN--*/") {
+			foundBegin = true;
+			index = k;
+		}
+	}
+	
+	if (index < 0) {
+		return;
+	}
+		
+	for (int i=0; i < list.count(); i++) {
+		header.insert(index, list[i]);
+	}
+
+	QFile outFile(outFileName);
+	outFile.open(QFile::WriteOnly);
+	QTextStream out(&outFile);
+	out << header.join("\n");
+}

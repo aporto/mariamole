@@ -31,6 +31,7 @@ public:
 public slots:
     void closeTab(int);
 	void onEditorTextChanged(void);
+	void FormatCode(void);
 
 signals:
      void codeChanged(void);

@@ -220,3 +220,16 @@ void EditorTab::closeAll(void)
 		closeTab(count()-1);
 	}
 }
+
+
+void EditorTab::FormatCode(void)
+{
+	if (currentIndex() < 1) {
+		return;
+	}
+	
+	if (tabType(currentIndex() == MM::codeTab)) {
+		Editor * editor = (Editor *)widget(currentIndex());
+		editor->CodeBeautifier();
+	}
+}

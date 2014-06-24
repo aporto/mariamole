@@ -164,3 +164,49 @@ void Editor::focusInEvent ( QFocusEvent * event )
 		}
 	}
 }
+
+
+void Editor::CodeBeautifier(void)
+{
+	QString code = this->text();
+	QString output = "";
+	QStringList lines = code.split("\n");
+	QString tab = "";
+	int i = 0;
+	bool inc;
+	while ( i < lines.count() ) {
+		inc = true;
+		QString trim = lines[i].trimmed();
+
+		// fix the } at the end of a block
+		if (trim.indexOf("}") >= 0) {
+			if (tab.length() > 0) {
+				tab.remove(0, 1);
+			}
+		}	
+		
+		// fix line tabs/blank spaces
+		lines[i] = tab + trim;
+		//output += tab + trim + "\n";
+		
+		// fix the { at the beginning of a block
+		if (trim.indexOf("{") >= 0) {
+			if (trim == "{") {
+				if (i > 0) {
+					lines[i-1] += " " + trim;
+					lines.erase(lines.begin() + i);
+					inc = false;
+				}
+			}
+			tab += "\t";
+		}
+		
+		if (inc) {
+			++i;
+		}
+	}
+	code = lines.join("\n");
+	setText(code);
+}
+
+

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MariaMole</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="mainwindow.qrc">
+    <normaloff>:/MainWindow/resources/logos/mariamole_icone.png</normaloff>:/MainWindow/resources/logos/mariamole_icone.png</iconset>
+  </property>
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
@@ -1096,7 +1100,7 @@ QToolButton {
   </action>
   <action name="actionFormat_code">
    <property name="text">
-    <string>Format code</string>
+    <string>Code beautifier</string>
    </property>
   </action>
   <action name="actionPrefereces">

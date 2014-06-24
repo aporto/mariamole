@@ -24,6 +24,7 @@ public:
 	void SetFileName(QString filename);
 	QString GetFileName(void);
 	void setEditorStyle (void);
+	void CodeBeautifier(void);
 
 public slots:
 	void onCursorPositionChanged(int line, int index);
