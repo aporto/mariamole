@@ -98,7 +98,8 @@ void MainWindow::CreateMainMenuContext(void)
 		mainMenu->addSeparator();
 		mainMenu->addAction(ui.actionExit);
 	} else {
-		ui.actionMainMenuButton->setVisible(false);		
+		ui.actionMainMenuButton->setVisible(false);	
+		ui.actionSeparator->setVisible(false);		
 		ui.menuBar->setVisible(true);	
 	}
 }
@@ -137,7 +138,8 @@ void MainWindow::CreateTreeContextMenu(void)
 
 	projectContext->addAction(ui.actionRename_project);
 	projectContext->addAction(ui.actionRemove_project);	
-	
+	projectContext->addAction(ui.actionExport_to_sketch);
+		
 	projectContext->addSeparator();
 	projectContext->addAction(ui.actionAdd_file);	
 	projectContext->addAction(ui.actionImport_arduino_library);
@@ -160,7 +162,7 @@ void MainWindow::CreateTreeContextMenu(void)
 	wsContext = new QMenu(this);
 	LoadStyleSheet(wsContext, "style_menu.css");
 	wsContext->addAction(ui.actionSelect_workspace);
-	wsContext->addAction(ui.actionReload_workspace);
+	wsContext->addAction(ui.actionRefresh_workspace_tree);
 	projectContext->addSeparator();
 	wsContext->addAction(ui.actionAdd_a_new_project);	
 }
@@ -343,6 +345,8 @@ void MainWindow::setupActions()
     ui.actionAdd_a_new_project->setStatusTip(tr("Create a new project"));
 	connect (ui.actionAdd_a_new_project, SIGNAL(triggered()), this, SLOT(AddNewProject()));
 
+	connect (ui.actionPrefereces, SIGNAL(triggered()), this, SLOT(EditPreferences()));
+
 	// Add new file
 	//ui.actionAdd_a_new_file->setShortcut(tr("Ctrl+N"));
     ui.actionImport_arduino_library->setStatusTip(tr("Import Arduino library"));
@@ -390,9 +394,14 @@ void MainWindow::setupActions()
 	connect (ui.actionRemove_file, SIGNAL(triggered()), this, SLOT(RemoveFile()));
 	connect (ui.actionRename_project, SIGNAL(triggered()), this, SLOT(RenameProject()));
 	connect (ui.actionRemove_project, SIGNAL(triggered()), this, SLOT(RemoveProject()));
-
-
+	connect (ui.actionExport_to_sketch, SIGNAL(triggered()), this, SLOT(ExportToSketch()));
+	
+	connect (ui.actionRefresh_workspace_tree, SIGNAL(triggered()), this, SLOT(AdjustWorkspace()));
+	
 	connect (ui.actionFormat_code, SIGNAL(triggered()), tabsEditor, SLOT(FormatCode()));
+	
+	bool ok = connect (ui.searchText, SIGNAL(activated( const QString&)), this, SLOT(OnSearchKeyPress(const QString&)));
+	connect (ui.btnSearch, SIGNAL(clicked()), this, SLOT(OnSearchGO()));
 	
 	// double click on build error/warning messages
 	connect(ui.buildMessages, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnBuildMessagesDoubleClick(QListWidgetItem*)));
@@ -1074,3 +1083,87 @@ void MainWindow::RemoveProject(void)
 }
 
 //-----------------------------------------------------------------------------
+
+void MainWindow::ExportToSketch(void)
+{
+	if (ui.tree->selectedItems().count() != 1) {
+		return;
+	}
+
+	QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
+
+	if (item->data(0,255) != WorskspaceTree::Project) {
+		return;
+	}
+
+	workspace.Save();
+
+	QString path = QFileDialog::getExistingDirectory(NULL, tr("Select directory to save the sketch"),
+                                                "",
+                                                QFileDialog::ShowDirsOnly
+                                                | QFileDialog::DontResolveSymlinks);
+	if (path == "") {
+		return;
+	}
+
+	workspace.ExportProjectToSketch(item->text(0), path);
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::EditPreferences(void)
+{
+	Preferences * pref = new Preferences(NULL);
+	bool ok = pref->Edit();
+	delete pref;
+
+	if (ok) {
+		if (config.useMenuButton) {
+			ui.actionMainMenuButton->setVisible(true);	
+			ui.actionSeparator->setVisible(true);		
+			ui.menuBar->setVisible(false);	
+		} else {
+			ui.actionMainMenuButton->setVisible(false);	
+			ui.actionSeparator->setVisible(false);		
+			ui.menuBar->setVisible(true);	
+		}
+
+		tabsEditor->ConfigureAllTabs();
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OnSearchKeyPress(const QString&)
+{
+	//if (e->key() == 13) {
+	OnSearchGO();
+	//}
+}
+
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OnSearchGO(void)
+{
+	QString text = ui.searchText->currentText();
+	tabsEditor->Search(text, ui.searchCBCase->isChecked(), ui.searchCBWords->isChecked());
+
+	ui.searchText->setFocus();
+	//ui.searchText->selectAll();
+
+	bool found = false;
+	for (int i=0; i < ui.searchText->count(); i++) {
+		if (text == ui.searchText->itemText(i)) {
+			found = true;
+			break;
+		}
+	}
+
+	if (found == false) {
+		ui.searchText->insertItem(0, text);
+		if (ui.searchText->count() > 5) {
+			ui.searchText->removeItem(0);
+		}
+	}
+}

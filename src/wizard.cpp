@@ -400,8 +400,12 @@ QString Wizard::GetSelectedExamplePath(void)
 		path = qApp->applicationDirPath() + "/arduino/arduino/examples/" + path;
 		path = path + "/" + QFileInfo(path).fileName() + ".ino";
 	} else {
-		path = selected->text(0) + "/examples/" + path + "/" + path + ".ino";
+		path = selected->text(0) + "/examples/" + path;// + "/" + path + ".ino";
+		path += "/" + QFileInfo(path).fileName() + ".ino";
 		path = config.LocateFileUsingSearchPaths(path, "$(LIBRARIES)", false);
+		if (path == "") {
+			ErrorMessage("Could not locate library path... Please report this error to MariaMole developers"); 
+		}
 	}
 
 	//path = qApp->applicationDirPath() + "/arduino/" + path + "/" + name + ".ino";

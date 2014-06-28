@@ -47,7 +47,9 @@ QString Editor::GetFileName(void)
 
 void Editor::setEditorStyle (void)
 {
-	QFont font ("Consolas", 14, QFont::Normal, false);
+	//QFont font ("Consolas", 14, QFont::Normal, false);
+	QFont font (config.editorFontName, config.editorFontSize, QFont::Normal, false);
+
 	QFontMetrics fontMetrics(font);
 
 	QColor backColor = QColor(22, 30, 32);
@@ -127,7 +129,8 @@ void Editor::setEditorStyle (void)
 
 void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool bold, bool italic, bool underline)
 {
-	QFont font("Consolas", -1, QFont::Normal, false);
+	//QFont font("Consolas", -1, QFont::Normal, false);
+	QFont font (config.editorFontName, config.editorFontSize, QFont::Normal, false);
 	lexer->setFont(font, style);
 	lexer->setColor(foreground, style);
 	lexer->setPaper(background, style);		
@@ -147,21 +150,27 @@ void Editor::focusInEvent ( QFocusEvent * event )
 
 	// Check if file was modified
 	QDateTime fileTime = QFileInfo(file).lastModified();
+	QString s1 = lastModifiedTime.toString();
+	QString s2 = fileTime.toString();
 	if (lastModifiedTime < fileTime) {
 		lastModifiedTime = QDateTime::currentDateTime();
-		if (GetUserConfirmation("File was modified outsite editor. Do you want to reload it?\n" +file))  {
-			QFile inFile(file);
-			if (!inFile.open(QFile::ReadOnly)) {
-				ErrorMessage(tr("Cannot read file %1:\n%2.").arg(file).arg(inFile.errorString()));			
+		QString ext = QFileInfo(file).suffix().toUpper();
+		if (ext != "H") {
+			if (GetUserConfirmation("File was modified outsite editor. Do you want to reload it?\n" +file) == false)  {
 				return;
 			}
-			QTextStream in(&inFile);
-			QApplication::setOverrideCursor(Qt::WaitCursor);
-			QString txt(in.readAll());
-			setText(txt);				
-			setModified(false);
-			QApplication::restoreOverrideCursor();
 		}
+		QFile inFile(file);
+		if (!inFile.open(QFile::ReadOnly)) {
+			ErrorMessage(tr("Cannot read file %1:\n%2.").arg(file).arg(inFile.errorString()));			
+			return;
+		}
+		QTextStream in(&inFile);
+		QApplication::setOverrideCursor(Qt::WaitCursor);
+		QString txt(in.readAll());
+		setText(txt);				
+		setModified(false);
+		QApplication::restoreOverrideCursor();
 	}
 }
 
@@ -210,3 +219,56 @@ void Editor::CodeBeautifier(void)
 }
 
 
+bool Editor::Open(QString filename)
+{
+	QFile file(filename);
+	if (!file.open(QFile::ReadOnly)) {
+		ErrorMessage(tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()));			
+		return false;
+	}
+	QTextStream in(&file);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+
+	QString txt(in.readAll());
+	setText(txt);
+	SetFileName(filename);
+	setModified(false);
+	lastModifiedTime = QFileInfo(filename).lastModified();
+	
+	return true;
+}
+
+bool Editor::Save(void)
+{
+	// text open in editor is always associated to a filename
+	// so wer don't need to ask for filenames before
+	// saving those files
+
+	if (isModified() == false) {
+		return true;
+	}
+
+	QFile qfile(file);
+	qfile.open(QIODevice::WriteOnly);// | QIODevice::Text);
+	if (qfile.error() != 0) {		
+		ErrorMessage(tr("Error while saving file %1:\n%2.")
+								.arg(file)
+								.arg(qfile.errorString()));
+		return false;
+	} else {    		
+		QTextStream out(&qfile); // we will serialize the data into the file
+		QString text = this->text();		
+		out << text; 		
+		qfile.close();
+
+		setModified(false);
+		lastModifiedTime = QFileInfo(file).lastModified();
+		return true;
+	}
+}
+
+
+void Editor::Configure(void)
+{
+	setEditorStyle();
+}

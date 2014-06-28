@@ -13,6 +13,7 @@
 #include <QDateTime>
 
 #include "mm_utils.h"
+#include "config.h"
 
 class Editor : public QsciScintilla
 {
@@ -21,10 +22,12 @@ class Editor : public QsciScintilla
 public:
 	Editor(QWidget *parent);
 	~Editor();
-	void SetFileName(QString filename);
 	QString GetFileName(void);
 	void setEditorStyle (void);
 	void CodeBeautifier(void);
+	bool Open(QString filename);
+	bool Save(void);
+	void Configure(void);
 
 public slots:
 	void onCursorPositionChanged(int line, int index);
@@ -37,7 +40,8 @@ private:
     QsciLexerCPP *lexer;
 	QString file;
 	QDateTime lastModifiedTime;
-
+	
+	void SetFileName(QString filename);
 	void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);
 };
 

@@ -106,24 +106,12 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		setCurrentIndex(index);
 		textEdit = (Editor *)widget(index);
 	} else {		
-		// File wasn't already open, So, let's create a new editor and load the file on it
-		QFile file(filename);
-		if (!file.open(QFile::ReadOnly)) {
-			ErrorMessage(tr("Cannot read file %1:\n%2.").arg(filename).arg(file.errorString()));			
-			return false;
-		}
-		QTextStream in(&file);
-		QApplication::setOverrideCursor(Qt::WaitCursor);
-
-		QString txt(in.readAll());
 		textEdit = new Editor(this);
-		textEdit->setText(txt);
-		textEdit->SetFileName(filename);
-		textEdit->setModified(false);
-
+		textEdit->Open(filename);
+		
 		connect(textEdit, SIGNAL(textChanged()), this, SLOT(onEditorTextChanged()));
 	
-		addTab(textEdit, QFileInfo(file).fileName());
+		addTab(textEdit, QFileInfo(filename).fileName());
 		setCurrentIndex(count() - 1);		
 		QApplication::restoreOverrideCursor();
 	}
@@ -176,29 +164,8 @@ void EditorTab::closeTab(int index)
 bool EditorTab::saveFile(int index) 
 {
 	Editor * editor = (Editor *)widget(index);
-	QString filename = editor->GetFileName();
+	return editor->Save();
 	
-	// text open in editor is always associated to a filename
-	// so wer don't need to ask for filenames before
-	// saving those files
-
-	QFile file(filename);
-	file.open(QIODevice::WriteOnly);// | QIODevice::Text);
-	if (file.error() != 0) {		
-		QMessageBox::warning(NULL, tr("Application"),
-								tr("Error while saving file %1:\n%2.")
-								.arg(filename)
-								.arg(file.errorString()));
-		return false;
-	} else {    		
-		QTextStream out(&file); // we will serialize the data into the file
-		QString text = editor->text();		
-		out << text; 		
-		file.close();
-
-		editor->setModified(true);
-		return true;
-	}
 }
 
 bool EditorTab::saveAllFiles(void)
@@ -231,5 +198,29 @@ void EditorTab::FormatCode(void)
 	if (tabType(currentIndex() == MM::codeTab)) {
 		Editor * editor = (Editor *)widget(currentIndex());
 		editor->CodeBeautifier();
+	}
+}
+
+void EditorTab::ConfigureAllTabs(void)
+{
+	for (int i=0; i < count(); i++) {
+		if (tabType(i) == MM::codeTab) {
+			Editor * editor = (Editor *)widget(i);
+			editor->Configure();			
+		}		
+	}
+}
+
+void EditorTab::Search(QString text, bool caseSensitive, bool wholeWords)
+{
+	if (currentIndex() < 1) {
+		return;
+	}
+	
+	if (tabType(currentIndex() == MM::codeTab)) {
+		Editor * editor = (Editor *)widget(currentIndex());
+		if (editor->findFirst(text, false, caseSensitive, wholeWords, true, true, false) == false) {
+			ErrorMessage("Text not found!");
+		}
 	}
 }

@@ -72,6 +72,9 @@ public:
 	map <QString, BoardDef> boards;
 	map <QString, ProgrammerDef> programmers;
 	map <QString, BuildDef> builds;
+
+	QString editorFontName;
+	unsigned int editorFontSize;
 	
 private:	
 	QString appPath;

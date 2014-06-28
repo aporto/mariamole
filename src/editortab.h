@@ -8,6 +8,7 @@
 #include "editor.h"
 #include "serialmonitor.h"
 #include "mm_utils.h"
+#include "config.h"
 
 namespace MM {
 	enum TabType {undefinedTab, codeTab, serialTab};
@@ -27,6 +28,8 @@ public:
 	bool saveAllFiles(void);	
 	void closeAll(void);	
 	void EnableAllSerialPorts(bool enable);
+	void ConfigureAllTabs(void);
+	void Search(QString text, bool caseSensitive, bool wholeWords);
 
 public slots:
     void closeTab(int);
@@ -39,6 +42,7 @@ signals:
 private:
 	MM::TabType tabType(int index);
 	bool saveFile(int index);	
+
 	
 };
 

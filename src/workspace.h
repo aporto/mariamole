@@ -4,6 +4,7 @@
 
 #include <QString>
 #include <QDir>
+#include <QFileDialog>
 
 #include <vector>
 
@@ -40,6 +41,7 @@ public:
 	void RenameFile(QString projectName, QString file);
 	void RemoveProject(QString projectName);
 	void RenameProject(QString projectName);
+	void ExportProjectToSketch(QString projectName, QString path);
 
 	vector <Project> projects;
 

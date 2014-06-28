@@ -11,7 +11,7 @@ ProjectProperties::ProjectProperties(QWidget *parent)
 	connect(ui.rbNoExternalProgrammer, SIGNAL(clicked()), this, SLOT(DisableProgrammer()));
 	connect(ui.rbYesExternalProgrammer, SIGNAL(clicked()), this, SLOT(EnableProgrammer()));
 	
-	connect(ui.btnCancel, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
+	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
 		this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
 
 	

@@ -43,6 +43,11 @@ int Config::Load(void)
 	settings.beginGroup("arduino");
 	extraArduinoLibsSearchPaths = settings.value("extraArduinoLibsSearchPaths", "").toString();
 	settings.endGroup();
+	
+	settings.beginGroup("ui");
+	editorFontName = settings.value("editorFontName", "Consolas").toString();
+	editorFontSize = settings.value("editorFontSize", "12").toInt();
+	settings.endGroup();
 
 	int res = LoadHardwareDefinitions();
 	if (res != 0) {
@@ -175,7 +180,7 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 	//QString qApp->applicationDirPath() + ;
 	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", appPath + "/arduino/arduino/libraries"));
 
-	dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", appPath + "/arduino/arduino/libraries;" + libPaths + ";" + projectLibPaths));
+	dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
 
 	dictionary.insert (pair <QString, QString> ("$(INCLUDES)", includePaths + ";" + projectIncludePaths));
 
@@ -249,6 +254,11 @@ bool Config::Save(void)
 
 	settings.beginGroup("arduino");
 	settings.setValue("extraArduinoLibsSearchPaths", extraArduinoLibsSearchPaths);			
+	settings.endGroup();
+
+	settings.beginGroup("ui");
+	settings.setValue("editorFontName", editorFontName);			
+	settings.setValue("editorFontSize", editorFontSize);			
 	settings.endGroup();
 	
 	return true;

@@ -839,16 +839,16 @@ void Builder::ImportDeclarations(void)
 		}
 
 		bool ignore = false;
-		ignore = ignore | (words.indexOf("IF") > 0);
-		ignore = ignore | (words.indexOf("ELSE") > 0);
-		ignore = ignore | (words.indexOf("WHILE") > 0);
-		ignore = ignore | (words.indexOf("DO") > 0);
-		ignore = ignore | (words.indexOf("SWITCH") > 0);
-		ignore = ignore | (lines[i].indexOf(";") > 0);
-		ignore = ignore | (lines[i].indexOf(".") > 0);
-		ignore = ignore | (lines[i].indexOf("->") > 0);
-		ignore = ignore | (lines[i].indexOf("=") > 0);
-		ignore = ignore | (lines[i].indexOf("==") > 0);
+		ignore = ignore | (words.indexOf("IF") >= 0);
+		ignore = ignore | (words.indexOf("ELSE") >= 0);
+		ignore = ignore | (words.indexOf("WHILE") >= 0);
+		ignore = ignore | (words.indexOf("DO") >= 0);
+		ignore = ignore | (words.indexOf("SWITCH") >= 0);
+		ignore = ignore | (lines[i].indexOf(";") >= 0);
+		ignore = ignore | (lines[i].indexOf(".") >= 0);
+		ignore = ignore | (lines[i].indexOf("->") >= 0);
+		ignore = ignore | (lines[i].indexOf("=") >= 0);
+		ignore = ignore | (lines[i].indexOf("==") >= 0);
 
 		if (lines[i].indexOf("//") >= 0) {
 			lines[i] = lines[i].left(lines[i].indexOf("//"));

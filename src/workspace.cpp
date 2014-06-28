@@ -680,3 +680,36 @@ Project * Workspace::FindProject(QString name)
 }
 	
 //-----------------------------------------------------------------------------
+
+void Workspace::ExportProjectToSketch(QString projectName, QString path)
+{
+	Project * project = FindProject(projectName);
+	if (project == NULL) {
+		ErrorMessage("Current project not defined!");
+		return;
+	}
+
+	path = path + "/" + project->name;
+	QDir().mkpath(path);
+
+	bool ok = true;
+	bool main = false;
+	
+	for (int i=0; i < project->files.size(); i++) {
+		ProjectFile *pfile = &(project->files.at(i));
+		if (pfile->type != ptSource) {
+			continue;
+		}
+		QString src = config.workspace + "/" + project->name + "/source/" + pfile->name;
+		QString dst = path + "/" + pfile->name;
+		if (pfile->name.toUpper() == "MAIN.CPP") {
+			dst = path + "/" + project->name + ".ino"; 
+			main = true;		
+		}
+		ok = ok & QFile::copy(src, dst);
+	}
+	ok = ok && main;
+	if (ok == false) {
+		ErrorMessage("Error while exporting Arduino sketch");
+	}
+}

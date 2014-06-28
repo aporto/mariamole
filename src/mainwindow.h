@@ -22,6 +22,7 @@
 #include "wizard.h"
 #include "projectproperties.h"
 #include "about.h"
+#include "preferences.h"
 
 //-----------------------------------------------------------------------------
 
@@ -70,7 +71,12 @@ public slots:
 	void RemoveFile(void);
 	void RenameProject(void);
 	void RemoveProject(void);
+	void ExportToSketch(void);
+	void EditPreferences(void);
 
+	void OnSearchKeyPress(const QString&);
+	void OnSearchGO(void);
+	
 protected:
 	void resizeEvent(QResizeEvent *event);
 
