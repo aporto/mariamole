@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	a.setApplicationName("mariamole");
-	a.setOrganizationName("MariaMole");
+	a.setOrganizationName("dalpix");
 	MainWindow w;
 	w.showMaximized();
 	return a.exec();

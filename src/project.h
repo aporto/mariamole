@@ -36,6 +36,7 @@ public:
 	void AddPath(QString & pathList, QString newPath);
 
 	bool current;
+	bool rebuild;
 
 	QString name;
 	vector <ProjectFile> files;

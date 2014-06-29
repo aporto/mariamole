@@ -62,6 +62,7 @@ public:
 	QString DecodeLibraryPath(QString libPath);
 
 	bool useMenuButton;
+	bool hideCompilerWarnings;
 	QString workspace;
 	QString includePaths;
 	QString libPaths;

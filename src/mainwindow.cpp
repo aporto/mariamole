@@ -231,7 +231,10 @@ void MainWindow::EditProjectProperties(void)
 
 	if (workspace.GetCurrentProject()->name == item->text(0)) {
 		ProjectProperties * prop = new ProjectProperties();
-		prop->Edit(workspace.GetCurrentProject());
+		if (prop->Edit(workspace.GetCurrentProject())) {
+			workspace.GetCurrentProject()->rebuild = true;
+			SetProjectModified();
+		}
 		delete prop;
 	}
 	AdjustWorkspaceTree();
@@ -292,7 +295,7 @@ void MainWindow::update(void)
 			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_check.png"));		
 			font.setBold(true);
 			
-			//// Turn serialports open again
+			// Turn serialports open again
 			if (item->bm.text.indexOf("successfully uploaded to board") > 0) {
 				tabsEditor->EnableAllSerialPorts(true);
 			}
@@ -300,6 +303,16 @@ void MainWindow::update(void)
 			item->setIcon(QIcon(":/MainWindow/resources/build_messages/build_messages_icon_build_info.png"));
 		}
 		item->setFont(font);
+
+		for (int i=0; i < ui.buildMessages->count(); i++) {
+			if (item->bm.type == mtError) {
+				if (item == ui.buildMessages->item(i)) {
+					ui.buildMessages->setCurrentRow(i);
+					OnBuildMessagesDoubleClick(item);
+				}
+				break;
+			}
+		}		
 	}
 
 	qApp->processEvents();
@@ -334,7 +347,7 @@ void MainWindow::setupActions()
 	// set workspace
 	ui.actionSelect_workspace->setShortcut(tr("Ctrl+W"));
     ui.actionSelect_workspace->setStatusTip(tr("Select the workspace path"));
-	connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspacePath()));
+	bool ok = connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspacePath()));
 
 	// open workspace folder
 	ui.actionOpen_workspace_folder->setStatusTip(tr("Open the workspace folder"));
@@ -346,6 +359,9 @@ void MainWindow::setupActions()
 	connect (ui.actionAdd_a_new_project, SIGNAL(triggered()), this, SLOT(AddNewProject()));
 
 	connect (ui.actionPrefereces, SIGNAL(triggered()), this, SLOT(EditPreferences()));
+
+	connect (ui.actionBurn_Arduino_bootloader, SIGNAL(triggered()), this, SLOT(StartBurnBootloader()));
+	
 
 	// Add new file
 	//ui.actionAdd_a_new_file->setShortcut(tr("Ctrl+N"));
@@ -400,7 +416,7 @@ void MainWindow::setupActions()
 	
 	connect (ui.actionFormat_code, SIGNAL(triggered()), tabsEditor, SLOT(FormatCode()));
 	
-	bool ok = connect (ui.searchText, SIGNAL(activated( const QString&)), this, SLOT(OnSearchKeyPress(const QString&)));
+	ok = connect (ui.searchText, SIGNAL(activated( const QString&)), this, SLOT(OnSearchKeyPress(const QString&)));
 	connect (ui.btnSearch, SIGNAL(clicked()), this, SLOT(OnSearchGO()));
 	
 	// double click on build error/warning messages
@@ -528,7 +544,10 @@ void MainWindow::OnBuildComplete(void)
 		float pp, dp, ep;
 		msg.GetLastSucessfullBuildInfo(ps, pp, ds, dp, es, ep);
 		if (ps >= 0) {
-			ui.lbProgramSize->setText("Program size: " + QString::number(ps) + " bytes");
+			if (pp > 100) {
+				pp = 100;
+			}
+			ui.lbProgramSize->setText("Program size: " + QString::number(ps) + " bytes");			
 			ui.pbProgramSize->setValue(pp);
 			ui.pbProgramSize->setVisible(true);
 		} else {
@@ -536,6 +555,9 @@ void MainWindow::OnBuildComplete(void)
 			ui.pbProgramSize->setVisible(false);
 		}
 		if (ds >= 0) {
+			if (dp > 100) {
+				dp = 100;
+			}
 			ui.lbMemorySize->setText("Memory size: " + QString::number(ds) + " bytes");
 			ui.pbMemorySize->setValue(dp);
 			ui.pbMemorySize->setVisible(true);
@@ -544,6 +566,9 @@ void MainWindow::OnBuildComplete(void)
 			ui.pbMemorySize->setVisible(false);
 		}
 		if (es >= 0) {
+			if (ep > 100) {
+				ep = 100;
+			}
 			ui.lbEEPROMSize->setText("EEPROM size: " + QString::number(es) + " bytes");
 			ui.pbEEPROMSize->setValue(ep);
 			ui.pbEEPROMSize->setVisible(true);
@@ -654,6 +679,7 @@ void MainWindow::SetWorkspacePath(void)
 {
 	SetWorkspace * setWorkspace = new SetWorkspace();
 	if (setWorkspace->Select()) {
+		tabsEditor->closeAll();
 		OpenWorkspace();
 	}	
 	delete setWorkspace;	
@@ -1166,4 +1192,32 @@ void MainWindow::OnSearchGO(void)
 			ui.searchText->removeItem(0);
 		}
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::closeEvent ( QCloseEvent * event )
+{  
+	event->ignore();	    
+	if (QMessageBox::Yes == QMessageBox::question(NULL, "Close Confirmation?",
+							"Are you sure you want to exit?", 
+							QMessageBox::Yes|QMessageBox::No))
+	{
+	event->accept();
+	}
+} 
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::StartBurnBootloader(void)
+{
+	BurnBootloader * select = new BurnBootloader(NULL);
+
+	//select->setStyleSheet(styleSheet());
+
+	if (select->Configure()) {
+		ui.buildMessages->clear();
+		buildWindow->BurnBootloader();			
+	}
+	delete select;	
 }

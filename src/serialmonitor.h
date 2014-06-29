@@ -7,9 +7,7 @@
 #include <QtSerialPort/QSerialPort>
 #include "ui_serialmonitor.h"
 
-#ifdef Q_OS_WIN
-#include <Windows.h>
-#endif
+#include "mm_utils.h"
 
 class SerialMonitor : public QWidget
 {
@@ -32,8 +30,7 @@ private:
 	Ui::SerialMonitor ui;
 	QString portId, portSpeed;
 	QSerialPort serialPort;
-	bool PrepareSerialPort(void);
-
+	
 	void CRT(QString text);
 };
 

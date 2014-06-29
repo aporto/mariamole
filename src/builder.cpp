@@ -92,6 +92,12 @@ int Builder::Build(bool upload)
 		return -1;
 	}
 
+	if (project->rebuild) {
+		if (Clean()) {
+			project->rebuild = false;
+		}
+	}
+
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
 	if (board == config.boards.end()) {
 		msg.Add("Could not find board configuration for project: " + project->name, mtError);
@@ -107,7 +113,7 @@ int Builder::Build(bool upload)
 	
 	msg.ClearBuildInfo();
 
-	msg.AddOutput("Detecting undeclared functions in main.cpp...", false);
+	msg.AddOutput("Detecting undeclared functions in main project file: " + project->name + ".cpp...", false);
 
 	ImportDeclarations();
 	bool ok = true;
@@ -180,8 +186,8 @@ bool Builder::Upload(void)
 	buildType = 2;
 	percentage = 0;
 
-	QString uploaderPath = qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avrdude";
+	QString uploaderPath = "\"" + qApp->applicationDirPath() + 
+		"/arduino/avr/bin/avrdude\"";
 	
 	msg.AddOutput("Uploading program to board " + project->boardName, false);	
 
@@ -227,10 +233,10 @@ bool Builder::Upload(void)
 		arguments += " -D";
 	} 
 
-	QString tempOutput = buildPath + "programmer_output.log";
+	//QString tempOutput = buildPath + "programmer_output.log";
 
 	arguments += " -q -q -Uflash:w:\"" + outputFile + "\":i";
-	arguments += " >> \"" + tempOutput + "\"";
+	//arguments += " >> \"" + tempOutput + "\"";
 	
 	msg.AddOutput(">> " + uploaderPath + " " + arguments, false);
 
@@ -244,34 +250,25 @@ bool Builder::Upload(void)
 	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
 	uploaderProc.start(uploaderPath);//QIODevice::ReadWrite);
 	
-	//uploaderProc.waitForFinished();
 	int timeOut = 0;
 	bool running = true;
 	while (running && (timeOut < config.uploadTimeout)) {
 		running = !(uploaderProc.waitForFinished(500));
-		percentage = 50 * timeOut / config.uploadTimeout;
-		timeOut++;
-	}
-
-	if (running) {
-		uploaderProc.kill();
-	}
-
-	/*int timeOut = -1;
-	while (uploaderProc.state() != QProcess::NotRunning) {
-		timeOut++;
-		if (timeOut == config.uploadTimeout) {
-			uploaderProc.terminate();
-			uploaderProc.kill();
+		percentage = 100 * timeOut / config.uploadTimeout;
+		qApp->processEvents();
+		if (cancel) {
 			break;
 		}
-		QThread::sleep(1);
-		percentage = 100 * timeOut / config.uploadTimeout;
+		timeOut++;
 	}
 
-	*/
+	bool ok = true;
+	if (running) {
+		uploaderProc.kill();
+		ok = false;
+	}
 
-	bool ok = uploaderProc.exitStatus() == QProcess::NormalExit;
+	ok = ok && (uploaderProc.exitStatus() == QProcess::NormalExit);
 	if (ok) {
 		ok = uploaderProc.exitCode() == 0;
 	}
@@ -283,74 +280,8 @@ bool Builder::Upload(void)
 		if (txt != "") {
 			msg.AddOutput(strLines.at(i));
 		}
-		//qDebug(strLines.at(i).toLocal8Bit());
 	}
-//QString line= p.readAllStandardOutput();
 
-// Wait for it to start
-//]]if(!process.waitForStarted())
-//]]return 0;
-
-//// Continue reading the data until EOF reached
-//QByteArray data;
-/*while ( process.state() != QProcess::NotRunning) {
-char * buffer[1024];
-memset(buffer, 0, sizeof(buffer));
-int k = process.read(1024);
-QString line = process.readLine();
-qDebug(line);
-}
-*/
-/*QString str = process.readLine();
-
-process.waitForReadyRead();
-data.append(process.readAll());
-
-// Output the data
-qDebug(data.data());
-qDebug("Done!");*/ 
-
-
-
-
-
-
-
-	/*QProcess uploaderProc;
-	uploaderProc.setArguments(arguments);
-	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
-	
-	uploaderProc.setStandardErrorFile(tempOutput);
-	uploaderProc.start(uploaderPath);
-
-	int timeOut = -1;
-	while (uploaderProc.state() != QProcess::NotRunning) {
-		timeOut++;
-		if (timeOut == config.uploadTimeout) {
-			uploaderProc.terminate();
-			uploaderProc.kill();
-			break;
-		}
-		QThread::sleep(1);
-		percentage = 100 * timeOut / config.uploadTimeout;
-	}
-	
-	//uploaderProc.waitForFinished();
-	
-	bool ok = uploaderProc.exitStatus() == QProcess::NormalExit;
-	if (ok) {
-		ok = uploaderProc.exitCode() == 0;
-	}	
-	/*QTextStream computerOutput(uploaderProc.readAll());
-	while (computerOutput.atEnd() == false) {
-		msg.AddOutput(computerOutput.readLine());
-	}*/
-	/*QFile file(tempOutput);
-	QTextStream in(&file);	
-	while(!in.atEnd()) {
-		QString line = in.readLine();
-		msg.AddOutput(line);
-	}*/
 	return ok;
 }
 
@@ -415,7 +346,7 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 	msg.AddOutput("Compiling file: " + inputFile, false);	
 
 	// Get the compiler path	
-	QString compilerPath = qApp->applicationDirPath() + 
+	QString compilerPath = "\"" + qApp->applicationDirPath() + 
 		"/arduino/avr/bin/";
 
 	if (QFileInfo(inputFile).suffix().toUpper() == "CPP") {
@@ -423,6 +354,8 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 	} else {
 		compilerPath += "avr-gcc";
 	}
+
+	compilerPath += "\"";
 	
 	
 	// Get the argument values from the project configuration	
@@ -486,25 +419,6 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
 		arguments += " -I\"" + includes[i] + "\"";
 	}
 
-	/*QString includePaths = config.DecodeMacros(projectIncludes[i], project).trimmed();
-	QString includePaths = config.DecodeMacros(project->includePaths, project).trimmed();
-	QStringList includes = includePaths.split(";");		
-	for (int i=0; i < includes.size(); i++) {
-		includes[i] = includes[i].trimmed();
-		includes[i] = config.DecodeLibraryPath(includes[i]);
-		if (includes[i] != "") {
-			arguments += " -I\"" + includes[i] + "\"";
-		}
-	}
-	includes = config.includePaths.split(";");		
-	for (int i=0; i < includes.size(); i++) {
-		includes[i] = includes.at(i).trimmed();
-		if (includes[i] != "") {
-			arguments += " -I\"" + includes.at(i) + "\"";
-		}
-	}*/
-
-	
 	msg.AddOutput(">> " + compilerPath + " " + arguments, false);
 
 	QProcess compilerProc;
@@ -543,8 +457,8 @@ void Builder::GetBinarySize(void)
 
 	
 	// Get the compiler path	
-	QString linkerPath = qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avr-size";
+	QString linkerPath = "\"" + qApp->applicationDirPath() + 
+		"/arduino/avr/bin/avr-size\"";
 
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
@@ -597,8 +511,8 @@ bool Builder::Link(void)
 	msg.AddOutput("Linking project:" + project->name, false);	
 
 	// Get the compiler path	
-	QString linkerPath = qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avr-gcc";
+	QString linkerPath = "\"" + qApp->applicationDirPath() + 
+		"/arduino/avr/bin/avr-gcc\"";
 
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
@@ -612,18 +526,7 @@ bool Builder::Link(void)
 			QString objFile = MangleFileName(workspace.GetFullFilePath(project->name, project->files.at(i).name));
 			arguments += " \"" + objFile + "\"";		
 
-			//QString objFile = project->files.at(i).name + ".o";//QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
-			//QString folder = QFileInfo(project->files.at(i).name).dir().path();
-			//folder = QFileInfo(folder).baseName();
-			
-			
-			//QString outputFile = QFileInfo(project->files.at(i).name).fileName(); //project->files.at(fileIndex).name;
-			//QString folder = QFileInfo(inputFile).dir().path();
-			//folder = QFileInfo(folder).baseName();
-			//outputFile = buildPath + "/" + folder + "_" + outputFile + ".o";			
-			//objFile = buildPath + "/" +  "source_" + objFile;			
-			//arguments += " \"" + objFile + "\"";		
-		}
+			}
 	}
 
 	arguments += " \"" + coreLib + "\"";		
@@ -656,8 +559,8 @@ bool Builder::Link(void)
 	// Finally, convert the elf file into hex format
 	if (ok) {
 		msg.AddOutput("Converting ELF to HEX...");
-		linkerPath = qApp->applicationDirPath() + 
-			"/arduino/avr/bin/avr-objcopy";
+		linkerPath = "\"" + qApp->applicationDirPath() + 
+			"/arduino/avr/bin/avr-objcopy\"";
 		arguments = " -O ihex -R .eeprom";
 		arguments += " \"" + binFile +"\"";
 		arguments += " \"" + buildPath + "/" + project->name + ".hex\"";
@@ -709,8 +612,8 @@ bool Builder::BuildCoreLib(void)
 	int oldPercent = percentage;
 	percentage = 0;
 
-	QString linkerPath = qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avr-ar";
+	QString linkerPath = "\"" + qApp->applicationDirPath() + 
+		"/arduino/avr/bin/avr-ar\"";
 	
 	msg.AddOutput("Linking core lib for board :" + project->boardName, false);	
 	
@@ -778,19 +681,60 @@ bool Builder::BuildCoreLib(void)
 
 QString Builder::GetLeonardoSerialPort(QString defaultPort)
 {
-	//to do!!!
-	// According to Arduino official doc.,
-	// before uploading to Leonardo we need to reset it first
-	// Then it will be assigned a different serial port, and we need
-	// to find it, and then use it to upload the new software
-	return defaultPort;
+	QStringList before, after;
+	QSerialPortInfo serialList;
+	QSerialPort port;
+	
+	for (int i=0; i < serialList.availablePorts().count();i++) {
+		before.append(serialList.availablePorts().at(i).portName());
+	}
+	
+#ifdef Q_OS_WIN
+	bool open = PrepareSerialPort(project->serialPort, project->serialPortSpeed);
+#else
+	port.setPortName(project->serialPort);
+	port.setFlowControl(QSerialPort::NoFlowControl);
+	port.setBaudRate(QSerialPort::Baud1200);
+	port.setParity(QSerialPort::NoParity);
+	port.setStopBits(QSerialPort::OneStop);
+	port.setDataBits(QSerialPort::Data8);
+	bool open = port.open (QIODevice::ReadWrite);
+#endif 
+	if (open) {	
+		char buffer[20] = "Hello!\r\n";
+		port.write ((const char *)buffer);
+		QThread::msleep(100);
+		port.close();
+
+		int counter = 30;
+		after.clear();
+		while (counter > 0) {
+			QSerialPortInfo newSerialList;
+			for (int i=0; i < newSerialList.availablePorts().count();i++) {
+				after.append(newSerialList.availablePorts().at(i).portName());
+			}
+
+			for (int i=0; i < after.count(); i++) {
+				if (before.indexOf(after.at(i)) < 0) {
+					return after.at(i);				
+				}
+			}
+			QThread::msleep(10);
+			counter--;
+		}
+	} else {
+		msg.Add("Invalid serial port for project " + project->name + ": '" + project->serialPort + "'", mtError);
+	}
+	
+	msg.Add("Could not detect Leonardo serial port for programming: " + project->name, mtWarning);
+	return project->serialPort;
 }
 
 //-----------------------------------------------------------------------------
 
 void Builder::ImportDeclarations(void)
 {
-	QString inFileName = config.workspace + "/" + project->name + "/source/main.cpp";
+	QString inFileName = config.workspace + "/" + project->name + "/source/" + project->name + ".cpp"; //main.cpp
 
 	if (QFileInfo(inFileName).exists() == false) {
 		return;
@@ -915,3 +859,147 @@ void Builder::ImportDeclarations(void)
 	QTextStream out(&outFile);
 	out << header.join("\n");
 }
+
+//-----------------------------------------------------------------------------
+
+bool Builder::BurnBootLoader(void)
+{
+	/*project = workspace.GetCurrentProject();
+	if (project == NULL) {
+		msg.Add("Current project not defined", mtError);
+		return false;
+	}*/
+
+	map <QString, BoardDef>::const_iterator board = config.boards.find(blbBoardName);
+
+	if (board == config.boards.end()) {
+		msg.Add("Error getting board configuration for: " + blbBoardName, mtError);
+		return false;
+	}
+
+	map <QString, BuildDef>::const_iterator build = config.builds.find(board->second.build_core);
+	map <QString, ProgrammerDef>::const_iterator programmer = config.programmers.find(blbProgrammerName);
+
+	if (build == config.builds.end()) {
+		msg.Add("Error getting build configuration for board " + blbBoardName, mtError);
+		return false;
+	}
+
+	if (programmer == config.programmers.end()) {
+		msg.Add("Error getting programmer configuration for board " + blbBoardName, mtError);
+		return false;
+	}
+
+	buildType = 2;
+	percentage = 0;
+
+	QString uploaderPath = "\"" + qApp->applicationDirPath() + 
+		"/arduino/avr/bin/avrdude\"";
+	
+	msg.AddOutput("Burning bootloader to board " + blbBoardName, false);	
+
+	QString outputFile = "\"" + qApp->applicationDirPath() + "/arduino/arduino/bootloaders/" + board->second.bootloader_path + "/" + board->second.bootloader_file;
+	QString arguments = "-C\"" + qApp->applicationDirPath() 
+		+ "/arduino/avr/etc/avrdude.conf\"";
+	//arguments += " -q -q"; // ultra quiet mode
+	arguments += " -p" + board->second.build_mcu;
+	
+	QString speed = "";
+	QString communication = "";
+	
+	arguments += " -c" + programmer->second.protocol;
+	communication = programmer->second.communication;
+	speed = programmer->second.speed;				
+
+	if (speed == "") {
+		speed = "19200";
+	}
+
+	if (communication == "serial") {
+		arguments += " -P\\\\.\\";
+		if (board->second.name == "Arduino Leonardo") {
+			QString leoPort = GetLeonardoSerialPort(blbSerialPort);
+			arguments += leoPort;
+			msg.AddOutput("Leonardo board: Uploading to alternative serial port '" + leoPort + "' (Please check Leonardo docs if you have any questions about this)", false);			
+		} else {
+			arguments += blbSerialPort;
+		}
+		if (speed != "") {
+			arguments += " -b" + speed;
+		}
+	} else {
+		arguments += " -P" + communication;
+	}
+
+	/*if (project->programmer == "") {
+		arguments += " -D";
+	} */
+
+	//QString tempOutput = buildPath + "programmer_output.log";
+
+	arguments += " -v -v -v -v -q -q -Uflash:w:\"" + outputFile + "\":i";
+	//arguments += " >> \"" + tempOutput + "\"";
+	
+	msg.AddOutput(">> " + uploaderPath + " " + arguments, false);
+
+	QProcess uploaderProc;
+
+#ifdef Q_OS_WIN
+	uploaderProc.setNativeArguments(arguments);
+#else
+	QStringList arglist; arglist << arguments; uploaderProc.setArguments(arglist);
+#endif
+	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
+	uploaderProc.start(uploaderPath);//QIODevice::ReadWrite);
+	
+	int timeOut = 0;
+	bool running = true;
+	while (running && (timeOut < config.uploadTimeout)) {
+		running = !(uploaderProc.waitForFinished(500));
+		qApp->processEvents();
+		percentage = 100 * timeOut / config.uploadTimeout;
+		timeOut++;
+		if (cancel) {
+			break;
+		}
+	}
+
+	bool ok = true;
+	if (running) {
+		uploaderProc.kill();
+		ok = false;
+	}
+
+	ok = ok && (uploaderProc.exitStatus() == QProcess::NormalExit);
+	if (ok) {
+		ok = uploaderProc.exitCode() == 0;
+	}
+
+	QByteArray byteArray = uploaderProc.readAllStandardOutput();
+	QStringList strLines = QString(byteArray).split("\n");
+	for (int i=0; i < strLines.count(); i++) {
+		QString txt = strLines.at(i).trimmed();
+		if (txt != "") {
+			msg.AddOutput(strLines.at(i));
+		}
+	}
+
+	if (ok) {
+		msg.Add("Bootloader successfully burnt into " +board->first, mtSuccess);
+	} else {
+		msg.Add("Failed to burn bootloader" , mtError);
+	}
+
+	return ok;
+}
+
+//-----------------------------------------------------------------------------
+
+void Builder::ConfigureBootloaderBurner(QString programmerName, QString boardName, QString SerialPort)
+{
+	blbProgrammerName = programmerName;
+	blbBoardName = boardName;
+	blbSerialPort = SerialPort;
+}
+
+//-----------------------------------------------------------------------------

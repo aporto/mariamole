@@ -31,6 +31,8 @@ bool Workspace::Open(QString workPath)
 	QDir dir;
 	dir.setPath(workPath);
 
+	projects.clear();
+
 	if (dir.exists() == false) {
 		return false;
 	}
@@ -150,43 +152,14 @@ bool Workspace::AddProject(QString name, QString importSketch)
 	project.name = name;	
 
 	if (importSketch == "") {		
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.cpp", "main.cpp", &project);
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", &project);		
+		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.cpp", project.name + ".cpp", &project);
+		//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", &project);		
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", &project);		
 	} else {
 
 		if (ImportSketch(&project, importSketch) == false) {
 			return false;
 		}
-		/*QString examplePath = config.LocateFileUsingSearchPaths(importExample, "$(LIBRARIES)", true);
-		QString exampleName = QFileInfo(importExample).fileName();
-		
-		QString mainFile = examplePath + "/" + exampleName + ".ino";				
-		CopyFileToProject(mainFile, "main.cpp", project);
-		
-		// Add #include <main.h> to main.cpp
-		QFile autoFile(config.workspace + "/" + project.name + "/source/main.cpp");
-		autoFile.open(QFile::ReadOnly | QFile::Text);
-		QTextStream stream(&autoFile);
-		QString fileContent = stream.readAll();
-		autoFile.close();
-		fileContent = "#include \"main.h\"\n" + fileContent;
-		autoFile.open(QFile::WriteOnly);
-		QTextStream streamOut(&autoFile);
-		streamOut << fileContent;
-		autoFile.close();
-		
-		// copy templates to project source path
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
-		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
-
-		//if example comes from a lib, add the lib files as external
-		if (importExample.toUpper().indexOf("/EXAMPLES/") > 0) {
-			QString libName = importExample;
-			libName = libName.left(libName.toUpper().indexOf("/EXAMPLES/"));
-			libName = QFileInfo(libName).fileName();
-			ImportLibrary(&project, libName);
-		}	*/	
 	}
 	projects.push_back(project);
 
@@ -231,19 +204,19 @@ bool Workspace::ImportSketch(Project * project, QString sketchFullPath)
 		}
 	}
 
-	fileContent = "#include \"main.h\"\n" + fileContent;
-	QFile outFile(config.workspace + "/" + project->name + "/source/main.cpp");
+	fileContent = "#include \"mariamole_auto_generated.h\"\n" + fileContent;
+	QFile outFile(config.workspace + "/" + project->name + "/source/" + project->name + ".cpp"); // main.cpp
 	outFile.open(QFile::WriteOnly);
 	QTextStream streamOut(&outFile);
 	streamOut << fileContent;
 	outFile.close();
 	ProjectFile pfile;
-	pfile.name = "main.cpp";
+	pfile.name = project->name + ".cpp"; //"main.cpp";
 	pfile.open = false;
 	pfile.type = ptSource;
 	project->files.push_back(pfile);
 
-	CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
+	//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
 	CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
 
 	ImportFilesFromSketchDirectory(project, path);
@@ -702,7 +675,7 @@ void Workspace::ExportProjectToSketch(QString projectName, QString path)
 		}
 		QString src = config.workspace + "/" + project->name + "/source/" + pfile->name;
 		QString dst = path + "/" + pfile->name;
-		if (pfile->name.toUpper() == "MAIN.CPP") {
+		if (pfile->name.toUpper() == (project->name.toUpper() + ".CPP")) { //"MAIN.CPP") {
 			dst = path + "/" + project->name + ".ino"; 
 			main = true;		
 		}

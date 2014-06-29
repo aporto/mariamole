@@ -61,10 +61,10 @@ font-size:14pt;</string>
         <widget class="QTreeWidget" name="examplesTree">
          <property name="geometry">
           <rect>
-           <x>310</x>
-           <y>10</y>
-           <width>261</width>
-           <height>331</height>
+           <x>300</x>
+           <y>30</y>
+           <width>231</width>
+           <height>251</height>
           </rect>
          </property>
          <property name="rootIsDecorated">

@@ -269,7 +269,7 @@ aaa: rgb(14, 22, 24);</string>
         <enum>QTabWidget::Triangular</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
@@ -339,7 +339,7 @@ color:rgb(140,140,140);</string>
 border-left: 1px solid rgb(55, 60,70);</string>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="page_3">
              <widget class="QLabel" name="label_8">
@@ -824,7 +824,7 @@ padding: 5px;</string>
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionSwitch_workspace"/>
+    <addaction name="actionSelect_workspace"/>
     <addaction name="actionSave_Workspace"/>
     <addaction name="actionRefresh_workspace_tree"/>
     <addaction name="separator"/>
@@ -832,6 +832,8 @@ padding: 5px;</string>
     <addaction name="actionRename_file"/>
     <addaction name="actionRemove_file"/>
     <addaction name="actionOpen_file"/>
+    <addaction name="separator"/>
+    <addaction name="actionBurn_Arduino_bootloader"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_workspace_folder"/>
     <addaction name="separator"/>
@@ -1046,16 +1048,6 @@ QToolButton {
     <bool>false</bool>
    </property>
   </action>
-  <action name="actionSwitch_workspace">
-   <property name="text">
-    <string>Switch workspace</string>
-   </property>
-  </action>
-  <action name="actionSave_workspace_as">
-   <property name="text">
-    <string>Save workspace as</string>
-   </property>
-  </action>
   <action name="actionRefresh_workspace_tree">
    <property name="text">
     <string>Refresh workspace tree</string>
@@ -1200,7 +1192,18 @@ QToolButton {
   </action>
   <action name="actionExport_to_sketch">
    <property name="text">
-    <string>Export to sketch</string>
+    <string>Export to Arduino sketch</string>
+   </property>
+   <property name="toolTip">
+    <string>Export to Arduino sketch</string>
+   </property>
+  </action>
+  <action name="actionBurn_Arduino_bootloader">
+   <property name="text">
+    <string>Burn Arduino bootloader</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

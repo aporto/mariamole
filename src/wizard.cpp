@@ -490,58 +490,5 @@ void Wizard::GetExamplesNamesRecursivelly(QString hierarchy, QString path, QStri
 
 //-----------------------------------------------------------------------------
 
-/*bool Workspace::AddProject(QString name, QString importExample) 
-{
-QString path = "c:/"; /// config.workspace;
-	QString name = ui.projectName.text();
-	path = path + "/" + name;
-	int aux = 0;	
-	QString auxPath = path;
-	do {		
-		book ok = QDir().mkdir(path);
-		if (ok == false) {
-			aux++;
-			auxPath = path + "_" + QString::number(aux);
-		}
-	} while ((ok == false) && (aux < 50));
-	
-	if (aux >= 50) {
-		return false;
-	}
 
-	Project project;
-	project.name = name;
-	projects.push_back(Project);
-
-	if (importExample == "") {
-		QFile::copy("/templates/main.cpp", path + "/main.cpp");
-		QFile::copy("/templates/main.h", path + "/main.h");
-	} else {
-		//// Get import path
-		QString exampleName = QFileInfo(importPath).fileName();
-		QString mainFile = importPath + "/" + exampleName + ".ino";		
-		QFile::copy(mainFile, path + "/main.cpp");
-		QFile::copy("/templates/main.h", path + "/main.h");
-
-		//if example comes from a lib, add the lib files as external
-		QString libPath = importPath;
-		if (libPath.toUpper().indexOf("/EXAMPLES/") > 0) {
-			libPath = libPath.left(libPath.toUpper().indexOf("/EXAMPLES/"));
-			QDir dir(libPath);                            
-			QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries); 
-			for (int f=0; f < files.size(); f++) {	
-				if (files.at(f).isDir() == false) {
-					QString fileName = QFileInfo(files.at(f).absoluteFilePath()).fileName();
-					QString ext = QFileInfo(files.at(f).absoluteFilePath()).suffix().toUpper();
-					if ( ( (ext == "CPP") || (ext == "C") ) || (ext == "H") ) {
-						ProjectFile file;
-						file.name = "$(LIBRARIES)\" + fileName;
-						file.type = ftExternal;
-						project->files.push_back(file);
-					}
-				}
-			}		
-		}
-	}
-}*/
 

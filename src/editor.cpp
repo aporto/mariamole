@@ -91,6 +91,10 @@ void Editor::setEditorStyle (void)
 	setUnmatchedBraceBackgroundColor(QColor(0,0,0));
 	setUnmatchedBraceForegroundColor(QColor(255, 0, 0));
 
+	// selection
+	setSelectionForegroundColor(QColor(150, 150, 150));
+	setSelectionBackgroundColor(QColor(52, 60, 62));
+	
 	// maim cpp styles
 	setLexerStyle(-1, QColor (120, 120, 120),backColor);	
 	//setLexerStyle(-1, Qt::red, Qt::blue);	
@@ -139,7 +143,16 @@ void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool
 
 void Editor::onCursorPositionChanged(int line, int index)
 {
-	//setCaretLineBackgroundColor(QColor(16, 24, 26));
+
+}
+
+void Editor::mousePressEvent ( QMouseEvent * event )
+{
+	QsciScintilla::mousePressEvent(event);
+	long res = this->SendScintilla(SCI_GETCARETLINEBACK, 0);
+	if (res != 0x00222018) {
+		setCaretLineBackgroundColor(QColor(24, 32, 34));
+	}
 	markerDeleteAll();
 }
 
@@ -154,8 +167,8 @@ void Editor::focusInEvent ( QFocusEvent * event )
 	QString s2 = fileTime.toString();
 	if (lastModifiedTime < fileTime) {
 		lastModifiedTime = QDateTime::currentDateTime();
-		QString ext = QFileInfo(file).suffix().toUpper();
-		if (ext != "H") {
+		QString name = QFileInfo(file).fileName().toLower();
+		if (name != "mariamole_auto_generated.h") {
 			if (GetUserConfirmation("File was modified outsite editor. Do you want to reload it?\n" +file) == false)  {
 				return;
 			}
@@ -183,9 +196,27 @@ void Editor::CodeBeautifier(void)
 	QString tab = "";
 	int i = 0;
 	bool inc;
+
 	while ( i < lines.count() ) {
 		inc = true;
 		QString trim = lines[i].trimmed();
+
+		int pos = trim.indexOf(" ");
+		bool IfAdd_DoItOnSametLine = false;
+		if (pos > 0) {
+			QString firstWord = trim.left(pos).trimmed().toUpper();
+			IfAdd_DoItOnSametLine |= (firstWord == "INT");
+			IfAdd_DoItOnSametLine |= (firstWord == "VOID");
+			IfAdd_DoItOnSametLine |= (firstWord == "FLOAT");
+			IfAdd_DoItOnSametLine |= (firstWord == "DOUBLE");
+			IfAdd_DoItOnSametLine |= (firstWord == "UNSIGNED");
+			IfAdd_DoItOnSametLine |= (firstWord == "LONG");
+			IfAdd_DoItOnSametLine |= (firstWord == "SHORT");
+			IfAdd_DoItOnSametLine |= (firstWord == "CHAR");
+			IfAdd_DoItOnSametLine |= (firstWord == "CHAR*");
+			IfAdd_DoItOnSametLine |= (firstWord == "BYTE");
+			IfAdd_DoItOnSametLine |= (firstWord == "BOOL");
+		}
 
 		// fix the } at the end of a block
 		if (trim.indexOf("}") >= 0) {
@@ -201,9 +232,15 @@ void Editor::CodeBeautifier(void)
 		// fix the { at the beginning of a block
 		if (trim.indexOf("{") >= 0) {
 			if (trim == "{") {
-				if (i > 0) {
-					lines[i-1] += " " + trim;
-					lines.erase(lines.begin() + i);
+				if (i > 0) {					
+					if (IfAdd_DoItOnSametLine) {
+						// move "{" of the end of the previous
+						lines[i-1] += " " + trim;
+						lines.erase(lines.begin() + i);
+					} else {
+						// leave "{" of the current line
+						lines[i] = trim; 
+					}
 					inc = false;
 				}
 			}

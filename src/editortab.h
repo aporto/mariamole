@@ -3,6 +3,7 @@
 
 #include <QTabWidget>
 #include <QFile>
+#include <QMenu>
 #include <QTextStream>
 
 #include "editor.h"
@@ -33,8 +34,11 @@ public:
 
 public slots:
     void closeTab(int);
+	void closeThis(void);
+	void closeAllButThis(void);
 	void onEditorTextChanged(void);
 	void FormatCode(void);
+	void ShowEditorMenu(const QPoint point);
 
 signals:
      void codeChanged(void);
@@ -42,6 +46,7 @@ signals:
 private:
 	MM::TabType tabType(int index);
 	bool saveFile(int index);	
+	QMenu * context;
 
 	
 };

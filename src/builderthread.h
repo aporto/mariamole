@@ -19,6 +19,7 @@ public:
 	//void Build(void);	
 	void run();
 	bool program;	//bool Finished(void);
+	bool burnBootloader;
 private:	
 	
 };

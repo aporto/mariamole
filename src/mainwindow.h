@@ -23,6 +23,7 @@
 #include "projectproperties.h"
 #include "about.h"
 #include "preferences.h"
+#include "burnbootloader.h"
 
 //-----------------------------------------------------------------------------
 
@@ -38,6 +39,8 @@ public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
     Editor *textEdit;
+
+	void closeEvent ( QCloseEvent * event );
 
 public slots:
 	void SetWorkspacePath(void);
@@ -73,6 +76,7 @@ public slots:
 	void RemoveProject(void);
 	void ExportToSketch(void);
 	void EditPreferences(void);
+	void StartBurnBootloader(void);
 
 	void OnSearchKeyPress(const QString&);
 	void OnSearchGO(void);

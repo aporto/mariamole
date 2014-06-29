@@ -96,7 +96,7 @@ bool Project::Load(QString workspace, QString filename)
 		}
 		ok = true;
 	}
-
+	rebuild = true;
 	return ok;
 }
 				

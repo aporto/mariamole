@@ -20,6 +20,7 @@ public:
 	BuildWindow(QWidget *parent = 0);
 	~BuildWindow();
 	void Build(bool upload);
+	void BurnBootloader(void);
 
 public slots:
 	void update(void);   

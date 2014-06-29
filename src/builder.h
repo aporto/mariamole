@@ -7,17 +7,9 @@
 #include "workspace.h" 
 #include "message_handler.h"
 
+#include <QtSerialPort/QSerialPortInfo>
+#include <QtSerialPort/QSerialPort>
 
-/*#ifdef __linux__ 
-    //linux code goes here
-#elif _WIN32
-   #include <Windows.h>
-   // windows code goes here
-#else
-
-#endif
-
-   */
 //-----------------------------------------------------------------------------
 
 class Builder
@@ -29,9 +21,12 @@ public:
 	void Cancel(void);
 	bool Clean(void);
 	int Build(bool upload);	
+	bool BurnBootLoader(void);
 	int GetLastBuildStatus(void);		
 	int GetPercentage(void);
 	int GetBuildType(void);
+	void ConfigureBootloaderBurner(QString programmerName, QString boardName, QString SerialPort);
+
 private:
 	Project * project;
 	QString buildPath;
@@ -40,6 +35,7 @@ private:
 	QString coreLib;
 	int buildType;
 	int lastBuildStatus;
+	QString blbProgrammerName, blbBoardName, blbSerialPort;
 
 	bool Compile(int fileIndex);
 	bool CompileFile(QString inputFile, bool testDate, bool silent);

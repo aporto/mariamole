@@ -69,7 +69,9 @@ void MessageHandler::AddOutput(QString text, bool parseText)
 			if (buildStage == 1) {
 				ParseCompilerMessage(text, bm);
 			} else if (buildStage == 2) { 
-				ParseLinkerMessage(text, bm);
+				if (config.hideCompilerWarnings == false) {
+					ParseLinkerMessage(text, bm);
+				}
 			} else if (buildStage == 3) { 
 				ParseUploaderMessage(text, bm);
 			} else if (buildStage == 4) {

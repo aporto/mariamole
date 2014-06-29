@@ -35,7 +35,11 @@ void BuilderThread::Build(void)
 
 void BuilderThread::run()
 {
-	builder.Build(program);	
+	if (burnBootloader) {
+		builder.BurnBootLoader();
+	} else {
+		builder.Build(program);	
+	}
 	exit();
 }
 

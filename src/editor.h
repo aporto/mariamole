@@ -34,6 +34,7 @@ public slots:
 
 protected: 
 	void focusInEvent ( QFocusEvent * event );
+	void mousePressEvent ( QMouseEvent * event );
 	
 private:
 	QsciAPIs *api;

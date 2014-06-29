@@ -34,6 +34,7 @@ void Preferences::OnOk(void)
 	config.editorFontName = ui.editorFontName->currentFont().family();
 	config.editorFontSize = ui.editorFontSize->value();
 	config.useMenuButton = ui.embedMenu->isChecked();
+	config.hideCompilerWarnings = ui.hideWarnings->isChecked();
 
 	config.Save();
 
@@ -70,6 +71,7 @@ bool Preferences::Edit(void)
 	ui.userLibraries->setText(config.extraArduinoLibsSearchPaths);	
 	ui.editorFontSize->setValue(config.editorFontSize);
 	ui.embedMenu->setChecked(config.useMenuButton);
+	ui.hideWarnings->setChecked(config.hideCompilerWarnings);
 
 	//ui.editorFontName->currentFont().setFamily("");
 	QFont font(config.editorFontName);

@@ -9,6 +9,16 @@ EditorTab::EditorTab(QWidget *parent)
 	LoadStyleSheet(this, "style_code_tab.css");
 
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+
+	//create context menu
+	context= new QMenu(this);		
+	LoadStyleSheet(context, "style_menu.css");
+	QAction * action = context->addAction("Close tab");
+	connect(action, SIGNAL(triggered()), this, SLOT(closeThis()));
+	action = context->addAction("Close all but this");
+	connect(action, SIGNAL(triggered()), this, SLOT(closeAllButThis()));
+	//projectContext->addAction(action);
+	//projectContext->addSeparator();
 }
 
 EditorTab::~EditorTab()
@@ -106,6 +116,11 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		setCurrentIndex(index);
 		textEdit = (Editor *)widget(index);
 	} else {		
+
+		if (QFileInfo(filename).exists() == false) {
+			ErrorMessage("Could not load file: \n\n" +  filename);
+			return false;
+		}
 		textEdit = new Editor(this);
 		textEdit->Open(filename);
 		
@@ -113,14 +128,19 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 	
 		addTab(textEdit, QFileInfo(filename).fileName());
 		setCurrentIndex(count() - 1);		
+
+		bool ok = connect(textEdit, SIGNAL(customContextMenuRequested(const QPoint &)),
+					this,SLOT(ShowEditorMenu(const QPoint )));
+		textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
+
 		QApplication::restoreOverrideCursor();
 	}
 
 	if (highlightLine >= 0) {		
-		//textEdit->setCursorPosition(highlightLine, 0);
+		textEdit->setCursorPosition(highlightLine-1, 0);
 		textEdit->ensureLineVisible(highlightLine-1);		
 		textEdit->markerAdd (highlightLine-1, 0);
-		//textEdit->setCaretLineBackgroundColor(QColor(255, 100, 100));
+		textEdit->setCaretLineBackgroundColor(QColor(100, 20, 20));
 	}
 
 	return true;
@@ -191,7 +211,7 @@ void EditorTab::closeAll(void)
 
 void EditorTab::FormatCode(void)
 {
-	if (currentIndex() < 1) {
+	if (currentIndex() < 0) {
 		return;
 	}
 	
@@ -213,7 +233,7 @@ void EditorTab::ConfigureAllTabs(void)
 
 void EditorTab::Search(QString text, bool caseSensitive, bool wholeWords)
 {
-	if (currentIndex() < 1) {
+	if (currentIndex() < 0) {
 		return;
 	}
 	
@@ -222,5 +242,38 @@ void EditorTab::Search(QString text, bool caseSensitive, bool wholeWords)
 		if (editor->findFirst(text, false, caseSensitive, wholeWords, true, true, false) == false) {
 			ErrorMessage("Text not found!");
 		}
+	}
+}
+
+void EditorTab::ShowEditorMenu(const QPoint point)
+{
+	if (currentIndex() < 0) {
+		return;
+	}
+	
+	context->popup(widget(currentIndex())->mapToGlobal(point));
+}
+
+void EditorTab::closeThis(void)
+{
+	if (currentIndex() < 0) {
+		return;
+	}
+	
+	closeTab(currentIndex());
+}
+
+void EditorTab::closeAllButThis(void)
+{
+	int t = currentIndex();
+	if (t < 0) {
+		return;
+	}
+
+	for (int i=0; i < t; i++) {
+		closeTab(0);
+	}
+	while (count() > 1) {
+		closeTab(1);
 	}
 }

@@ -1,5 +1,4 @@
 #include "mm_utils.h"
-#include "mm_utils.h"
 
 
 bool GetUserConfirmation(QString msg)
@@ -28,4 +27,41 @@ void LoadStyleSheet(QWidget * widget, QString file)
     QTextStream css(&cssFile);
 	QString styleText = css.readAll();
 	widget->setStyleSheet(styleText);
+}
+
+bool PrepareSerialPort(QString portId, QString portSpeed)
+{
+#ifdef Q_OS_WIN
+	// This is (probably) only necessary on Windows:
+	// serial port timeouts shall be configured before using Qt serial port
+	// this is not supported by QSerialPort
+	DCB dcbSerialParams = {0};
+	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+	QString name = "\\\\.\\" + portId;
+	HANDLE hSerial = CreateFileA(portId.toLocal8Bit(), GENERIC_READ | GENERIC_WRITE, 0, NULL,
+						OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (!GetCommState(hSerial, &dcbSerialParams)) {
+		return false;
+	}
+	dcbSerialParams.BaudRate=portSpeed.toInt();
+	dcbSerialParams.ByteSize=8;
+	dcbSerialParams.StopBits=ONESTOPBIT;
+	dcbSerialParams.Parity=NOPARITY;
+	if (!SetCommState(hSerial, &dcbSerialParams)){
+		CloseHandle(hSerial);
+		return false;
+	}
+
+	COMMTIMEOUTS timeouts={0};
+	timeouts.ReadIntervalTimeout=50;
+	timeouts.ReadTotalTimeoutConstant=1;
+	timeouts.ReadTotalTimeoutMultiplier=1;
+
+	timeouts.WriteTotalTimeoutConstant=50;
+	timeouts.WriteTotalTimeoutMultiplier=1;
+	SetCommTimeouts(hSerial, &timeouts);
+	CloseHandle(hSerial);
+#endif 
+
+	return true;
 }

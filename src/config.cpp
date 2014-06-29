@@ -49,6 +49,11 @@ int Config::Load(void)
 	editorFontSize = settings.value("editorFontSize", "12").toInt();
 	settings.endGroup();
 
+
+	settings.beginGroup("compiler");
+	hideCompilerWarnings = settings.value("hideCompilerWarnings", "0").toBool();
+	settings.endGroup();
+	
 	int res = LoadHardwareDefinitions();
 	if (res != 0) {
 		return res;
@@ -259,6 +264,10 @@ bool Config::Save(void)
 	settings.beginGroup("ui");
 	settings.setValue("editorFontName", editorFontName);			
 	settings.setValue("editorFontSize", editorFontSize);			
+	settings.endGroup();
+
+	settings.beginGroup("compiler");
+	settings.setValue("hideCompilerWarnings", hideCompilerWarnings);				 
 	settings.endGroup();
 	
 	return true;

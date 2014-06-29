@@ -42,9 +42,29 @@ void BuildWindow::Build(bool program)
 	timer->start(50);
 	thread = new BuilderThread(this);
 	thread->program = program;
+	thread->burnBootloader = false;
 	connect(thread, SIGNAL(finished ()), this, SLOT(completed()));
-	thread->start();
+	thread->start();	
+}
+
+//-----------------------------------------------------------------------------
+
+void BuildWindow::BurnBootloader(void)
+{
+	ui.progressBar->setValue(0);
+	ui.label->setText("Burning bootloader");
 	
+	this->setModal(true);
+
+	oldProgressBarType = -1;
+	
+	show();
+	
+	timer->start(50);
+	thread = new BuilderThread(this);
+	thread->burnBootloader = true;
+	connect(thread, SIGNAL(finished ()), this, SLOT(completed()));
+	thread->start();	
 }
 
 //-----------------------------------------------------------------------------
