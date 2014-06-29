@@ -37,9 +37,9 @@ bool Builder::Clean(void)
 	buildPath = config.workspace + "/" + project->name + "/build"; 
 	QDir dir = QDir(buildPath);
 	bool ok = dir.removeRecursively();
-	if (ok) {
-		msg.Add("All " + project->name + " build files were successfully erased.", mtSuccess);
-	} else {
+	if (ok==false) {
+	//	msg.Add("All " + project->name + " build files were successfully erased.", mtSuccess);
+	//} else {
 		msg.Add("Error while cleaning project " + project->name + ".", mtError);
 	}
 
@@ -193,9 +193,9 @@ bool Builder::Upload(void)
 
 	QString outputFile = buildPath + "/" + project->name + ".hex";
 	QString arguments = "-C\"" + qApp->applicationDirPath() 
-		+ "/arduino/avr/etc/avrdude.conf\"";
+		+ "/arduino/avr/etc/avrdude.conf\" ";
 	//arguments += " -q -q"; // ultra quiet mode
-	arguments += " -p " + board->second.build_mcu;
+	arguments += " -p" + board->second.build_mcu;
 	
 	QString speed = "";
 	QString communication = "";
@@ -235,7 +235,7 @@ bool Builder::Upload(void)
 
 	//QString tempOutput = buildPath + "programmer_output.log";
 
-	arguments += " -q -q -Uflash:w:\"" + outputFile + "\":i";
+	arguments += " -q -Uflash:w:\"" + outputFile + "\":i";
 	//arguments += " >> \"" + tempOutput + "\"";
 	
 	msg.AddOutput(">> " + uploaderPath + " " + arguments, false);

@@ -5071,6 +5071,15 @@ Source: "D:\github\mariamole\build\release\Qt5Qml.dll"; DestDir: "{app}"; Flags:
 Source: "D:\github\mariamole\build\release\Qt5SerialPort.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\github\mariamole\build\release\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\github\mariamole\build\release\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qminimald.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qminimald.pdb"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qoffscreend.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qoffscreend.pdb"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qwindowsd.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\github\mariamole\build\release\platforms\qwindowsd.pdb"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -5680,3 +5689,4 @@ Name: "{app}\arduino\avr\utils\libusb"
 Name: "{app}\arduino\avr\utils\libusb\bin"
 Name: "{app}\config"
 Name: "{app}\templates"
+Name: "{app}\platforms"
