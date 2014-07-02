@@ -987,7 +987,7 @@ void MainWindow::ExitSoftware(void)
 
 void MainWindow::VisitMariaMoleWebsite(void)
 {
-	QString path = 
+	//QString path = //QString??? Nop, it does return a bool :p
 	QDesktopServices::openUrl(QUrl("http://dalpix.com/mariamole"));
 }
 
@@ -995,7 +995,7 @@ void MainWindow::VisitMariaMoleWebsite(void)
 
 void MainWindow::VisitArduinoHelp(void)
 {
-	QString path = 
+	//QString path = 
 	QDesktopServices::openUrl(QUrl("http://arduino.cc/en/Reference/HomePage"));
 }
 
@@ -1003,7 +1003,7 @@ void MainWindow::VisitArduinoHelp(void)
 
 void MainWindow::ReportABug(void)
 {
-	QString path = 
+	//QString path = 
 	QDesktopServices::openUrl(QUrl("http://github.com/aporto/mariamole/issues/new"));
 }
 
