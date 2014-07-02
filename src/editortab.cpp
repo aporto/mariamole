@@ -148,6 +148,10 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 
 void EditorTab::onEditorTextChanged(void)
 {
+	int index = currentIndex();
+	Editor * editor = (Editor *)widget(index);
+	
+	setTabText(index, "*" + QFileInfo(editor->GetFileName()).fileName());
 	emit codeChanged();
 }
 
@@ -167,12 +171,12 @@ void EditorTab::closeTab(int index)
 	}
 	
 	// removeTab doesnt delete the widget
-	QWidget * w = widget(index);
+	//QWidget * w = widget(index); //
 	this->removeTab(index);
-	delete w;
+	//delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
 
-	//delete widget(index);
-   // cout << "Index to remove == "  << index << endl;
+	  //delete widget(index);
+    // cout << "Index to remove == "  << index << endl;
     //QWidget* tabItem = this->widget(index);
     // Removes the tab at position index from this stack of widgets.
     // The page widget itself is not deleted.
@@ -184,8 +188,16 @@ void EditorTab::closeTab(int index)
 bool EditorTab::saveFile(int index) 
 {
 	Editor * editor = (Editor *)widget(index);
-	return editor->Save();
 	
+	QString fileNamemod = tabText(index);
+	QChar asterisk = tabText(index).at(0);
+	
+	if(asterisk == '*' && editor->isModified()) {
+		fileNamemod.remove(0, 1);
+		this->setTabText(index, fileNamemod);
+  }
+  
+	return editor->Save();
 }
 
 bool EditorTab::saveAllFiles(void)
