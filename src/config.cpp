@@ -15,7 +15,7 @@ Config::Config(void)
 
 Config::~Config(void)
 {
-	Save();
+    //Save();
 }
 
 //-----------------------------------------------------------------------------
@@ -303,7 +303,7 @@ QString Config::DecodeLibraryPath(QString libPath)
 		if (dirPath.length() < 2) {
 			continue;
 		}
-		if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
+        if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
 			dirPath = dirPath.left(dirPath.length()-1);
 		}
 		dirPath = path1 + dirPath + path2;
@@ -326,7 +326,7 @@ QString Config::LocateFileUsingSearchPaths(QString filename, QString searchPaths
 		if (dirPath.length() < 2) {
 			continue;
 		}
-		if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
+        if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
 			dirPath = dirPath.left(dirPath.length()-1);
 		}
 		dirPath += "/" + filename;

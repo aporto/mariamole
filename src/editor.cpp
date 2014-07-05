@@ -10,11 +10,11 @@ Editor::Editor(QWidget *parent)
 	//setEolMode(QsciScintilla::EolUnix);
 
 	lexer = new QsciLexerCPP;
-  this->setLexer(lexer);
+    this->setLexer(lexer);
+	//setAutoCompletionThreshold(0);
 	
-	
-  api = new QsciAPIs(lexer);
-  api->prepare();
+    api = new QsciAPIs(lexer);
+    api->prepare();
 
 	LoadStyleSheet(this, "style_code_editor.css");
 	
@@ -31,7 +31,7 @@ Editor::Editor(QWidget *parent)
 
 Editor::~Editor()
 {
-	//delete lexer;
+	delete lexer;
   //delete api; api parent's (lexer) will delete it
 }
 
@@ -141,10 +141,10 @@ void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool
 }
 
 
-void Editor::onCursorPositionChanged(int line, int index)
+/*void Editor::onCursorPositionChanged(int line, int index)
 {
 
-}
+}*/
 
 void Editor::mousePressEvent ( QMouseEvent * event )
 {

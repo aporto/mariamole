@@ -106,7 +106,7 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 	if (serialPort.open(QIODevice::ReadWrite)) {		
 		//serialPort.setDataTerminalReady(true);
 		//serialPort.setRequestToSend(true);
-		bool ok = connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+        connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
 		CRT(">> Serial port [" + portId + "] open at " + portSpeed + "!\n\r");		
 		return true;
 	} else {
@@ -123,7 +123,7 @@ bool SerialMonitor::ClosePort(void)
 		return true;
 	} 
 
-	bool ok = disconnect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+    disconnect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
 
 	serialPort.clear();	
 

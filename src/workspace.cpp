@@ -114,7 +114,7 @@ Project * Workspace::GetCurrentProject(void)
 		return NULL;
 	}*/
 
-	for (int i=0; i < projects.size(); i++) {
+    for (unsigned int i=0; i < projects.size(); i++) {
 		if (projects.at(i).current) {
 			return &(projects.at(i));
 		}
@@ -280,7 +280,7 @@ bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefix
 	//fileContent; += "\n\n";
 
 	// add all header files
-	for (int i=0; i < project->files.size(); i++) {
+    for (unsigned int i=0; i < project->files.size(); i++) {
 		if (project->files.at(i).type == ptExternal) {
 			QString name = QFileInfo(project->files.at(i).name).fileName();
 			QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
@@ -345,7 +345,7 @@ void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, Q
 
 				//Only add this file if its wasn't yet preset at the project
 				bool found = false;
-				for (int i=0; i < project->files.size(); i++) {
+                for (unsigned int i=0; i < project->files.size(); i++) {
 					if (project->files.at(i).name == file.name) {
 						found = true;
 						break;
@@ -382,7 +382,7 @@ bool Workspace::CopyFileToProject(QString input, QString output, Project * proje
 bool Workspace::Save(void)
 {
 	bool ok = true;
-	for (int i=0; i < projects.size(); i++) {
+    for (unsigned int i=0; i < projects.size(); i++) {
 		if (projects.at(i).Save(config.workspace) == false) {
 			ok = false;
 			msg.Add("Could not save project '" + projects.at(i).name + "'", mtError);
@@ -589,7 +589,7 @@ void Workspace::RemoveProject(QString projectName)
 		return;
 	}
 
-	for (int i=0; i < projects.size(); i++) {
+    for (unsigned int i=0; i < projects.size(); i++) {
 		if (projects.at(i).name == projectName) {
 			projects.erase(projects.begin() + i);
 			break;

@@ -117,7 +117,7 @@ void Project::AddPath(QString & pathList, QString newPath)
 
 bool Project::Save(QString workspacePath)
 {
-	bool ok = false;
+    //bool ok = false;
 
 	QString path = workspacePath + "/" + name;
 	QDir().mkdir(path + "/source");

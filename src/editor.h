@@ -30,7 +30,7 @@ public:
 	void Configure(void);
 
 public slots:
-	void onCursorPositionChanged(int line, int index);
+    //void onCursorPositionChanged(int line, int index);
 
 protected: 
 	void focusInEvent ( QFocusEvent * event );

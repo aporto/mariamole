@@ -20,7 +20,7 @@ struct ProjectFile {
 
 //-----------------------------------------------------------------------------
 
-using namespace std;
+//using namespace std;
 
 //-----------------------------------------------------------------------------
 
@@ -39,9 +39,9 @@ public:
 	bool rebuild;
 
 	QString name;
-	vector <ProjectFile> files;
 	QString programmer;
 	QString boardName;
+    std::vector <ProjectFile> files;
 	QString serialPort;
 	QString includePaths;
 	QString libPaths;

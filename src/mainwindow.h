@@ -29,7 +29,11 @@
 
 namespace WorskspaceTree {
 	enum Types {Workspace, Project,ExternalTree, ExternalFile, File};
-};
+}
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {

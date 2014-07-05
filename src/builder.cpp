@@ -117,7 +117,7 @@ int Builder::Build(bool upload)
 
 	ImportDeclarations();
 	bool ok = true;
-	for (int i=0; i < project->files.size(); i++) {
+    for (unsigned int i=0; i < project->files.size(); i++) {
 		QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
 		if ((ext == "CPP") || (ext == "c")) {
 			ok = ok & Compile(i);
@@ -250,7 +250,7 @@ bool Builder::Upload(void)
 	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
 	uploaderProc.start(uploaderPath);//QIODevice::ReadWrite);
 	
-	int timeOut = 0;
+    unsigned int timeOut = 0;
 	bool running = true;
 	while (running && (timeOut < config.uploadTimeout)) {
 		running = !(uploaderProc.waitForFinished(500));
@@ -308,7 +308,7 @@ bool Builder::Compile(int fileIndex)
 		break; 
 	}
 
-	return CompileFile(inputFile, true, false);
+    return CompileFile(inputFile, true);//, false);
 }
 
 //-----------------------------------------------------------------------------
@@ -326,7 +326,7 @@ QString Builder::MangleFileName(QString inputFile)
 
 //-----------------------------------------------------------------------------
 
-bool Builder::CompileFile(QString inputFile, bool testDate, bool silent)
+bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 {
 	// Define the output file.	
 	QString outputFile = MangleFileName(inputFile);
@@ -520,7 +520,7 @@ bool Builder::Link(void)
 	arguments += "-Os -Wl,--gc-section";	
 	arguments += " -mmcu=" + board->second.build_mcu;
 	arguments += " -o \"" + binFile + "\"";
-	for (int i=0; i < project->files.size(); i++) {
+    for (unsigned int i=0; i < project->files.size(); i++) {
 		QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
 		if ( (ext == "CPP") || (ext == "C") ) {
 			QString objFile = MangleFileName(workspace.GetFullFilePath(project->name, project->files.at(i).name));
@@ -626,7 +626,7 @@ bool Builder::BuildCoreLib(void)
 			continue;
 		}
 		QString inputFile = config.DecodeMacros(coreFiles.at(i), project);	
-		ok = ok && CompileFile (inputFile, false, true);
+        ok = ok && CompileFile (inputFile, false);//, true);
 		if (ok) {
 
 			//ALEX 
@@ -952,7 +952,7 @@ bool Builder::BurnBootLoader(void)
 	uploaderProc.setProcessChannelMode(QProcess::MergedChannels);
 	uploaderProc.start(uploaderPath);//QIODevice::ReadWrite);
 	
-	int timeOut = 0;
+    unsigned int timeOut = 0;
 	bool running = true;
 	while (running && (timeOut < config.uploadTimeout)) {
 		running = !(uploaderProc.waitForFinished(500));

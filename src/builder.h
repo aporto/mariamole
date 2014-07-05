@@ -38,7 +38,7 @@ private:
 	QString blbProgrammerName, blbBoardName, blbSerialPort;
 
 	bool Compile(int fileIndex);
-	bool CompileFile(QString inputFile, bool testDate, bool silent);
+    bool CompileFile(QString inputFile, bool testDate);//, bool silent);
 	bool Link(void);
 	void GetBinarySize(void);
 	bool BuildCoreLib(void);

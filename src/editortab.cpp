@@ -33,7 +33,7 @@ MM::TabType EditorTab::tabType(int index)
 		return MM::undefinedTab;
 	}
 
-	QWidget * w = widget(index);
+    //QWidget * w = widget(index);
 	
 	if (widget(index)->windowIconText() == "editor") {
 		return MM::codeTab;
@@ -47,7 +47,7 @@ int EditorTab::fileIndex(QString filename)
 // if no tab holds this file, returns -1
 {
 	for (int i=0;  i < count(); i++) {
-		QWidget * w = widget(i);
+        //QWidget * w = widget(i);
 		// Check if the widget is a code editor
 		if (tabType(i) == MM::codeTab) {		
 			Editor * editor = (Editor *)(widget(i));
@@ -129,7 +129,7 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		addTab(textEdit, QFileInfo(filename).fileName());
 		setCurrentIndex(count() - 1);		
 
-		bool ok = connect(textEdit, SIGNAL(customContextMenuRequested(const QPoint &)),
+        connect(textEdit, SIGNAL(customContextMenuRequested(const QPoint &)),
 					this,SLOT(ShowEditorMenu(const QPoint )));
 		textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -175,8 +175,8 @@ void EditorTab::closeTab(int index)
 	this->removeTab(index);
 	//delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
 
-	  //delete widget(index);
-    // cout << "Index to remove == "  << index << endl;
+	//delete widget(index);
+   // cout << "Index to remove == "  << index << endl;
     //QWidget* tabItem = this->widget(index);
     // Removes the tab at position index from this stack of widgets.
     // The page widget itself is not deleted.

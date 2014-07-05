@@ -2,7 +2,7 @@
 
 //-----------------------------------------------------------------------------
 #include <iostream>
-using namespace std;
+//using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 	QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
-  QTextStream css(&cssFile);
+    QTextStream css(&cssFile);
 	QString styleText = css.readAll();
 	ui.messageTabs->setStyleSheet(styleText);
 	ui.actionSave_Workspace->setData(0);
@@ -122,7 +122,7 @@ void MainWindow::CreateTreeContextMenu(void)
 	ui.tree->setContextMenuPolicy(Qt::CustomContextMenu);
 	LoadStyleSheet(projectContext, "style_menu.css");
 	//projectContext->setStyleSheet(ui.menuBar->styleSheet());
-	bool ok = connect(ui.tree, SIGNAL(customContextMenuRequested(const QPoint &)),
+    connect(ui.tree, SIGNAL(customContextMenuRequested(const QPoint &)),
 		this,SLOT(ShowTreeMenu(const QPoint )));
 
 	QAction * action = projectContext->addAction("Set default project");
@@ -347,7 +347,7 @@ void MainWindow::setupActions()
 	// set workspace
 	ui.actionSelect_workspace->setShortcut(tr("Ctrl+W"));
     ui.actionSelect_workspace->setStatusTip(tr("Select the workspace path"));
-	bool ok = connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspacePath()));
+    connect (ui.actionSelect_workspace, SIGNAL(triggered()), this, SLOT(SetWorkspacePath()));
 
 	// open workspace folder
 	ui.actionOpen_workspace_folder->setStatusTip(tr("Open the workspace folder"));
@@ -416,7 +416,7 @@ void MainWindow::setupActions()
 	
 	connect (ui.actionFormat_code, SIGNAL(triggered()), tabsEditor, SLOT(FormatCode()));
 	
-	ok = connect (ui.searchText, SIGNAL(activated( const QString&)), this, SLOT(OnSearchKeyPress(const QString&)));
+    connect (ui.searchText, SIGNAL(activated( const QString&)), this, SLOT(OnSearchKeyPress(const QString&)));
 	connect (ui.btnSearch, SIGNAL(clicked()), this, SLOT(OnSearchGO()));
 	
 	// double click on build error/warning messages
@@ -683,6 +683,7 @@ void MainWindow::SetWorkspacePath(void)
 		OpenWorkspace();
 	}	
 	delete setWorkspace;	
+    config.Save();
 }
 
 //-----------------------------------------------------------------------------
@@ -698,8 +699,8 @@ void MainWindow::OpenWorkspace(void)
 
 	// open all previously open files
 	tabsEditor->closeAll();
-	for (int p=0; p < workspace.projects.size(); p++) {
-		for (int f=0; f < workspace.projects.at(p).files.size(); f++) {
+    for (unsigned int p=0; p < workspace.projects.size(); p++) {
+        for (unsigned int f=0; f < workspace.projects.at(p).files.size(); f++) {
 			QString filename = workspace.projects.at(p).files.at(f).name;
 			filename = workspace.GetFullFilePath(workspace.projects.at(p).name, filename);
 			if (workspace.projects.at(p).files.at(f).open) {
@@ -728,9 +729,9 @@ void MainWindow::AdjustWorkspaceTree(void)
 		return;
 	}
         
-	for (int pwi=0; pwi < workspace.projects.size(); pwi++) {
+    for (unsigned int pwi=0; pwi < workspace.projects.size(); pwi++) {
 		bool foundAtTree = false;
-		for (int pti=0; pti < root->childCount(); pti++) {
+        for (unsigned int pti=0; pti < root->childCount(); pti++) {
 			QTreeWidgetItem *projNode = root->child(pti);
 			if (workspace.projects.at(pwi).name == projNode->text(0)) {
 				foundAtTree = true;
@@ -755,7 +756,7 @@ void MainWindow::AdjustWorkspaceTree(void)
 	while (pti < root->childCount()) {
 		QTreeWidgetItem *projNode = root->child(pti);		
 		bool foundAtWorkspace = false;
-		for (int pwi=0; pwi < workspace.projects.size(); pwi++) {
+        for (unsigned int pwi=0; pwi < workspace.projects.size(); pwi++) {
 			QString projectName = projNode->text(0);
 			if (workspace.projects.at(pwi).name == projectName) {
 				foundAtWorkspace = true;
@@ -788,8 +789,8 @@ void MainWindow::AdjustWorkspaceTree(void)
 			//projNode->setForeground(0, QColor(140,140,140));
 		}
 	}
-	int i0 = ui.tree->children().count();
-	int i = root->childCount();
+    //int i0 = ui.tree->children().count();
+    //int i = root->childCount();
 	//int ii = root->child(0)->childCount();
 	
 }
@@ -810,11 +811,11 @@ void MainWindow::AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode)
 	}
 
 	// First, check if all files in this project at workspace exist at the tree. If not, add them to the tree
-	for (int fwi=0; fwi < project->files.size(); fwi++) {
+    for (unsigned int fwi=0; fwi < project->files.size(); fwi++) {
 		bool foundAtTree = false;
 		if (project->files.at(fwi).type == ptSource) {
 			// source files
-			for (int fti=0; fti < projNode->childCount(); fti++) {
+            for (unsigned int fti=0; fti < projNode->childCount(); fti++) {
 				QTreeWidgetItem *fileNode = projNode->child(fti);
 				QString nodeName = fileNode->text(0);
 				if (project->files.at(fwi).name == nodeName) {
@@ -886,7 +887,7 @@ void MainWindow::AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem * projNode)
 		QString nodeText = fileNode->text(0);
 		
 		bool foundAtWorkspace = false;
-		for (int fwi=0; fwi < project->files.size(); fwi++) {
+        for (unsigned int fwi=0; fwi < project->files.size(); fwi++) {
 			if (project->files.at(fwi).type == ptSource) {
 				continue;
 			}		
@@ -913,8 +914,8 @@ void MainWindow::SaveWorkspace(void)
 	if (tabsEditor->saveAllFiles() == false) {
 		return;
 	}
-	for (int p=0; p < workspace.projects.size(); p++) {
-		for (int f=0; f < workspace.projects.at(p).files.size(); f++) {
+    for (unsigned int p=0; p < workspace.projects.size(); p++) {
+        for (unsigned int f=0; f < workspace.projects.at(p).files.size(); f++) {
 			QString filename = workspace.projects.at(p).files.at(f).name;
 			filename = workspace.GetFullFilePath(workspace.projects.at(p).name, filename);
 			int index = tabsEditor->fileIndex(filename);
@@ -987,7 +988,7 @@ void MainWindow::ExitSoftware(void)
 
 void MainWindow::VisitMariaMoleWebsite(void)
 {
-	//QString path = //QString??? Nop, it does return a bool :p
+    //QString path =
 	QDesktopServices::openUrl(QUrl("http://dalpix.com/mariamole"));
 }
 
@@ -995,7 +996,7 @@ void MainWindow::VisitMariaMoleWebsite(void)
 
 void MainWindow::VisitArduinoHelp(void)
 {
-	//QString path = 
+    //QString path =
 	QDesktopServices::openUrl(QUrl("http://arduino.cc/en/Reference/HomePage"));
 }
 
@@ -1003,7 +1004,7 @@ void MainWindow::VisitArduinoHelp(void)
 
 void MainWindow::ReportABug(void)
 {
-	//QString path = 
+    //QString path =
 	QDesktopServices::openUrl(QUrl("http://github.com/aporto/mariamole/issues/new"));
 }
 
@@ -1155,6 +1156,8 @@ void MainWindow::EditPreferences(void)
 		}
 
 		tabsEditor->ConfigureAllTabs();
+
+		config.Save();
 	}
 }
 
