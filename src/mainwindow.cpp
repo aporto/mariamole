@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 	QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
-    QTextStream css(&cssFile);
+  QTextStream css(&cssFile);
 	QString styleText = css.readAll();
 	ui.messageTabs->setStyleSheet(styleText);
 	ui.actionSave_Workspace->setData(0);

@@ -10,16 +10,16 @@ Editor::Editor(QWidget *parent)
 	//setEolMode(QsciScintilla::EolUnix);
 
 	lexer = new QsciLexerCPP;
-    this->setLexer(lexer);
-	//setAutoCompletionThreshold(0);
+  this->setLexer(lexer);
 	
-    api = new QsciAPIs(lexer);
-    api->prepare();
+	
+  api = new QsciAPIs(lexer);
+  api->prepare();
 
 	LoadStyleSheet(this, "style_code_editor.css");
 	
-    setAutoCompletionThreshold(1);
-    setAutoCompletionSource(QsciScintilla::AcsAll);
+  setAutoCompletionThreshold(1);
+  setAutoCompletionSource(QsciScintilla::AcsAll);
 
 	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
 
@@ -31,8 +31,8 @@ Editor::Editor(QWidget *parent)
 
 Editor::~Editor()
 {
-	delete lexer;
-//    delete api; api parent's (lexer) will delete it
+	//delete lexer;
+  //delete api; api parent's (lexer) will delete it
 }
 
 void Editor::SetFileName(QString filename)
@@ -169,10 +169,11 @@ void Editor::focusInEvent ( QFocusEvent * event )
 		lastModifiedTime = QDateTime::currentDateTime();
 		QString name = QFileInfo(file).fileName().toLower();
 		if (name != "mariamole_auto_generated.h") {
-			if (GetUserConfirmation("File was modified outsite editor. Do you want to reload it?\n" +file) == false)  {
+			if (GetUserConfirmation("File was modified outside editor. Do you want to reload it?\n" +file) == false)  {
 				return;
 			}
 		}
+		
 		QFile inFile(file);
 		if (!inFile.open(QFile::ReadOnly)) {
 			ErrorMessage(tr("Cannot read file %1:\n%2.").arg(file).arg(inFile.errorString()));			
