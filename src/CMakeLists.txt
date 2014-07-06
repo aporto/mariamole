@@ -34,5 +34,6 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
-  Qt5::Widgets Qt5Xml qscintilla2
+  #Qt5::Widgets Qt5Xml qscintilla2
+  Qt5::Widgets Qt5Xml Qt5SerialPort qt5scintilla2
 )

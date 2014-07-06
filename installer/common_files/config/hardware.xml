@@ -1,7 +1,8 @@
 <mariamole>
 	<builds>
 		<build name="arduino">
-			<core_files>$(ARDUINO_CORE)\WInterrupts.c;$(ARDUINO_CORE)\wiring.c;$(ARDUINO_CORE)\wiring_analog.c;$(ARDUINO_CORE)\wiring_digital.c  	;$(ARDUINO_CORE)\wiring_pulse.c;$(ARDUINO_CORE)\wiring_shift.c;$(ARDUINO_CORE)\CDC.cpp;$(ARDUINO_CORE)\HardwareSerial.cpp;$(ARDUINO_CORE)\HID.cpp;$(ARDUINO_CORE)\IPAddress.cpp;$(ARDUINO_CORE)\main.cpp;$(ARDUINO_CORE)\new.cpp;$(ARDUINO_CORE)\Print.cpp;$(ARDUINO_CORE)\Stream.cpp;$(ARDUINO_CORE)\Tone.cpp;$(ARDUINO_CORE)\USBCore.cpp;$(ARDUINO_CORE)\WMath.cpp;$(ARDUINO_CORE)\WString.cpp</core_files>
+			<core_files>		$(ARDUINO_CORE)/WInterrupts.c;$(ARDUINO_CORE)/wiring.c;$(ARDUINO_CORE)/wiring_analog.c;$(ARDUINO_CORE)/wiring_digital.c  	;$(ARDUINO_CORE)/wiring_pulse.c;$(ARDUINO_CORE)/wiring_shift.c;$(ARDUINO_CORE)/CDC.cpp;$(ARDUINO_CORE)/HardwareSerial.cpp;$(ARDUINO_CORE)/HID.cpp;$(ARDUINO_CORE)/IPAddress.cpp;$(ARDUINO_CORE)/main.cpp;$(ARDUINO_CORE)/new.cpp;$(ARDUINO_CORE)/Print.cpp;$(ARDUINO_CORE)/Stream.cpp;$(ARDUINO_CORE)/Tone.cpp;$(ARDUINO_CORE)/USBCore.cpp;$(ARDUINO_CORE)/WMath.cpp;$(ARDUINO_CORE)/WString.cpp
+			</core_files>
 		</build>
 	</builds>
 	<boards>
@@ -45,26 +46,7 @@
 			<build.variant>standard</build.variant>
 		</board>		
 		
-		<board name="Arduino Leonardo">
-			<type>arduino</type>
-			<upload.protocol>avr109</upload.protocol>
-			<upload.maxsize>28672</upload.maxsize>
-			<upload.speed>57600</upload.speed>
-			<upload.disable_flushing>1</upload.disable_flushing>
-			<bootloader.low_fuses>0xff></bootloader.low_fuses>
-			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
-			<bootloader.extended_fuses>0xcb</bootloader.extended_fuses>
-			<bootloader.path>caterina</bootloader.path>
-			<bootloader.file>Caterina-Leonardo.hex</bootloader.file>
-			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
-			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
-			<build.mcu>atmega32u4</build.mcu>
-			<build.f_cpu>16000000L</build.f_cpu>
-			<build.core>arduino</build.core>
-			<build.variant>leonardo</build.variant>
-			<build.vid>0x2341</build.vid>
-			<build.pid>0x8036</build.pid>
-		</board>		
+		
 		
 		<board name="Arduino Diecimila or Duemilanove w/ ATmega168">
 			<type>arduino</type>
@@ -136,6 +118,43 @@
 			<build.f_cpu>16000000L</build.f_cpu>
 			<build.core>arduino</build.core>
 			<build.variant>mega</build.variant>			
+		</board>	
+		
+		<board name="Arduino Mega (ATmega1280)">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>126976</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<bootloader.low_fuses>0xFF></bootloader.low_fuses>
+			<bootloader.high_fuses>0xda</bootloader.high_fuses>
+			<bootloader.extended_fuses>0xf5</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_atmega1280.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega1280</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>mega</build.variant>			
+		</board>	
+		
+		
+		<board name="Arduino Mini w/ ATmega328">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>28672</upload.maxsize>
+			<upload.speed>115200</upload.speed>
+			<bootloader.low_fuses>0xFF></bootloader.low_fuses>
+			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x05</bootloader.extended_fuses>
+			<bootloader.path>optiboot</bootloader.path>
+			<bootloader.file>optiboot_atmega328-Mini.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega328p</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>eightanaloginputs</build.variant>			
 		</board>	
 	</boards>
 	

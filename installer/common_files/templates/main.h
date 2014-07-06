@@ -3,9 +3,7 @@
 #define _MARIAMOLE_MAIN_H
 //---------------------------------------------------------------------------
 
-#include <arduino.h>
-
-/* $$((MARIA_MOLE_ADD_INCLUDES)) */
+#include "mariamole_auto_generated.h"
 
 //---------------------------------------------------------------------------
 #endif
