@@ -442,6 +442,15 @@ border-left: 1px solid rgb(55, 60,70);</string>
              </widget>
             </widget>
             <widget class="QWidget" name="page_2">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	border: 0px solid white;
+}
+
+QImage {
+	border: 0px solid white;
+}</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_4">
               <property name="leftMargin">
                <number>0</number>
@@ -1014,6 +1023,9 @@ QToolButton {
    <property name="toolTip">
     <string>Build current project</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
    </property>
@@ -1028,6 +1040,9 @@ QToolButton {
    </property>
    <property name="toolTip">
     <string>Upload current project to board</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>

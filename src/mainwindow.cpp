@@ -330,7 +330,7 @@ void MainWindow::setupActions()
     //Save Action
 
 	//Build project Action
-	ui.actionBuild_project->setShortcut(tr("Ctrl+B"));
+	//ui.actionBuild_project->setShortcut(tr("Ctrl+B"));
     ui.actionBuild_project->setStatusTip(tr("Build the current project"));
 	connect(ui.actionBuild_project, SIGNAL(triggered()), this, SLOT(BuildProject()));
 
@@ -340,7 +340,7 @@ void MainWindow::setupActions()
 	connect(ui.actionClean_current_project, SIGNAL(triggered()), this, SLOT(CleanProject()));
 
 	//Upload program Action	
-	ui.actionBuild_and_upload_project->setShortcut(tr("Ctrl+U"));
+	//ui.actionBuild_and_upload_project->setShortcut(tr("Ctrl+U"));
     ui.actionBuild_and_upload_project->setStatusTip(tr("Upload the current project to the board, building it if necessary"));
 	connect(ui.actionBuild_and_upload_project, SIGNAL(triggered()), this, SLOT(UploadProgram()));
 
@@ -613,6 +613,7 @@ void MainWindow::CleanProject()
 
 void MainWindow::UploadProgram()
 {
+	SaveWorkspace();
 	ui.buildMessages->clear();
 	tabsEditor->EnableAllSerialPorts(false);
 	buildWindow->Build(true);	

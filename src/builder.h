@@ -3,19 +3,25 @@
 #define MM_BUILDER__H
 //-----------------------------------------------------------------------------
 
-#include <QProcess>
-#include "workspace.h" 
-#include "message_handler.h"
+//#include <QProcess>
+#include <QWidget>
 
 #include <QtSerialPort/QSerialPortInfo>
 #include <QtSerialPort/QSerialPort>
 
+#include "workspace.h"
+#include "message_handler.h"
+#include "launcher.h"
+
+
 //-----------------------------------------------------------------------------
 
-class Builder
+class Builder// : public QWidget
 {
+   // Q_OBJECT
+
 public:
-	Builder(void);
+    Builder(); //(QWidget * parent);
 	~Builder(void);
 
 	void Cancel(void);
@@ -27,15 +33,18 @@ public:
 	int GetBuildType(void);
 	void ConfigureBootloaderBurner(QString programmerName, QString boardName, QString SerialPort);
 
+
 private:
 	Project * project;
 	QString buildPath;
-	int percentage;
-	bool cancel;
+	//int percentage;
+	//bool cancel;
 	QString coreLib;
 	int buildType;
 	int lastBuildStatus;
 	QString blbProgrammerName, blbBoardName, blbSerialPort;
+
+    Launcher launcher;
 
 	bool Compile(int fileIndex);
     bool CompileFile(QString inputFile, bool testDate);//, bool silent);
@@ -46,6 +55,7 @@ private:
 	QString GetLeonardoSerialPort(QString defaultPort);
 	QString MangleFileName(QString inputFile);
 	void ImportDeclarations(void);
+   // bool RunCommand(QString cmd, QStringList args, QStringList * output, bool sendToOutput);
 };
 
 //-----------------------------------------------------------------------------

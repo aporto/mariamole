@@ -31,7 +31,7 @@ Editor::Editor(QWidget *parent)
 
 Editor::~Editor()
 {
-	delete lexer;
+    //delete lexer;
   //delete api; api parent's (lexer) will delete it
 }
 
