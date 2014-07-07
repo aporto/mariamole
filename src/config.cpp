@@ -22,7 +22,13 @@ Config::~Config(void)
 
 int Config::Load(void)
 {
+#ifdef Q_OS_WIN
 	appPath = qApp->applicationDirPath(); // "C:/Users/aporto/Documents/GitHub/mariamole/build";
+#endif
+
+#ifdef Q_OS_LINUX
+    appPath = QDir::homePath() + "/.mariamole";
+#endif
 
 	QSettings settings(QSettings::IniFormat, QSettings::UserScope, 
 		"MariaMole", "config");
@@ -68,8 +74,17 @@ int Config::Load(void)
 
 int Config::LoadHardwareDefinitions(void)
 {
+
+
+
 	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
 			QDir::separator() + "hardware.xml");
+    qDebug() << "FILE HOME LOAD: " << filepath;
+
+#ifdef Q_OS_LINUX
+    if(!QFile::exists(filepath))
+        filepath = "/etc/mariamole/config";
+#endif
 
     qDebug() << "Loading " << filepath;
 
