@@ -820,7 +820,7 @@ padding: 5px;</string>
      <x>0</x>
      <y>0</y>
      <width>1112</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -855,7 +855,7 @@ padding: 5px;</string>
     <addaction name="actionSearch"/>
     <addaction name="actionFormat_code"/>
     <addaction name="separator"/>
-    <addaction name="actionPrefereces"/>
+    <addaction name="actionPreferences"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuProject">
@@ -1125,9 +1125,9 @@ QToolButton {
     <string>Code beautifier</string>
    </property>
   </action>
-  <action name="actionPrefereces">
+  <action name="actionPreferences">
    <property name="text">
-    <string>Prefereces</string>
+    <string>Preferences</string>
    </property>
   </action>
   <action name="actionAdd">

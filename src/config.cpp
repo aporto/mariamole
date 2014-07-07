@@ -45,8 +45,10 @@ int Config::Load(void)
 	settings.endGroup();
 	
 	settings.beginGroup("ui");
-	editorFontName = settings.value("editorFontName", "Consolas").toString();
-	editorFontSize = settings.value("editorFontSize", "12").toInt();
+    editorFontName  = settings.value("editorFontName", "Consolas").toString();
+    editorFontSize  = settings.value("editorFontSize", "12").toInt();
+    editorColorName = settings.value("editorColorName", "").toString();
+
 	settings.endGroup();
 
 
@@ -68,6 +70,10 @@ int Config::LoadHardwareDefinitions(void)
 {
 	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
 			QDir::separator() + "hardware.xml");
+
+    qDebug() << "Loading " << filepath;
+
+
 	QFile file(filepath);
 	
 	if (file.open(QIODevice::ReadOnly) == false) {
@@ -75,12 +81,14 @@ int Config::LoadHardwareDefinitions(void)
 	}
 
 	QDomDocument doc("mydocument");
-	if (doc.setContent(&file) == false) {
+    if (doc.setContent(&file) == false) {
 		file.close();
 		return 102;
 	}
+
 	file.close();
-	QDomElement docElem = doc.documentElement();
+
+    QDomElement docElem = doc.documentElement();
 	QDomNode xmlHw = docElem.firstChild();
 	
 	while(xmlHw.isNull() == false) {
@@ -264,6 +272,7 @@ bool Config::Save(void)
 	settings.beginGroup("ui");
 	settings.setValue("editorFontName", editorFontName);			
 	settings.setValue("editorFontSize", editorFontSize);			
+    settings.setValue("editorColorName", editorColorName);
 	settings.endGroup();
 
 	settings.beginGroup("compiler");

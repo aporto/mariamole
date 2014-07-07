@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
 	
 	// Prepare editor UI
 	//ui.editorTabs->clear();  //removes all the previous tabs
-	tabsEditor = new EditorTab(this);
+    tabsEditor = new EditorTab(this);
 	connect(tabsEditor, SIGNAL(codeChanged()), this, SLOT(OnProjectModified()));
 	//ui.tabParent->addWidget(tabsEditor);
 	ui.splitter->addWidget(tabsEditor);
@@ -358,7 +358,7 @@ void MainWindow::setupActions()
     ui.actionAdd_a_new_project->setStatusTip(tr("Create a new project"));
 	connect (ui.actionAdd_a_new_project, SIGNAL(triggered()), this, SLOT(AddNewProject()));
 
-	connect (ui.actionPrefereces, SIGNAL(triggered()), this, SLOT(EditPreferences()));
+    connect (ui.actionPreferences, SIGNAL(triggered()), this, SLOT(EditPreferences()));
 
 	connect (ui.actionBurn_Arduino_bootloader, SIGNAL(triggered()), this, SLOT(StartBurnBootloader()));
 	
@@ -1141,7 +1141,7 @@ void MainWindow::ExportToSketch(void)
 
 void MainWindow::EditPreferences(void)
 {
-	Preferences * pref = new Preferences(NULL);
+    Preferences * pref = new Preferences(NULL);
 	bool ok = pref->Edit();
 	delete pref;
 

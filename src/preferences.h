@@ -2,6 +2,7 @@
 #define PREFERENCES_H
 
 #include <QDialog>
+#include <QColorDialog>
 #include "ui_preferences.h"
 
 #include "config.h"
@@ -19,10 +20,12 @@ public slots:
 	void OnOk(void);
 	void OnCancel(void);
 	void PageChange (QListWidgetItem * current, QListWidgetItem * previous);
+    void ColorPick (void);
 
 private:
 	Ui::Preferences ui;
 	bool ok;
+    QColor color;
 };
 
 #endif // PREFERENCES_H

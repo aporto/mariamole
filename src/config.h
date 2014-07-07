@@ -75,6 +75,7 @@ public:
 	map <QString, BuildDef> builds;
 
 	QString editorFontName;
+    QString editorColorName;
 	unsigned int editorFontSize;
 	
 private:	

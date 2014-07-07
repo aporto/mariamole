@@ -49,7 +49,7 @@
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
-          <number>2</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="page_2">
           <widget class="QLabel" name="lblName_2">
@@ -74,7 +74,7 @@
           <widget class="QSpinBox" name="uploadTimeout">
            <property name="geometry">
             <rect>
-             <x>180</x>
+             <x>190</x>
              <y>70</y>
              <width>61</width>
              <height>22</height>
@@ -115,7 +115,7 @@
             <rect>
              <x>20</x>
              <y>110</y>
-             <width>111</width>
+             <width>131</width>
              <height>16</height>
             </rect>
            </property>
@@ -173,7 +173,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>70</y>
+             <y>30</y>
              <width>451</width>
              <height>16</height>
             </rect>
@@ -195,8 +195,8 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>90</y>
-             <width>411</width>
+             <y>50</y>
+             <width>321</width>
              <height>22</height>
             </rect>
            </property>
@@ -209,8 +209,8 @@
           <widget class="QCheckBox" name="embedMenu">
            <property name="geometry">
             <rect>
-             <x>20</x>
-             <y>200</y>
+             <x>10</x>
+             <y>230</y>
              <width>301</width>
              <height>20</height>
             </rect>
@@ -222,7 +222,7 @@
           <widget class="QLabel" name="label_7">
            <property name="geometry">
             <rect>
-             <x>370</x>
+             <x>20</x>
              <y>130</y>
              <width>111</width>
              <height>16</height>
@@ -235,7 +235,7 @@
           <widget class="QSpinBox" name="editorFontSize">
            <property name="geometry">
             <rect>
-             <x>371</x>
+             <x>20</x>
              <y>150</y>
              <width>61</width>
              <height>22</height>
@@ -252,7 +252,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>130</y>
+             <y>80</y>
              <width>241</width>
              <height>20</height>
             </rect>
@@ -271,7 +271,7 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>150</y>
+             <y>100</y>
              <width>321</width>
              <height>22</height>
             </rect>
@@ -281,6 +281,41 @@
            </property>
            <property name="fontFilters">
             <set>QFontComboBox::AllFonts</set>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="editorColorPicker">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>180</y>
+             <width>91</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string>Choose the background color of the editor</string>
+           </property>
+           <property name="text">
+            <string>Editor color</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="colorPicked">
+           <property name="geometry">
+            <rect>
+             <x>120</x>
+             <y>180</y>
+             <width>61</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </widget>

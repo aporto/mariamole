@@ -1,7 +1,7 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-//#include <QsciScintilla>
+
 #include <qwidget.h>
 #include <Qsci/qsciscintilla.h>
 #include <Qsci/qscilexercpp.h>

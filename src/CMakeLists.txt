@@ -18,9 +18,10 @@ endif()
 
 
 file(GLOB_RECURSE UI_FILES *.ui)
-file(GLOB_RECURSE CODE_FILES builder.cpp build_message_item.cpp config.cpp editortab.cpp  mainwindow.cpp project.cpp setworkspace.cpp
-                             workspace.cpp builderthread.cpp buildwindow.cpp editor.cpp  main.cpp message_handler.cpp projectproperties.cpp 
-														    mm_utils.cpp wizard.cpp)
+file(GLOB_RECURSE CODE_FILES about.cpp builder.cpp builderthread.cpp build_message_item.cpp buildwindow.cpp burnbootloader.cpp
+			     config.cpp editor.cpp editortab.cpp getuserstring.cpp launcher.cpp main.cpp mainwindow.cpp
+			     message_handler.cpp mm_utils.cpp preferences.cpp project.cpp projectproperties.cpp serialmonitor.cpp
+      											setworkspace.cpp wizard.cpp workspace.cpp)
 
 
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})

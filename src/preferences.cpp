@@ -10,10 +10,21 @@ Preferences::Preferences(QWidget *parent)
 	ui.editorFontName->setFontFilters(QFontComboBox::ScalableFonts | QFontComboBox::NonScalableFonts | QFontComboBox::MonospacedFonts);
 
 	connect(ui.btnOk, SIGNAL(clicked()), this, SLOT(OnOk()));
+    connect(ui.editorColorPicker  , SIGNAL(clicked()), this, SLOT(ColorPick()));
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(OnCancel()));
 	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
 		this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
 	//connect(ui.btnCancel, SIGNAL(triggered()), this, SLOT(BuildProject()));
+
+    color = QColor(config.editorColorName);
+
+
+    QPalette palette = ui.colorPicked->palette();
+    palette.setColor(QPalette::Background, color);
+    ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
+    ui.colorPicked->setPalette(palette);
+
+    qDebug() << "Color: " << color;
 }
 
 //-----------------------------------------------------------------------------
@@ -25,18 +36,38 @@ Preferences::~Preferences()
 
 //-----------------------------------------------------------------------------
 
+
+void Preferences::ColorPick(void)
+{
+    color = QColorDialog::getColor(color.isValid() ? color : Qt::transparent, this);
+
+    if (color.isValid())
+    {
+        qDebug() << color;
+        QPalette palette = ui.colorPicked->palette();
+        palette.setColor(QPalette::Background, color);
+        ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
+        ui.colorPicked->setPalette(palette);
+
+    }
+}
+
+
+
+
 void Preferences::OnOk(void)
 {
 	ok = true;
 
 	config.uploadTimeout = ui.uploadTimeout->value();
 	config.extraArduinoLibsSearchPaths = ui.userLibraries->text();
-	config.editorFontName = ui.editorFontName->currentFont().family();
-	config.editorFontSize = ui.editorFontSize->value();
-	config.useMenuButton = ui.embedMenu->isChecked();
+    config.editorFontName  = ui.editorFontName->currentFont().family();
+    config.editorFontSize  = ui.editorFontSize->value();
+    config.editorColorName = ui.colorPicked->palette().color(ui.colorPicked->backgroundRole()).name();
+    config.useMenuButton   = ui.embedMenu->isChecked();
 	config.hideCompilerWarnings = ui.hideWarnings->isChecked();
 
-	config.Save();
+    config.Save();
 
 	close();
 }

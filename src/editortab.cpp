@@ -24,7 +24,6 @@ EditorTab::EditorTab(QWidget *parent)
 EditorTab::~EditorTab()
 {
 
-
 }
 
 MM::TabType EditorTab::tabType(int index)
@@ -171,18 +170,9 @@ void EditorTab::closeTab(int index)
 	}
 	
 	// removeTab doesnt delete the widget
-	//QWidget * w = widget(index); //
+    //QWidget * w = widget(index); //
 	this->removeTab(index);
-	//delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
-
-	//delete widget(index);
-   // cout << "Index to remove == "  << index << endl;
-    //QWidget* tabItem = this->widget(index);
-    // Removes the tab at position index from this stack of widgets.
-    // The page widget itself is not deleted.
-    //this->removeTab(index);
-    //delete this->widget(index);
-    //delete tabItem; //It does not work, still do not know why...
+    //delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
 }
 
 bool EditorTab::saveFile(int index) 
