@@ -3,6 +3,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
+
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
@@ -38,3 +39,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
   #Qt5::Widgets Qt5Xml qscintilla2
   Qt5::Widgets Qt5Xml Qt5SerialPort qt5scintilla2
 )
+
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/config DESTINATION /etc/mariamole)
+
+
+
+

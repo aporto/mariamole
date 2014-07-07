@@ -30,6 +30,10 @@ int Config::Load(void)
     appPath = QDir::homePath() + "/.mariamole";
 #endif
 
+#ifdef Q_OS_MAC
+    appPath = QDir::homePath() + "/Library/mariamole";
+#endif
+
 	QSettings settings(QSettings::IniFormat, QSettings::UserScope, 
 		"MariaMole", "config");
 
@@ -74,14 +78,11 @@ int Config::Load(void)
 
 int Config::LoadHardwareDefinitions(void)
 {
-
-
-
 	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
 			QDir::separator() + "hardware.xml");
-    qDebug() << "FILE HOME LOAD: " << filepath;
 
-#ifdef Q_OS_LINUX
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     if(!QFile::exists(filepath))
         filepath = "/etc/mariamole/config";
 #endif
