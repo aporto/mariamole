@@ -22,7 +22,17 @@ Config::~Config(void)
 
 int Config::Load(void)
 {
+#ifdef Q_OS_WIN
 	appPath = qApp->applicationDirPath(); // "C:/Users/aporto/Documents/GitHub/mariamole/build";
+#endif
+
+#ifdef Q_OS_LINUX
+    appPath = QDir::homePath() + "/.mariamole";
+#endif
+
+#ifdef Q_OS_MAC
+    appPath = QDir::homePath() + "/Library/mariamole";
+#endif
 
 	QSettings settings(QSettings::IniFormat, QSettings::UserScope, 
 		"MariaMole", "config");
@@ -36,7 +46,7 @@ int Config::Load(void)
 	includePaths = settings.value("includePaths", "").toString();
 	libPaths = settings.value("libPaths", "").toString();
 	libs = settings.value("libs", "").toString();
-	//coreLibsPath = settings.value("coreLibsPath", "").toString();
+    arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
 	uploadTimeout = settings.value("uploadTimeout", 30).toInt();	
     settings.endGroup();
 	
@@ -45,8 +55,10 @@ int Config::Load(void)
 	settings.endGroup();
 	
 	settings.beginGroup("ui");
-	editorFontName = settings.value("editorFontName", "Consolas").toString();
-	editorFontSize = settings.value("editorFontSize", "12").toInt();
+    editorFontName  = settings.value("editorFontName", "Consolas").toString();
+    editorFontSize  = settings.value("editorFontSize", "12").toInt();
+    editorColorName = settings.value("editorColorName", "").toString();
+
 	settings.endGroup();
 
 
@@ -67,7 +79,17 @@ int Config::Load(void)
 int Config::LoadHardwareDefinitions(void)
 {
 	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
-			QDir::separator() + "hardware.xml");
+                                            QDir::separator() + "hardware.xml");
+
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    if(!QFile::exists(filepath))
+        filepath = "/etc/mariamole/config/hardware.xml";
+#endif
+
+    qDebug() << "Loading " << filepath;
+
+
 	QFile file(filepath);
 	
 	if (file.open(QIODevice::ReadOnly) == false) {
@@ -75,12 +97,14 @@ int Config::LoadHardwareDefinitions(void)
 	}
 
 	QDomDocument doc("mydocument");
-	if (doc.setContent(&file) == false) {
+    if (doc.setContent(&file) == false) {
 		file.close();
 		return 102;
 	}
+
 	file.close();
-	QDomElement docElem = doc.documentElement();
+
+    QDomElement docElem = doc.documentElement();
 	QDomNode xmlHw = docElem.firstChild();
 	
 	while(xmlHw.isNull() == false) {
@@ -246,14 +270,13 @@ bool Config::Save(void)
 	settings.beginGroup("main");
     settings.setValue("workspace", workspace);
 	settings.setValue("useMenuButton", useMenuButton);
-	
     settings.endGroup();
 	
 	settings.beginGroup("build");
 	settings.setValue("includePaths", includePaths);
 	settings.setValue("libPaths", libPaths);
 	settings.setValue("libs", libs);
-	//settings.setValue("coreLibsPath", coreLibsPath);	
+    settings.setValue("arduinoCoreOpt", arduinoCoreOpt);
 	settings.setValue("uploadTimeout", uploadTimeout);		
 	settings.endGroup();
 
@@ -264,6 +287,7 @@ bool Config::Save(void)
 	settings.beginGroup("ui");
 	settings.setValue("editorFontName", editorFontName);			
 	settings.setValue("editorFontSize", editorFontSize);			
+    settings.setValue("editorColorName", editorColorName);
 	settings.endGroup();
 
 	settings.beginGroup("compiler");

@@ -9,11 +9,24 @@ Preferences::Preferences(QWidget *parent)
 
 	ui.editorFontName->setFontFilters(QFontComboBox::ScalableFonts | QFontComboBox::NonScalableFonts | QFontComboBox::MonospacedFonts);
 
-	connect(ui.btnOk, SIGNAL(clicked()), this, SLOT(OnOk()));
+    connect(ui.btnOk, SIGNAL(clicked()), this, SLOT(OnOk()));
+    connect(ui.btnApply, SIGNAL(clicked()), this, SLOT(OnApply()));
+    connect(ui.btnColorPicker  , SIGNAL(clicked()), this, SLOT(ColorPick()));
+    connect(ui.btnLoadCore, SIGNAL(clicked()), this, SLOT(OnLoadCore()));
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(OnCancel()));
 	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
-		this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
-	//connect(ui.btnCancel, SIGNAL(triggered()), this, SLOT(BuildProject()));
+        this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
+
+
+    color = QColor(config.editorColorName);
+
+
+    QPalette palette = ui.colorPicked->palette();
+    palette.setColor(QPalette::Background, color);
+    ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
+    ui.colorPicked->setPalette(palette);
+
+    //qDebug() << "Color: " << color;
 }
 
 //-----------------------------------------------------------------------------
@@ -25,20 +38,46 @@ Preferences::~Preferences()
 
 //-----------------------------------------------------------------------------
 
+
+void Preferences::ColorPick(void)
+{
+    color = QColorDialog::getColor(color.isValid() ? color : Qt::transparent, this);
+
+    if (color.isValid())
+    {
+        //qDebug() << color;
+        QPalette palette = ui.colorPicked->palette();
+        palette.setColor(QPalette::Background, color);
+        ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
+        ui.colorPicked->setPalette(palette);
+    }
+}
+
+
+
+
 void Preferences::OnOk(void)
 {
-	ok = true;
-
-	config.uploadTimeout = ui.uploadTimeout->value();
-	config.extraArduinoLibsSearchPaths = ui.userLibraries->text();
-	config.editorFontName = ui.editorFontName->currentFont().family();
-	config.editorFontSize = ui.editorFontSize->value();
-	config.useMenuButton = ui.embedMenu->isChecked();
-	config.hideCompilerWarnings = ui.hideWarnings->isChecked();
-
-	config.Save();
-
+    OnApply();
 	close();
+}
+
+
+
+void Preferences::OnApply(void)
+{
+    ok = true;
+
+    config.uploadTimeout = ui.uploadTimeout->value();
+    config.arduinoCoreOpt = ui.arduinoCore->text();
+    config.extraArduinoLibsSearchPaths = ui.userLibraries->text();
+    config.editorFontName  = ui.editorFontName->currentFont().family();
+    config.editorFontSize  = ui.editorFontSize->value();
+    config.editorColorName = ui.colorPicked->palette().color(ui.colorPicked->backgroundRole()).name();
+    config.useMenuButton   = ui.embedMenu->isChecked();
+    config.hideCompilerWarnings = ui.hideWarnings->isChecked();
+
+    config.Save();
 }
 
 //-----------------------------------------------------------------------------
@@ -48,14 +87,33 @@ void Preferences::OnCancel(void)
 	close();
 }
 
+
+
+void Preferences::OnLoadCore(void)
+{
+    QString path = "";
+    if (QDir(config.arduinoCoreOpt).exists()) {
+        path = config.arduinoCoreOpt;
+    }
+    path = QFileDialog::getExistingDirectory(this, tr("Arduino Core libs path"),
+                                                path,
+                                                QFileDialog::ShowDirsOnly
+                                                | QFileDialog::DontResolveSymlinks);
+
+    if (QDir(path).exists()) {
+        ui.arduinoCore->setText(path);
+    }
+}
+
+
 //-----------------------------------------------------------------------------
 
 void Preferences::PageChange ( QListWidgetItem * current, QListWidgetItem * previous )
 {
 	int index = ui.menuList->currentRow();
-	if (index < 0) {
+
+    if (index < 0)
 		index = 0;
-	}
 
 	ui.stackedWidget->setCurrentIndex(index);
 }
@@ -68,10 +126,12 @@ bool Preferences::Edit(void)
 	ui.stackedWidget->setCurrentIndex(0);
 
 	ui.uploadTimeout->setValue(config.uploadTimeout);
+    ui.arduinoCore->setText(config.arduinoCoreOpt);
 	ui.userLibraries->setText(config.extraArduinoLibsSearchPaths);	
 	ui.editorFontSize->setValue(config.editorFontSize);
 	ui.embedMenu->setChecked(config.useMenuButton);
 	ui.hideWarnings->setChecked(config.hideCompilerWarnings);
+
 
 	//ui.editorFontName->currentFont().setFamily("");
 	QFont font(config.editorFontName);

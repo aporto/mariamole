@@ -189,7 +189,9 @@ bool Builder::Upload(void)
 	buildType = 2;
 	launcher.SetPercentage(0);
 
-	QString uploaderPath = "\"" + qApp->applicationDirPath() + 
+    QString corePath = config.arduinoCoreOpt.length() > 0 ? config.arduinoCoreOpt : qApp->applicationDirPath();
+
+    QString uploaderPath = "\"" + corePath +
 		"/arduino/avr/bin/avrdude\"";
 	
 	msg.AddOutput("Uploading program to board " + project->boardName, false);	
@@ -344,11 +346,13 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 		}
 	}
 	
-	msg.AddOutput("Compiling file: " + inputFile, false);	
+    msg.AddOutput("Compiling file: " + inputFile, false);
 
-	// Get the compiler path	
-	QString compilerPath = "\"" + qApp->applicationDirPath() + 
-		"/arduino/avr/bin/";
+    QString compilerPath;
+    //Get the compiler path
+    QString corePath = config.arduinoCoreOpt.length() > 0 ? config.arduinoCoreOpt : qApp->applicationDirPath();
+
+    compilerPath = "\"" + corePath + "/arduino/avr/bin/";
 
 	if (QFileInfo(inputFile).suffix().toUpper() == "CPP") {
 		compilerPath += "avr-g++";
@@ -385,8 +389,11 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
     QStringList projectIncludes = project->includePaths.split(";");
     QStringList includes;
 	includes << QFileInfo(inputFile).path();
-	includes << qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
+    includes << corePath + "/arduino/arduino/cores/" + board->second.build_core;
+
+    //includes << qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
 	includes << config.DecodeMacros("$(ARDUINO_VARIANT)", project);
+
     for (int l=0; l < projectIncludes.count(); l++) {
 
         projectIncludes[l] = projectIncludes[l].trimmed();
@@ -428,10 +435,17 @@ void Builder::GetBinarySize(void)
 	// to do: Check if the binary file is update. 
 	// If yes, we won't compile it again to gain time
 
+
+    QString linkerPath;
+    QString corePath = config.arduinoCoreOpt.length() > 0 ? config.arduinoCoreOpt : qApp->applicationDirPath();
+
+    linkerPath = "\"" + corePath + "/arduino/avr/bin/avr-size\"";
+
+
 	
 	// Get the compiler path	
-	QString linkerPath = "\"" + qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avr-size\"";
+    //QString linkerPath = "\"" + qApp->applicationDirPath() +
+    //	"/arduino/avr/bin/avr-size\"";
 
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
@@ -464,9 +478,15 @@ bool Builder::Link(void)
 	
 	msg.AddOutput("Linking project:" + project->name, false);	
 
+    QString linkerPath;
+    QString corePath = config.arduinoCoreOpt.length() > 0 ? config.arduinoCoreOpt : qApp->applicationDirPath();
+
+    linkerPath = "\"" + corePath + "/arduino/avr/bin/avr-gcc\"";
+
+
 	// Get the compiler path	
-	QString linkerPath = "\"" + qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avr-gcc\"";
+    //QString linkerPath = "\"" + qApp->applicationDirPath() +
+    //	"/arduino/avr/bin/avr-gcc\"";
 
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
@@ -492,9 +512,12 @@ bool Builder::Link(void)
 
 	// Finally, convert the elf file into hex format
 	if (ok) {
-		msg.AddOutput("Converting ELF to HEX...");
-		linkerPath = "\"" + qApp->applicationDirPath() + 
-			"/arduino/avr/bin/avr-objcopy\"";
+        msg.AddOutput("Converting ELF to HEX...");
+        linkerPath = "\"" + corePath + "/arduino/avr/bin/avr-objcopy\"";
+
+        //linkerPath = "\"" + qApp->applicationDirPath() +
+        //	"/arduino/avr/bin/avr-objcopy\"";
+
 		arguments.clear();
 		arguments << "-O" << "ihex" << "-R" << ".eeprom";
 		arguments << binFile;
@@ -529,8 +552,11 @@ bool Builder::BuildCoreLib(void)
 	int oldPercent = launcher.GetPercentage();
 	launcher.SetPercentage(0);
 
-	QString linkerPath = "\"" + qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avr-ar\"";
+
+
+    QString linkerPath;
+    QString corePath = config.arduinoCoreOpt.length() > 0 ? config.arduinoCoreOpt : qApp->applicationDirPath();
+    linkerPath = "\"" + corePath + "/arduino/avr/bin/avr-ar\"";
 	
 	msg.AddOutput("Linking core lib for board :" + project->boardName, false);	
 	
@@ -781,14 +807,14 @@ bool Builder::BurnBootLoader(void)
 	buildType = 2;
 	launcher.SetPercentage(0);
 
-	QString uploaderPath = "\"" + qApp->applicationDirPath() + 
-		"/arduino/avr/bin/avrdude\"";
+    QString corePath = config.arduinoCoreOpt.length() > 0 ? config.arduinoCoreOpt : qApp->applicationDirPath();
+
+    QString uploaderPath = "\"" + corePath + "/arduino/avr/bin/avrdude\"";
 	
 	msg.AddOutput("Burning bootloader to board " + blbBoardName, false);	
 
-	QString outputFile = "\"" + qApp->applicationDirPath() + "/arduino/arduino/bootloaders/" + board->second.bootloader_path + "/" + board->second.bootloader_file;
-	QString arguments = "-C\"" + qApp->applicationDirPath() 
-		+ "/arduino/avr/etc/avrdude.conf\"";
+    QString outputFile = "\"" + corePath  + "/arduino/arduino/bootloaders/" + board->second.bootloader_path + "/" + board->second.bootloader_file;
+    QString arguments = "-C\"" + corePath + "/arduino/avr/etc/avrdude.conf\"";
 	//arguments += " -q -q"; // ultra quiet mode
 	arguments += " -p" + board->second.build_mcu;
 	
@@ -914,7 +940,7 @@ void Builder::ConfigureBootloaderBurner(QString programmerName, QString boardNam
         ok = (ec == 0);
     }
 
-    /*QTextStream computerOutput(proc.readAll());
+    //QTextStream computerOutput(proc.readAll());
     if (sendToOutput) {
         while (computerOutput.atEnd() == false) {
             msg.AddOutput(computerOutput.readLine());

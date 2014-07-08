@@ -67,6 +67,7 @@ public:
 	QString includePaths;
 	QString libPaths;
 	QString libs;
+    QString arduinoCoreOpt;
 	QString extraArduinoLibsSearchPaths;
 	//QString coreLibsPath;
 	unsigned int uploadTimeout;
@@ -75,6 +76,7 @@ public:
 	map <QString, BuildDef> builds;
 
 	QString editorFontName;
+    QString editorColorName;
 	unsigned int editorFontSize;
 	
 private:	
