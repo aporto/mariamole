@@ -9,6 +9,8 @@ find_package(Qt5Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 
+find_package(Qt5Core)
+
 
 ## Compiler flags
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -35,9 +37,14 @@ add_executable(${CMAKE_PROJECT_NAME}
 )
 
 
-target_link_libraries(${CMAKE_PROJECT_NAME}
-  Qt5::Widgets Qt5Xml Qt5SerialPort qt5scintilla2
-)
+if(APPLE)
+	set(LINK_LIBS "-L/Users/gduarte/Qt/5.3/clang_64/lib -F/Users/gduarte/Qt/5.3/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework QtXml -framework QtSerialPort -lqscintilla2")
+else()
+	set(LINK_LIBS "Qt5::Widgets Qt5Xml Qt5SerialPort qt5scintilla2")
+endif(APPLE)
+
+
+target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_LIBS})
 
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)

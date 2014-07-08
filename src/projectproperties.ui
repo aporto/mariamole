@@ -75,7 +75,7 @@
             </rect>
            </property>
            <property name="text">
-            <string>No. Upload program viaUSB cable</string>
+            <string>No. Upload program via USB cable</string>
            </property>
           </widget>
           <widget class="QRadioButton" name="rbYesExternalProgrammer">

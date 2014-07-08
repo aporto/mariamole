@@ -63,7 +63,7 @@ int EditorTab::portIndex(QString port)
 // returns the tab index that holds the requested serila port
 {
 	for (int i=0;  i < count(); i++) {
-		QWidget * w = widget(i);
+		//QWidget * w = widget(i);
 		// Check if the widget is a code editor
 		if (tabType(i) == MM::serialTab) {		
 			SerialMonitor * monitor = (SerialMonitor *)(widget(i));

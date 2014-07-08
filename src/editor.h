@@ -3,14 +3,16 @@
 
 
 #include <qwidget.h>
-#include <Qsci/qsciscintilla.h>
-#include <Qsci/qscilexercpp.h>
-#include <Qsci/qsciapis.h>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QApplication>
 #include <QColor>
 #include <QDateTime>
+//QScintilla
+#include <Qsci/qsciscintilla.h>
+#include <Qsci/qscilexercpp.h>
+#include <Qsci/qsciapis.h>
+
 
 #include "mm_utils.h"
 #include "config.h"

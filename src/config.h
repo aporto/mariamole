@@ -67,6 +67,7 @@ public:
 	QString includePaths;
 	QString libPaths;
 	QString libs;
+    QString arduinoCoreOpt;
 	QString extraArduinoLibsSearchPaths;
 	//QString coreLibsPath;
 	unsigned int uploadTimeout;

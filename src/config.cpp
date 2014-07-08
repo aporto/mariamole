@@ -46,7 +46,7 @@ int Config::Load(void)
 	includePaths = settings.value("includePaths", "").toString();
 	libPaths = settings.value("libPaths", "").toString();
 	libs = settings.value("libs", "").toString();
-	//coreLibsPath = settings.value("coreLibsPath", "").toString();
+    arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
 	uploadTimeout = settings.value("uploadTimeout", 30).toInt();	
     settings.endGroup();
 	
@@ -79,12 +79,12 @@ int Config::Load(void)
 int Config::LoadHardwareDefinitions(void)
 {
 	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
-			QDir::separator() + "hardware.xml");
+                                            QDir::separator() + "hardware.xml");
 
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     if(!QFile::exists(filepath))
-        filepath = "/etc/mariamole/config";
+        filepath = "/etc/mariamole/config/hardware.xml";
 #endif
 
     qDebug() << "Loading " << filepath;
@@ -270,14 +270,13 @@ bool Config::Save(void)
 	settings.beginGroup("main");
     settings.setValue("workspace", workspace);
 	settings.setValue("useMenuButton", useMenuButton);
-	
     settings.endGroup();
 	
 	settings.beginGroup("build");
 	settings.setValue("includePaths", includePaths);
 	settings.setValue("libPaths", libPaths);
 	settings.setValue("libs", libs);
-	//settings.setValue("coreLibsPath", coreLibsPath);	
+    settings.setValue("arduinoCoreOpt", arduinoCoreOpt);
 	settings.setValue("uploadTimeout", uploadTimeout);		
 	settings.endGroup();
 
