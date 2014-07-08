@@ -26,7 +26,7 @@ Preferences::Preferences(QWidget *parent)
     ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
     ui.colorPicked->setPalette(palette);
 
-    qDebug() << "Color: " << color;
+    //qDebug() << "Color: " << color;
 }
 
 //-----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ void Preferences::ColorPick(void)
 
     if (color.isValid())
     {
-        qDebug() << color;
+        //qDebug() << color;
         QPalette palette = ui.colorPicked->palette();
         palette.setColor(QPalette::Background, color);
         ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
@@ -78,7 +78,6 @@ void Preferences::OnApply(void)
     config.hideCompilerWarnings = ui.hideWarnings->isChecked();
 
     config.Save();
-
 }
 
 //-----------------------------------------------------------------------------
@@ -112,12 +111,11 @@ void Preferences::OnLoadCore(void)
 void Preferences::PageChange ( QListWidgetItem * current, QListWidgetItem * previous )
 {
 	int index = ui.menuList->currentRow();
-	if (index < 0) {
+
+    if (index < 0)
 		index = 0;
-	}
 
 	ui.stackedWidget->setCurrentIndex(index);
-    //ui.btnApply->setEnabled(false);
 }
 
 //-----------------------------------------------------------------------------
