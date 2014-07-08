@@ -16,7 +16,7 @@ Preferences::Preferences(QWidget *parent)
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(OnCancel()));
 	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
         this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
-	//connect(ui.btnCancel, SIGNAL(triggered()), this, SLOT(BuildProject()));
+
 
     color = QColor(config.editorColorName);
 
@@ -50,7 +50,6 @@ void Preferences::ColorPick(void)
         palette.setColor(QPalette::Background, color);
         ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
         ui.colorPicked->setPalette(palette);
-
     }
 }
 
@@ -79,6 +78,7 @@ void Preferences::OnApply(void)
     config.hideCompilerWarnings = ui.hideWarnings->isChecked();
 
     config.Save();
+
 }
 
 //-----------------------------------------------------------------------------
@@ -96,19 +96,11 @@ void Preferences::OnLoadCore(void)
     if (QDir(config.arduinoCoreOpt).exists()) {
         path = config.arduinoCoreOpt;
     }
-
-    /*QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::Directory);
-    if (dialog.exec() != QFileDialog::Accepted) {
-        return;
-    }*/
-
     path = QFileDialog::getExistingDirectory(this, tr("Arduino Core libs path"),
                                                 path,
                                                 QFileDialog::ShowDirsOnly
                                                 | QFileDialog::DontResolveSymlinks);
 
-    //path = dialog.Directory();
     if (QDir(path).exists()) {
         ui.arduinoCore->setText(path);
     }
@@ -125,6 +117,7 @@ void Preferences::PageChange ( QListWidgetItem * current, QListWidgetItem * prev
 	}
 
 	ui.stackedWidget->setCurrentIndex(index);
+    //ui.btnApply->setEnabled(false);
 }
 
 //-----------------------------------------------------------------------------
