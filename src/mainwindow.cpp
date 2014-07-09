@@ -538,9 +538,9 @@ void MainWindow::AddNewProject(void)
 
 void MainWindow::ConfigureCurrentProject(void)
 {
-	ProjectProperties * prop = new ProjectProperties();
-	prop->Edit(workspace.GetCurrentProject());
-	delete prop;
+    ProjectProperties * prop = new ProjectProperties();
+    prop->Edit(workspace.GetCurrentProject());
+    delete prop;
 	AdjustWorkspaceTree();
 }
 

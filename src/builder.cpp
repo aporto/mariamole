@@ -213,7 +213,11 @@ bool Builder::Upload(void)
 
 	QString outputFile = buildPath + "/" + project->name + ".hex";
 	QStringList arguments;
-	QString confPath = qApp->applicationDirPath() + "/arduino/avr/etc/avrdude.conf";
+#if defined(Q_OS_WIN)
+    QString confPath = qApp->applicationDirPath() + "/arduino/avr/etc/avrdude.conf";
+#elif defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    QString confPath = config.arduinoCoreOpt + "/arduino/avr/etc/avrdude.conf";
+#endif
 	arguments << "-C" << confPath;
 	//arguments << "-q" << "-q"; // ultra quiet mode
 	arguments << "-p" << board->second.build_mcu;
@@ -270,6 +274,7 @@ bool Builder::Compile(int fileIndex)
 
 	// Get the input file path
 	inputFile = project->files.at(fileIndex).name;
+
 	switch (project->files.at(fileIndex).type) {
 		case ptSource: 
 			inputFile = config.workspace +  "/" + //QDir::separator() + 
@@ -278,10 +283,11 @@ bool Builder::Compile(int fileIndex)
 
 		case ptExternal: 
 		case ptExtra:
-			inputFile = config.LocateFileUsingSearchPaths(inputFile, "$(LIBRARIES)", false);			
+            inputFile = config.LocateFileUsingSearchPaths(inputFile, "$(LIBRARIES)", false);
+            qDebug() << "LibsPath" << inputFile;
 		break; 
 	}
-
+    qDebug() << "inputFile: " << inputFile;
 	return CompileFile(inputFile, true);//, false);
 }
 
@@ -356,14 +362,22 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	QStringList projectIncludes = project->includePaths.split(";");
 	QStringList includes;
 	includes << QFileInfo(inputFile).path();
-	includes << qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
+
+#if defined(Q_OS_WIN)
+    includes <<  qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
+#endif
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    qDebug() << "arduinoCoreOpt" << config.arduinoCoreOpt;
+    includes << config.arduinoCoreOpt + "/arduino/cores/" + board->second.build_core;
+#endif
 	includes << config.DecodeMacros("$(ARDUINO_VARIANT)", project);
 	for (int l=0; l < projectIncludes.count(); l++) {
 
 		projectIncludes[l] = projectIncludes[l].trimmed();
 		if (projectIncludes[l].length() < 2) {
 			continue;
-		}
+        }
 		if (projectIncludes[l].indexOf("/") > 0) {
 			QString path = config.DecodeLibraryPath(projectIncludes[l]).trimmed();
 			if (path.length() > 1) {
@@ -386,6 +400,8 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	}
 
     bool ok = launcher->RunCommand(compilerPath, arguments);
+
+    qDebug() << "args: " << arguments;
    /* bool l = (compilerPath == "avr-g++");
     QStringList ls;
     ls << "-V";
@@ -508,6 +524,7 @@ bool Builder::BuildCoreLib(void)
 	msg.AddOutput("Linking core lib for board :" + project->boardName, false);	
 	
 	QStringList coreFiles = bld->second.coreLibs.split(";");
+    qDebug() << "Core Libs:" << bld->second.coreLibs;
 	bool ok = true;
 	
 	for (int i=0; i < coreFiles.size(); i++) {

@@ -18,8 +18,8 @@ Editor::Editor(QWidget *parent)
 
 	LoadStyleSheet(this, "style_code_editor.css");
 	
-  setAutoCompletionThreshold(1);
-  setAutoCompletionSource(QsciScintilla::AcsAll);
+    setAutoCompletionThreshold(1);
+    setAutoCompletionSource(QsciScintilla::AcsAll);
 
 	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
 
@@ -32,8 +32,8 @@ Editor::Editor(QWidget *parent)
 Editor::~Editor()
 {
    delete lexer;
-    //QSciScintilla::~QsciScintilla();
-  //delete api; api parent's (lexer) will delete it
+   //QSciScintilla::~QsciScintilla();
+   //delete api; api parent's (lexer) will delete it
 }
 
 void Editor::SetFileName(QString filename)
