@@ -38,9 +38,9 @@ int Config::Load(void)
 	arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
     uploadTimeout = settings.value("uploadTimeout", 30).toInt();
 #ifdef Q_OS_WIN
+	appPath = qApp->applicationDirPath();
     configPath = appPath + "/config";
-    configUserPath = QDir::homePath() + "/MariaMole/config";
-    appPath = qApp->applicationDirPath();
+    configUserPath = QDir::homePath() + "/MariaMole/config";    
 #endif
 
 #ifdef Q_OS_LINUX

@@ -219,6 +219,7 @@ void MainWindow::SetDefaultProject(void)
 void MainWindow::EditProjectProperties(void)
 {
 	if (ui.tree->selectedItems().count() != 1) {
+		ErrorMessage("No project selected!");		
 		return;
 	}
 
@@ -227,12 +228,14 @@ void MainWindow::EditProjectProperties(void)
 	//QString text = item->text(0);
 
 	if (item->data(0,255) != WorskspaceTree::Project) {
+		ErrorMessage("No project selected!");		
 		return;
 	}
 
 	workspace.SetCurrentProject(item->text(0));
 
 	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");		
 		return;
 	}
 
@@ -604,6 +607,10 @@ void MainWindow::open()
 
 void MainWindow::BuildProject()
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");
+		return;
+	}
 	SaveWorkspace();
 	ui.buildMessages->clear();
 	//buildWindow->Build(false);
@@ -615,6 +622,10 @@ void MainWindow::BuildProject()
 
 void MainWindow::UploadProgram()
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");
+		return;
+	}
 	SaveWorkspace();
 	ui.buildMessages->clear();
 	tabsEditor->EnableAllSerialPorts(false);
@@ -627,6 +638,10 @@ void MainWindow::UploadProgram()
 
 void MainWindow::CleanProject()
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");
+		return;
+	}
 	ui.buildMessages->clear();
     builder->Clean();
     ui.buildStatus->setCurrentIndex(builder->GetLastBuildStatus());
