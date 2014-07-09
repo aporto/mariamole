@@ -14,7 +14,7 @@ ProjectProperties::ProjectProperties(QWidget *parent)
 	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
 		this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
 
-	connect(ui.cbSerialPort, SIGNAL(activated(int)), this, SLOT(OnSerialPortSelected(int))); 	
+    connect(ui.cbSerialPort, SIGNAL(activated(int)), this, SLOT(OnSerialPortSelected(int)));
 }
 
 //-----------------------------------------------------------------------------
@@ -95,16 +95,16 @@ bool ProjectProperties::Edit(Project * project)
 		}
 	}	
 
-	// get list of serial ports
+    // get list of serial ports
 	ui.cbSerialPort->clear();	
-	ui.cbSerialPort->addItem("N/A");
-	OnSerialPortSelected(0);
+    ui.cbSerialPort->addItem("N/A");
+    OnSerialPortSelected(0);
 	ui.cbSerialPort->setCurrentIndex(0);
 	for (int i=0; i < ui.cbSerialPort->count(); i++) {
 		if (project->serialPort == ui.cbSerialPort->itemText(i)) {
 			ui.cbSerialPort->setCurrentIndex(i);
 		}
-	}
+    }
 
 	// populate programmers list
 	ui.cbExternalProgrammer->clear();
@@ -155,7 +155,7 @@ bool ProjectProperties::Edit(Project * project)
 
 void ProjectProperties::OnSerialPortSelected(int index)
 {
-	QString curr = "N/A";
+    QString curr = "N/A";
 	if (ui.cbSerialPort->currentIndex() >= 0) {
 		curr = ui.cbBoardName->itemText(ui.cbBoardName->currentIndex());
 	}
@@ -175,7 +175,7 @@ void ProjectProperties::OnSerialPortSelected(int index)
 			ui.cbSerialPort->addItem(serial.availablePorts().at(i).portName());
 		}
 	}
-	
+
 	// remove all serial ports that no longer exist 
 	int j = 0;
 	while (j < ui.cbSerialPort->count()) {
@@ -196,11 +196,11 @@ void ProjectProperties::OnSerialPortSelected(int index)
 	}
 
 	// retorna a escolher o item que ja existia
-	/*ui.cbSerialPort->setCurrentIndex(0);
+    /*ui.cbSerialPort->setCurrentIndex(0);
 	for (int i=0; i < ui.cbSerialPort->count(); i++) {
 		if (curr == ui.cbSerialPort->itemText(i)) {
 			ui.cbSerialPort->setCurrentIndex(i);
 		}
-	}*/
+    }*/
 }
 
