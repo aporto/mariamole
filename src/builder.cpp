@@ -213,7 +213,11 @@ bool Builder::Upload(void)
 
 	QString outputFile = buildPath + "/" + project->name + ".hex";
 	QStringList arguments;
-	QString confPath = qApp->applicationDirPath() + "/arduino/avr/etc/avrdude.conf";
+#if defined(Q_OS_WIN)
+    QString confPath = qApp->applicationDirPath() + "/arduino/avr/etc/avrdude.conf";
+#elif defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    QString confPath = "/etc/avrdude.conf";
+#endif
 	arguments << "-C" << confPath;
 	//arguments << "-q" << "-q"; // ultra quiet mode
 	arguments << "-p" << board->second.build_mcu;
@@ -238,9 +242,19 @@ bool Builder::Upload(void)
 		if (board->second.name == "Arduino Leonardo") {
 			QString leoPort = GetLeonardoSerialPort(project->serialPort);
 			arguments << "-P\\\\.\\" + leoPort;
+
+#ifdef Q_OS_WIN
+            arguments << "-P\\\\.\\" + leoPort;
+#else
+            arguments << "-P/dev/" + leoPort;
+#endif
 			msg.AddOutput("Leonardo board: Uploading to alternative serial port '" + leoPort + "' (Please check Leonardo docs if you have any questions about this)", false);			
 		} else {
-			arguments << "-P\\\\.\\" + project->serialPort;
+#ifdef Q_OS_WIN
+            arguments << "-P\\\\.\\" + project->serialPort;
+#else
+            arguments << "-P/dev/" + project->serialPort;
+#endif
 		}
 		if (speed != "") {
 			arguments << "-b" + speed;
@@ -270,6 +284,7 @@ bool Builder::Compile(int fileIndex)
 
 	// Get the input file path
 	inputFile = project->files.at(fileIndex).name;
+
 	switch (project->files.at(fileIndex).type) {
 		case ptSource: 
 			inputFile = config.workspace +  "/" + //QDir::separator() + 
@@ -278,10 +293,11 @@ bool Builder::Compile(int fileIndex)
 
 		case ptExternal: 
 		case ptExtra:
-			inputFile = config.LocateFileUsingSearchPaths(inputFile, "$(LIBRARIES)", false);			
+            inputFile = config.LocateFileUsingSearchPaths(inputFile, "$(LIBRARIES)", false);
+            qDebug() << "LibsPath" << inputFile;
 		break; 
 	}
-
+    qDebug() << "inputFile: " << inputFile;
 	return CompileFile(inputFile, true);//, false);
 }
 
@@ -353,17 +369,27 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	arguments << "-DF_CPU=" + board->second.build_f_cpu;
 
 	// add all include paths from the project configurations
-	QStringList projectIncludes = project->includePaths.split(";");
+    QStringList projectIncludes = project->includePaths.split(";") + config.extraArduinoLibsSearchPaths.split(";");
 	QStringList includes;
 	includes << QFileInfo(inputFile).path();
-	includes << qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
+
+
+
+#if defined(Q_OS_WIN)
+    includes <<  qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
+#endif
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    qDebug() << "arduinoCoreOpt" << config.arduinoCoreOpt;
+    includes << config.arduinoCoreOpt + "/arduino/cores/" + board->second.build_core;
+#endif
 	includes << config.DecodeMacros("$(ARDUINO_VARIANT)", project);
 	for (int l=0; l < projectIncludes.count(); l++) {
 
 		projectIncludes[l] = projectIncludes[l].trimmed();
 		if (projectIncludes[l].length() < 2) {
 			continue;
-		}
+        }
 		if (projectIncludes[l].indexOf("/") > 0) {
 			QString path = config.DecodeLibraryPath(projectIncludes[l]).trimmed();
 			if (path.length() > 1) {
@@ -386,6 +412,8 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	}
 
     bool ok = launcher->RunCommand(compilerPath, arguments);
+
+    qDebug() << "args: " << arguments;
    /* bool l = (compilerPath == "avr-g++");
     QStringList ls;
     ls << "-V";
@@ -508,6 +536,7 @@ bool Builder::BuildCoreLib(void)
 	msg.AddOutput("Linking core lib for board :" + project->boardName, false);	
 	
 	QStringList coreFiles = bld->second.coreLibs.split(";");
+    qDebug() << "Core Libs:" << bld->second.coreLibs;
 	bool ok = true;
 	
 	for (int i=0; i < coreFiles.size(); i++) {

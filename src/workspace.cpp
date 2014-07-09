@@ -217,7 +217,7 @@ bool Workspace::ImportSketch(Project * project, QString sketchFullPath)
 	project->files.push_back(pfile);
 
 	//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
-	CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);		
+    CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);
 
 	ImportFilesFromSketchDirectory(project, path);
 
@@ -252,6 +252,9 @@ void Workspace::ImportFilesFromSketchDirectory(Project * project, QString sketch
 
 bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefixPath)
 {
+
+    qDebug() << "ImportLibrary";
+
 	// first, find the library path
 	if (libPath.indexOf("/") < 0) {
 		QString libName = libPath;
@@ -309,6 +312,8 @@ bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefix
 
 void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, QString libPath)
 {
+
+    qDebug() << "ImportLibraryFilesRecursively";
 	QString libName = QFileInfo(libPath).fileName();
 
 	int pathLen = path.length() - libPath.length();				
