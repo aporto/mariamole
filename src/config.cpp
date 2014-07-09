@@ -230,9 +230,15 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 	}
 
 	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", appPath + "/arduino/arduino/libraries"));
-    //qDebug() << "appPath:" << appPath;
+    qDebug() << "appPath:" << appPath;
+#if defined(Q_OS_LINUX) || defined (Q_OS_MAC)
+    dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
+#endif
 
-	dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
+#if defined(Q_OS_WIN)
+    dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
+#endif
+
     //qDebug() << "libPath: " << projectLibPaths << ";" << appPath << "/arduino/arduino/libraries;" << libPaths << ";" << config.extraArduinoLibsSearchPaths;
 
 	dictionary.insert (pair <QString, QString> ("$(INCLUDES)", includePaths + ";" + projectIncludePaths));

@@ -216,7 +216,7 @@ bool Builder::Upload(void)
 #if defined(Q_OS_WIN)
     QString confPath = qApp->applicationDirPath() + "/arduino/avr/etc/avrdude.conf";
 #elif defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    QString confPath = config.arduinoCoreOpt + "/arduino/avr/etc/avrdude.conf";
+    QString confPath = "/etc/avrdude.conf";
 #endif
 	arguments << "-C" << confPath;
 	//arguments << "-q" << "-q"; // ultra quiet mode
@@ -242,9 +242,19 @@ bool Builder::Upload(void)
 		if (board->second.name == "Arduino Leonardo") {
 			QString leoPort = GetLeonardoSerialPort(project->serialPort);
 			arguments << "-P\\\\.\\" + leoPort;
+
+#ifdef Q_OS_WIN
+            arguments << "-P\\\\.\\" + leoPort;
+#else
+            arguments << "-P/dev/" + leoPort;
+#endif
 			msg.AddOutput("Leonardo board: Uploading to alternative serial port '" + leoPort + "' (Please check Leonardo docs if you have any questions about this)", false);			
 		} else {
-			arguments << "-P\\\\.\\" + project->serialPort;
+#ifdef Q_OS_WIN
+            arguments << "-P\\\\.\\" + project->serialPort;
+#else
+            arguments << "-P/dev/" + project->serialPort;
+#endif
 		}
 		if (speed != "") {
 			arguments << "-b" + speed;
@@ -359,9 +369,11 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	arguments << "-DF_CPU=" + board->second.build_f_cpu;
 
 	// add all include paths from the project configurations
-	QStringList projectIncludes = project->includePaths.split(";");
+    QStringList projectIncludes = project->includePaths.split(";") + config.extraArduinoLibsSearchPaths.split(";");
 	QStringList includes;
 	includes << QFileInfo(inputFile).path();
+
+
 
 #if defined(Q_OS_WIN)
     includes <<  qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
