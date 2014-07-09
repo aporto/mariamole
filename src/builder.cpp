@@ -634,7 +634,8 @@ void Builder::ImportDeclarations(void)
 	}
 
 	for (int i=0; i < lines.count(); i++) {
-		QStringList words = lines[i].trimmed().split(" ");
+		QRegExp rx("(\\ |\\,|\\(|\\)|\\.|\\:|\\t)"); //RegEx for ' ' or ',' or '.' or ':' or '\t'
+		QStringList words = lines[i].trimmed().split(rx);
 		int w = 0;
 		while (w < words.count()) {
 			words[w] = words[w].trimmed().toUpper();

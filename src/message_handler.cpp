@@ -72,9 +72,7 @@ void MessageHandler::AddOutput(QString text, bool parseText)
 			if (buildStage == 1) {
 				ParseCompilerMessage(text, bm);
 			} else if (buildStage == 2) { 
-				if (config.hideCompilerWarnings == false) {
-					ParseLinkerMessage(text, bm);
-				}
+				ParseLinkerMessage(text, bm);
 			} else if (buildStage == 3) { 
 				ParseUploaderMessage(text, bm);
 			} else if (buildStage == 4) {
@@ -82,7 +80,9 @@ void MessageHandler::AddOutput(QString text, bool parseText)
 			}
 			
 			if (bm.type != mtUnknown) {
-				mmbuildMessages.push(bm);
+				if ( (bm.type != mtWarning) || ( (bm.type == mtWarning) && (config.hideCompilerWarnings == false) ) ) {
+					mmbuildMessages.push(bm);
+				}
 			}
 		}
 	}		

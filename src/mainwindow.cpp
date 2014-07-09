@@ -75,7 +75,8 @@ MainWindow::MainWindow(QWidget *parent)
 	}
 
     builder = new Builder(this);
-    launcher = new Launcher(this);
+	builder->setVisible(false);
+    launcher = new Launcher(this);	
 }
 
 //-----------------------------------------------------------------------------
@@ -85,7 +86,7 @@ void MainWindow::CreateMainMenuContext(void)
 	//ui.actionTemp1->setVisible(false);
 	//ui.actionTemp2->setVisible(false);
 
-	//LoadStyleSheet(ui.menuFile, "style_menu.css");
+	LoadStyleSheet(ui.menuFile, "style_menu.css");
 	LoadStyleSheet(ui.menuEdit, "style_menu.css");
 	LoadStyleSheet(ui.menuProject, "style_menu.css");
 	LoadStyleSheet(ui.menuHelp, "style_menu.css");
@@ -607,6 +608,7 @@ void MainWindow::BuildProject()
 	ui.buildMessages->clear();
 	//buildWindow->Build(false);
     builder->Build(false);
+	OnBuildComplete();
 }
 
 //-----------------------------------------------------------------------------
@@ -618,6 +620,7 @@ void MainWindow::UploadProgram()
 	tabsEditor->EnableAllSerialPorts(false);
 	//buildWindow->Build(true);	
     builder->Build(true);
+	OnBuildComplete();
 }
 
 //-----------------------------------------------------------------------------
@@ -627,6 +630,7 @@ void MainWindow::CleanProject()
 	ui.buildMessages->clear();
     builder->Clean();
     ui.buildStatus->setCurrentIndex(builder->GetLastBuildStatus());
+	OnBuildComplete();
 }
 
 //-----------------------------------------------------------------------------
