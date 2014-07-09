@@ -55,11 +55,14 @@ void MessageHandler::AddOutput(QString text, bool parseText)
 			parseThis = (text.indexOf(" bytes (") > 0) && (text.indexOf(" Full)") > 0);
 		} else {
 			pos = text.indexOf(": error: ");
-			if (pos < 0 ) {
+            if (pos < 0 ) {
 				pos = text.indexOf(": warning: ");
-			}
+            }
+            if (pos < 0 ) {
+                pos = text.indexOf("fatal error:");
+            }
 			parseThis = pos > 0;
-		}
+        }
 		if (parseThis) {
 			MMBuildMessage bm;
 			bm.type = mtUnknown;
@@ -152,7 +155,7 @@ void MessageHandler::ParseCompilerMessage(QString text, MMBuildMessage &bm)
 	}
 
 	QString type = list[0]; //part2.left(pos);
-	if (type == " error") {
+    if ( (type == " error") || (type == " fatal error") ) {
 		bm.type = mtError;
 	} else if (type == " warning") {
 		bm.type = mtWarning;

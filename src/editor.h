@@ -1,16 +1,18 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-//#include <QsciScintilla>
+
 #include <qwidget.h>
-#include <Qsci/qsciscintilla.h>
-#include <Qsci/qscilexercpp.h>
-#include <Qsci/qsciapis.h>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QApplication>
 #include <QColor>
 #include <QDateTime>
+//QScintilla
+#include <Qsci/qsciscintilla.h>
+#include <Qsci/qscilexercpp.h>
+#include <Qsci/qsciapis.h>
+
 
 #include "mm_utils.h"
 #include "config.h"
@@ -21,7 +23,7 @@ class Editor : public QsciScintilla
 
 public:
 	Editor(QWidget *parent);
-	~Editor();
+    ~Editor();
 	QString GetFileName(void);
 	void setEditorStyle (void);
 	void CodeBeautifier(void);
@@ -40,7 +42,7 @@ private:
 	QsciAPIs *api;
     QsciLexerCPP *lexer;
 	QString file;
-	QDateTime lastModifiedTime;
+    QDateTime lastModifiedTime;
 	
 	void SetFileName(QString filename);
 	void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);

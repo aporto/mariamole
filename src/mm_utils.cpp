@@ -14,7 +14,7 @@ bool GetUserConfirmation(QString msg)
 void ErrorMessage(QString msg) {
 	QMessageBox mb;
 	mb.setStyleSheet("");
-	QMessageBox::StandardButton reply;
+	//QMessageBox::StandardButton reply;
 	mb.warning(NULL, "MariaMole", msg);
 }
 

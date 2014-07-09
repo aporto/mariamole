@@ -2,41 +2,30 @@
 #define BUILDWINDOW_H
 
 #include <QWidget>
+#include <QProgressDialog>
 #include <QDialog>
 #include <QTimer>
 #include <QMouseEvent>
-//#include <QtConcurrent>
 
-#include "builderthread.h"
 #include "ui_buildwindow.h"
 
-#include "builder.h"
+namespace BuildWindowTypes {
+	enum phaseType {cleaning, compiling, linking, linkingCore, uploading, bootloader};
+}
 
-class BuildWindow : public QDialog
+class BuildWindow : public QProgressDialog 
 {
 	Q_OBJECT
 
 public:
 	BuildWindow(QWidget *parent = 0);
 	~BuildWindow();
-	void Build(bool upload);
-	void BurnBootloader(void);
-
-public slots:
-	void update(void);   
-	void completed(void);   
-	void cancelBuild(void);
-
-signals:
-    void buildComplete(void);
+	
+	void SetPhase(BuildWindowTypes::phaseType phase);
+	void SetProgress(int progress);
 
 private:
 	Ui::BuildWindow ui;
-	BuilderThread * thread;	
-	QFuture <int> buildResult;
-	QTimer * timer;
-	bool building;
-	int oldProgressBarType;
 };
 
 #endif // BUILDWINDOW_H

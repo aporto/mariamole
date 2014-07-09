@@ -10,11 +10,11 @@ Editor::Editor(QWidget *parent)
 	//setEolMode(QsciScintilla::EolUnix);
 
 	lexer = new QsciLexerCPP;
-    this->setLexer(lexer);
+	this->setLexer(lexer);
 	//setAutoCompletionThreshold(0);
 	
-    api = new QsciAPIs(lexer);
-    api->prepare();
+	api = new QsciAPIs(lexer);
+	api->prepare();
 
 	LoadStyleSheet(this, "style_code_editor.css");
 	
@@ -25,13 +25,14 @@ Editor::Editor(QWidget *parent)
 
 	setEditorStyle();
 
-	lastModifiedTime = QDateTime::currentDateTime();
+    lastModifiedTime = QDateTime::currentDateTime();
 }
 
 
 Editor::~Editor()
 {
-    //delete lexer;
+   delete lexer;
+    //QSciScintilla::~QsciScintilla();
   //delete api; api parent's (lexer) will delete it
 }
 
@@ -52,7 +53,10 @@ void Editor::setEditorStyle (void)
 
 	QFontMetrics fontMetrics(font);
 
-	QColor backColor = QColor(22, 30, 32);
+    //QColor backColor = QColor(22, 30, 32);
+    QColor backColor = QColor(config.editorColorName);
+
+    //this->setColor(backColor);
 	
 	// margin
 	setMarginLineNumbers(100, true);
@@ -68,7 +72,7 @@ void Editor::setEditorStyle (void)
 
 	// compile error/warning mark
 	markerDefine(QsciScintilla::RightArrow, 1); 
-    setMarkerBackgroundColor(Qt::red, 1);	
+	setMarkerBackgroundColor(Qt::red, 1);	
 	markerDefine(QsciScintilla::Circle, 0);
 	setMarkerBackgroundColor(Qt::red, 0);
 	setMarkerForegroundColor(Qt::white, 0);
@@ -162,30 +166,33 @@ void Editor::focusInEvent ( QFocusEvent * event )
 	QsciScintilla::focusInEvent(event);
 
 	// Check if file was modified
-	QDateTime fileTime = QFileInfo(file).lastModified();
-	QString s1 = lastModifiedTime.toString();
-	QString s2 = fileTime.toString();
-	if (lastModifiedTime < fileTime) {
-		lastModifiedTime = QDateTime::currentDateTime();
-		QString name = QFileInfo(file).fileName().toLower();
-		if (name != "mariamole_auto_generated.h") {
-			if (GetUserConfirmation("File was modified outside editor. Do you want to reload it?\n" +file) == false)  {
+	QFileInfo fInfo(file);
+	if (fInfo.exists()) {
+		QDateTime fileTime = fInfo.lastModified();
+        QString s1 = lastModifiedTime.toString();
+		QString s2 = fileTime.toString();
+        if (lastModifiedTime < fileTime) {
+			lastModifiedTime = QDateTime::currentDateTime();
+			QString name = QFileInfo(file).fileName().toLower();
+			if (name != "mariamole_auto_generated.h") {
+				if (GetUserConfirmation("File was modified outside editor. Do you want to reload it?\n" +file) == false)  {
+					return;
+				}
+			}
+		
+			QFile inFile(file);
+			if (!inFile.open(QFile::ReadOnly)) {
+				ErrorMessage(tr("Cannot read file %1:\n%2.").arg(file).arg(inFile.errorString()));			
 				return;
 			}
-		}
-		
-		QFile inFile(file);
-		if (!inFile.open(QFile::ReadOnly)) {
-			ErrorMessage(tr("Cannot read file %1:\n%2.").arg(file).arg(inFile.errorString()));			
-			return;
-		}
-		QTextStream in(&inFile);
-		QApplication::setOverrideCursor(Qt::WaitCursor);
-		QString txt(in.readAll());
-		setText(txt);				
-		setModified(false);
-		QApplication::restoreOverrideCursor();
-	}
+			QTextStream in(&inFile);
+			QApplication::setOverrideCursor(Qt::WaitCursor);
+			QString txt(in.readAll());
+			setText(txt);				
+			setModified(false);
+			QApplication::restoreOverrideCursor();
+        }
+	} // file exists
 }
 
 
@@ -271,7 +278,7 @@ bool Editor::Open(QString filename)
 	setText(txt);
 	SetFileName(filename);
 	setModified(false);
-	lastModifiedTime = QFileInfo(filename).lastModified();
+    lastModifiedTime = QFileInfo(filename).lastModified();
 	
 	return true;
 }
@@ -300,7 +307,7 @@ bool Editor::Save(void)
 		qfile.close();
 
 		setModified(false);
-		lastModifiedTime = QFileInfo(file).lastModified();
+        lastModifiedTime = QFileInfo(file).lastModified();
 		return true;
 	}
 }

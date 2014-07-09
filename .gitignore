@@ -48,3 +48,4 @@ projects/msvc10/GeneratedFiles
 /projects/msvc10/Release/rc.read.1.tlog
 /projects/msvc10/Release/rc.write.1.tlog
 /projects/msvc10/mariamole.opensdf
+/src/*.bak

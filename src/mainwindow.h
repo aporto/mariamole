@@ -12,7 +12,7 @@
 
 #include "ui_mainwindow.h"
 
-#include "buildwindow.h"
+//#include "buildwindow.h"
 #include "config.h"
 #include "workspace.h"
 #include "setworkspace.h"
@@ -24,6 +24,8 @@
 #include "about.h"
 #include "preferences.h"
 #include "burnbootloader.h"
+
+#include "launcher.h"
 
 //-----------------------------------------------------------------------------
 
@@ -90,12 +92,14 @@ protected:
 
 private:
 	Ui::MainWindowClass ui;
-	BuildWindow * buildWindow;
+	//BuildWindow * buildWindow;
 	Wizard * wizard;
 	SetWorkspace * setWorkspace;
 	QMenu * projectContext, * fileContext, * wsContext;
 	QMenu * mainMenu;
 	
+    Builder * builder;
+
 	EditorTab *tabsEditor;
 
 	void CreateMainMenuContext(void);
@@ -105,6 +109,7 @@ private:
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);
 	void SetProjectModified(void);
+	
 };
 
 #endif // MAINWINDOW_H

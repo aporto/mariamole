@@ -66,7 +66,7 @@ bool BurnBootloader::Configure(void)
 		QString board = ui.boards->itemText(ui.boards->currentIndex());
 		QString programmer = ui.programmers->itemText(ui.programmers->currentIndex());
 		QString port = ui.ports->itemText(ui.ports->currentIndex());
-		builder.ConfigureBootloaderBurner(programmer, board, port);
+//		builder.ConfigureBootloaderBurner(programmer, board, port);
 	}
 
 	return ok;

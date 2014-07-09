@@ -5,7 +5,8 @@
 //using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
+    : QMainWindow(parent)//,
+
 {
 	ui.setupUi(this);		
 	
@@ -41,11 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(100);
 
-    QPalette palette = ui.menuBar->palette();
-	palette.setColor(QPalette::Button,  ui.mainToolBar->palette().color(QPalette::Window));
-	ui.menuBar->setPalette(palette);
+    //QPalette palette = ui.menuBar->palette();
+	//palette.setColor(QPalette::Button,  ui.mainToolBar->palette().color(QPalette::Window));
+	//ui.menuBar->setPalette(palette);
 
-    buildWindow = new BuildWindow();
+    //buildWindow = new BuildWindow();
 	
 	ui.buildStatus->setCurrentIndex(0);
 
@@ -72,25 +73,30 @@ MainWindow::MainWindow(QWidget *parent)
 	if (QDir(config.workspace).exists()){
 		OpenWorkspace();	
 	}
+
+    builder = new Builder(this);
+    launcher = new Launcher(this);
 }
 
 //-----------------------------------------------------------------------------
 
 void MainWindow::CreateMainMenuContext(void)
 {
+	//ui.actionTemp1->setVisible(false);
+	//ui.actionTemp2->setVisible(false);
+
+	//LoadStyleSheet(ui.menuFile, "style_menu.css");
+	LoadStyleSheet(ui.menuEdit, "style_menu.css");
+	LoadStyleSheet(ui.menuProject, "style_menu.css");
+	LoadStyleSheet(ui.menuHelp, "style_menu.css");
+
 	if (config.useMenuButton) {
 		mainMenu = new QMenu(this);
 		LoadStyleSheet(mainMenu, "style_menu.css");
-
-		//ui.actionMainMenuButton->setMenu(mainMenu);
-		//ui.actionMainMenuButton->set
-		//ui.actionMainMenuButton->popsetPopupMode(QToolButton::InstantPopup);
-		//mainMenu->setStyleSheet(ui.menuBar->styleSheet());			
-		//ui.mainToolBar->insertSeparator(ui.actionSelect_workspace);
 		ui.menuBar->setVisible(false);	
-		ui.actionMainMenuButton->setVisible(true);		
-		connect(ui.actionMainMenuButton, SIGNAL(triggered()), this,SLOT(ShowMainMenu()));
-		connect(ui.actionSeparator, SIGNAL(triggered()), this,SLOT(ShowMainMenu()));
+		ui.actionMainMenu2->setVisible(true);		
+		bool c = connect(ui.actionMainMenu2, SIGNAL(triggered()), this, SLOT(ShowMainMenu()));
+		c = connect(ui.actionMenu3, SIGNAL(triggered()), this,SLOT(ShowMainMenu()));
 		mainMenu->addMenu(ui.menuFile);
 		mainMenu->addMenu(ui.menuEdit);
 		mainMenu->addMenu(ui.menuProject);
@@ -98,8 +104,8 @@ void MainWindow::CreateMainMenuContext(void)
 		mainMenu->addSeparator();
 		mainMenu->addAction(ui.actionExit);
 	} else {
-		ui.actionMainMenuButton->setVisible(false);	
-		ui.actionSeparator->setVisible(false);		
+		ui.actionMainMenu2->setVisible(false);	
+		ui.actionMenu3->setVisible(false);		
 		ui.menuBar->setVisible(true);	
 	}
 }
@@ -358,7 +364,7 @@ void MainWindow::setupActions()
     ui.actionAdd_a_new_project->setStatusTip(tr("Create a new project"));
 	connect (ui.actionAdd_a_new_project, SIGNAL(triggered()), this, SLOT(AddNewProject()));
 
-	connect (ui.actionPrefereces, SIGNAL(triggered()), this, SLOT(EditPreferences()));
+	connect (ui.actionPreferences, SIGNAL(triggered()), this, SLOT(EditPreferences()));
 
 	connect (ui.actionBurn_Arduino_bootloader, SIGNAL(triggered()), this, SLOT(StartBurnBootloader()));
 	
@@ -383,7 +389,7 @@ void MainWindow::setupActions()
 	connect (ui.actionSave_Workspace, SIGNAL(triggered()), this, SLOT(SaveWorkspace()));
 
 	// build complete
-	connect (buildWindow, SIGNAL(buildComplete()), this, SLOT(OnBuildComplete()));
+	//connect (buildWindow, SIGNAL(buildComplete()), this, SLOT(OnBuildComplete()));
 
 	//mouse click on workspace tree	
 	connect (ui.tree, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
@@ -495,6 +501,10 @@ void MainWindow::ImportLibrary(void)
 
 void MainWindow::AddNewFileToProject(void)
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("You need to create a new project first");
+		return;
+	}
 	Wizard * wizard = new Wizard();
 	bool ok = wizard->NewFile();	
 	
@@ -538,8 +548,8 @@ void MainWindow::ConfigureCurrentProject(void)
 
 void MainWindow::OnBuildComplete(void)
 {
-	ui.buildStatus->setCurrentIndex(builder.GetLastBuildStatus());
-	if (builder.GetLastBuildStatus() == 2) {
+	ui.buildStatus->setCurrentIndex(builder->GetLastBuildStatus());
+	if (builder->GetLastBuildStatus() == 2) {
 		int ps, ds, es;
 		float pp, dp, ep;
 		msg.GetLastSucessfullBuildInfo(ps, pp, ds, dp, es, ep);
@@ -595,18 +605,8 @@ void MainWindow::BuildProject()
 {
 	SaveWorkspace();
 	ui.buildMessages->clear();
-	//tabsEditor->EnableAllSerialPorts(false);
-	buildWindow->Build(false);
-	//tabsEditor->EnableAllSerialPorts(true);
-}
-
-//-----------------------------------------------------------------------------
-
-void MainWindow::CleanProject()
-{
-	ui.buildMessages->clear();
-	builder.Clean();
-	ui.buildStatus->setCurrentIndex(builder.GetLastBuildStatus());
+	//buildWindow->Build(false);
+    builder->Build(false);
 }
 
 //-----------------------------------------------------------------------------
@@ -616,7 +616,17 @@ void MainWindow::UploadProgram()
 	SaveWorkspace();
 	ui.buildMessages->clear();
 	tabsEditor->EnableAllSerialPorts(false);
-	buildWindow->Build(true);	
+	//buildWindow->Build(true);	
+    builder->Build(true);
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::CleanProject()
+{
+	ui.buildMessages->clear();
+    builder->Clean();
+    ui.buildStatus->setCurrentIndex(builder->GetLastBuildStatus());
 }
 
 //-----------------------------------------------------------------------------
@@ -657,7 +667,7 @@ void MainWindow::loadFile(const QString &fileName)
 
 MainWindow::~MainWindow()
 {
-	delete buildWindow;
+	//delete buildWindow;
 }
 
 //-----------------------------------------------------------------------------
@@ -1147,12 +1157,12 @@ void MainWindow::EditPreferences(void)
 
 	if (ok) {
 		if (config.useMenuButton) {
-			ui.actionMainMenuButton->setVisible(true);	
-			ui.actionSeparator->setVisible(true);		
+			ui.actionMainMenu2->setVisible(true);	
+			ui.actionMenu3->setVisible(true);		
 			ui.menuBar->setVisible(false);	
 		} else {
-			ui.actionMainMenuButton->setVisible(false);	
-			ui.actionSeparator->setVisible(false);		
+			ui.actionMainMenu2->setVisible(false);	
+			ui.actionMenu3->setVisible(false);		
 			ui.menuBar->setVisible(true);	
 		}
 
@@ -1221,7 +1231,23 @@ void MainWindow::StartBurnBootloader(void)
 
 	if (select->Configure()) {
 		ui.buildMessages->clear();
-		buildWindow->BurnBootloader();			
+		//buildWindow->BurnBootloader();			
 	}
 	delete select;	
 }
+
+/*
+
+QWidget {
+	background-color: rgb(22, 30, 32);
+	border-left: 1px solid rgb(55, 60,70);
+}
+
+QImage {
+	border: 0px solid rgb(55, 60,70);
+}
+
+QLabel {
+	border: 0px solid rgb(55, 60,70);
+}
+*/

@@ -2,6 +2,8 @@
 #include "launcher.h"
 //-----------------------------------------------------------------------------
 
+Launcher * launcher;
+
 Launcher::Launcher(QObject *parent)
 	: QObject(parent)
 {
@@ -15,11 +17,11 @@ Launcher::~Launcher()
 
 //-----------------------------------------------------------------------------
 
-bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut)
+bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut, BuildWindow * const progress)
 {
-	if (cancel) {
+	/*if (cancel) {
 		return false;
-	}
+	}*/
 
 	proc = new QProcess(NULL);
 	proc->setProcessChannelMode(QProcess::MergedChannels);    
@@ -38,12 +40,15 @@ bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut)
 	if (timeOut > 0) {
 		unsigned int timeOutCounter = 0;
 		bool running = true;
-		while (running && (timeOutCounter < timeOut)) {
-			running = !(proc->waitForFinished(500));
-			qApp->processEvents();
-			percentage = 100 * timeOutCounter / timeOut;
+		// timeout * 10 because out time resolution here is 100 ms
+		while (running && (timeOutCounter < timeOut * 10)) {
+			percentage = 10 * timeOutCounter / timeOut;
+			progress->setValue(percentage);			
+			running = !(proc->waitForFinished(70));
+			qApp->processEvents();			
+			QThread::msleep(30);
 			timeOutCounter++;
-			if (cancel) {
+			if (progress->wasCanceled()) {
 				break;
 			}
 		}
@@ -65,7 +70,7 @@ bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut)
         ok = (ec == 0);
     }
 
-  	c = disconnect(this, SIGNAL(readyReadStandardOutput()), this, SLOT(OnReadStandardOutput()));
+    c = disconnect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(OnReadStandardOutput()));
 	delete proc;
     
     return ok;
@@ -85,15 +90,15 @@ void Launcher::OnReadStandardOutput(void)
 }
 
 //-----------------------------------------------------------------------------
-
+/*
 bool Launcher::GetCancel(void)
 {
 	return cancel;
 }
 
 //-----------------------------------------------------------------------------
-
-void Launcher::SetCancel(bool value)
+*/
+/*void Launcher::SetCancel(bool value)
 {
 	cancel = value;
 }
@@ -111,5 +116,5 @@ int Launcher::GetPercentage(void)
 {
 	return percentage;
 }
-
+*/
 //-----------------------------------------------------------------------------

@@ -41,13 +41,13 @@ SOURCES += \
     ../../src/about.cpp \
     ../../src/build_message_item.cpp \
     ../../src/builder.cpp \
-    ../../src/builderthread.cpp \
     ../../src/buildwindow.cpp \
     ../../src/burnbootloader.cpp \
     ../../src/config.cpp \
     ../../src/editor.cpp \
     ../../src/editortab.cpp \
     ../../src/getuserstring.cpp \
+    ../../src/launcher.cpp \
     ../../src/main.cpp \
     ../../src/mainwindow.cpp \
     ../../src/message_handler.cpp \
@@ -64,13 +64,13 @@ HEADERS  += \
     ../../src/about.h \
     ../../src/build_message_item.h \
     ../../src/builder.h \
-    ../../src/builderthread.h \
     ../../src/buildwindow.h \
     ../../src/burnbootloader.h \
     ../../src/config.h \
     ../../src/editor.h \
     ../../src/editortab.h \
     ../../src/getuserstring.h \
+    ../../src/launcher.h \
     ../../src/mainwindow.h \
     ../../src/message_handler.h \
     ../../src/mm_utils.h \

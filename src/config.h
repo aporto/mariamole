@@ -67,7 +67,9 @@ public:
 	QString includePaths;
 	QString libPaths;
 	QString libs;
+    QString arduinoCoreOpt;
 	QString extraArduinoLibsSearchPaths;
+	QString avrPath;
 	//QString coreLibsPath;
 	unsigned int uploadTimeout;
 	map <QString, BoardDef> boards;
@@ -75,10 +77,13 @@ public:
 	map <QString, BuildDef> builds;
 
 	QString editorFontName;
+    QString editorColorName;
 	unsigned int editorFontSize;
 	
 private:	
 	QString appPath;
+	QString configPath;
+	QString configUserPath;
 	vector <QString> macros;
 
 	int LoadHardwareDefinitions(void);

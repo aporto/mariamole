@@ -22,10 +22,9 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QMenu {
-     background-color: blue;
-	fdfdf: rgb(52, 60, 62); 
-	color:red;
+     background-color: rgb(52, 60, 62); 
      border: 1px solid black;
+	 color: rgb(140, 140, 140);
  }
 
 QWidget {
@@ -39,11 +38,6 @@ color:blue;
 QMainWindow::separator {
 color:white;
 background-color:blue;
-}
-
-QToolBar {
-	border: 10px solid red;
-
 }
 
 QScrollBar:horizontal {
@@ -173,7 +167,12 @@ aaa: rgb(14, 22, 24);</string>
  QTreeView::branch:open:has-children:has-siblings  {
          border-image: none;
          image: url(&quot;:/MainWindow/resources/tree_structure/stylesheet-branch-open.png&quot;);
- }</string>
+ }
+
+QTreeView::item { 
+	border: 0px solid black; 
+}
+</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Box</enum>
@@ -339,7 +338,7 @@ color:rgb(140,140,140);</string>
 border-left: 1px solid rgb(55, 60,70);</string>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="page_3">
              <widget class="QLabel" name="label_8">
@@ -855,7 +854,7 @@ padding: 5px;</string>
     <addaction name="actionSearch"/>
     <addaction name="actionFormat_code"/>
     <addaction name="separator"/>
-    <addaction name="actionPrefereces"/>
+    <addaction name="actionPreferences"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuProject">
@@ -896,10 +895,11 @@ padding: 5px;</string>
 	color: white;
 	_background-color: rgb(22, 30, 32);
 	border:none;
-	border-bottom: 1px solid rgb(57, 65, 67);
+	border-bottom: 1px solid rgb(44, 52, 54);
+	border-top: 1px solid rgb(80,80,80);
 	font:bold;
 	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                 stop:0 rgb(52, 60, 62),  stop:1 rgb(32, 40, 42));
+                 stop:0 rgb(52, 60, 62),  stop:1 rgb(32, 40, 42));		
 }
 
 QToolButton {
@@ -919,8 +919,9 @@ QToolButton {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionMainMenuButton"/>
-   <addaction name="actionSeparator"/>
+   <addaction name="actionTemp1"/>
+   <addaction name="actionMainMenu2"/>
+   <addaction name="actionMenu3"/>
    <addaction name="separator"/>
    <addaction name="actionSelect_workspace"/>
    <addaction name="actionSave_Workspace"/>
@@ -1125,9 +1126,9 @@ QToolButton {
     <string>Code beautifier</string>
    </property>
   </action>
-  <action name="actionPrefereces">
+  <action name="actionPreferences">
    <property name="text">
-    <string>Prefereces</string>
+    <string>Preferences</string>
    </property>
   </action>
   <action name="actionAdd">
@@ -1185,26 +1186,6 @@ QToolButton {
     <string>Open Arduino online help</string>
    </property>
   </action>
-  <action name="actionMainMenuButton">
-   <property name="text">
-    <string>Menu</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionSeparator">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="mainwindow.qrc">
-     <normaloff>:/MainWindow/resources/scrollbars/arrow_down.png</normaloff>:/MainWindow/resources/scrollbars/arrow_down.png</iconset>
-   </property>
-   <property name="text">
-    <string>separator</string>
-   </property>
-  </action>
   <action name="actionExport_to_sketch">
    <property name="text">
     <string>Export to Arduino sketch</string>
@@ -1219,6 +1200,33 @@ QToolButton {
    </property>
    <property name="visible">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionMainMenu2">
+   <property name="text">
+    <string>Menu</string>
+   </property>
+   <property name="toolTip">
+    <string>Main Menu</string>
+   </property>
+  </action>
+  <action name="actionMenu3">
+   <property name="icon">
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/MainWindow/resources/scrollbars/arrow_down.png</normaloff>:/MainWindow/resources/scrollbars/arrow_down.png</iconset>
+   </property>
+   <property name="text">
+    <string>actionMenu3</string>
+   </property>
+  </action>
+  <action name="actionTemp1">
+   <property name="text">
+    <string>                           </string>
+   </property>
+  </action>
+  <action name="actionTemp2">
+   <property name="text">
+    <string>   </string>
    </property>
   </action>
  </widget>

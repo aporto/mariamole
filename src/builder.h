@@ -3,8 +3,9 @@
 #define MM_BUILDER__H
 //-----------------------------------------------------------------------------
 
-//#include <QProcess>
+#include <QObject>
 #include <QWidget>
+#include <QProgressDialog>
 
 #include <QtSerialPort/QSerialPortInfo>
 #include <QtSerialPort/QSerialPort>
@@ -12,42 +13,39 @@
 #include "workspace.h"
 #include "message_handler.h"
 #include "launcher.h"
-
+#include "buildwindow.h"
 
 //-----------------------------------------------------------------------------
 
-class Builder// : public QWidget
+class Builder : public QWidget
 {
-   // Q_OBJECT
+    Q_OBJECT
 
 public:
-    Builder(); //(QWidget * parent);
+    Builder(QWidget *parent);
 	~Builder(void);
 
-	void Cancel(void);
+    //Launcher * launcher;
+
 	bool Clean(void);
 	int Build(bool upload);	
 	bool BurnBootLoader(void);
-	int GetLastBuildStatus(void);		
-	int GetPercentage(void);
+	int GetLastBuildStatus(void);			
 	int GetBuildType(void);
 	void ConfigureBootloaderBurner(QString programmerName, QString boardName, QString SerialPort);
 
-
 private:
+	bool running;
 	Project * project;
 	QString buildPath;
-	//int percentage;
-	//bool cancel;
+	int percentage;
 	QString coreLib;
-	int buildType;
 	int lastBuildStatus;
 	QString blbProgrammerName, blbBoardName, blbSerialPort;
-
-    Launcher launcher;
+	BuildWindow * progress;
 
 	bool Compile(int fileIndex);
-    bool CompileFile(QString inputFile, bool testDate);//, bool silent);
+	bool CompileFile(QString inputFile, bool testDate);//, bool silent);
 	bool Link(void);
 	void GetBinarySize(void);
 	bool BuildCoreLib(void);
@@ -55,12 +53,15 @@ private:
 	QString GetLeonardoSerialPort(QString defaultPort);
 	QString MangleFileName(QString inputFile);
 	void ImportDeclarations(void);
-   // bool RunCommand(QString cmd, QStringList args, QStringList * output, bool sendToOutput);
+	void SetPercentage(int value);
+	bool GetCancel(void);
+	int GetPercentage(void);	
 };
 
 //-----------------------------------------------------------------------------
 
-extern Builder builder;
+//extern Builder builder;
 
 //-----------------------------------------------------------------------------
 #endif
+

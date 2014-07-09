@@ -15,40 +15,59 @@ Config::Config(void)
 
 Config::~Config(void)
 {
-    //Save();
+	//Save();
 }
 
 //-----------------------------------------------------------------------------
 
 int Config::Load(void)
 {
-	appPath = qApp->applicationDirPath(); // "C:/Users/aporto/Documents/GitHub/mariamole/build";
+	appPath = qApp->applicationDirPath(); 	
+#ifdef Q_OS_WIN
+	configPath = appPath + "/config";    
+	configUserPath = QDir::homePath() + "/MariaMole/config";    
+#endif
 
+#ifdef Q_OS_LINUX
+	configUserPath = QDir::homePath() + "/.mariamole";
+	configPath = "/etc/mariamole/config/hardware.xml";
+    appPath = 
+#endif
+
+#ifdef Q_OS_MAC
+	configUserPath = QDir::homePath() + "/Library/mariamole";
+	configPath = "/etc/mariamole/config/hardware.xml";
+#endif
+
+	//configUserPath
+	
 	QSettings settings(QSettings::IniFormat, QSettings::UserScope, 
 		"MariaMole", "config");
 
 	settings.beginGroup("main");
 	workspace = settings.value("workspace", "").toString();
 	useMenuButton= settings.value("useMenuButton", "1").toBool();
-    settings.endGroup();
+	settings.endGroup();
 
 	settings.beginGroup("build");
 	includePaths = settings.value("includePaths", "").toString();
 	libPaths = settings.value("libPaths", "").toString();
 	libs = settings.value("libs", "").toString();
-	//coreLibsPath = settings.value("coreLibsPath", "").toString();
+	arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
 	uploadTimeout = settings.value("uploadTimeout", 30).toInt();	
-    settings.endGroup();
+	avrPath = settings.value("avrPath", qApp->applicationDirPath() + "/arduino/avr/bin/").toString();	
+	settings.endGroup();
 	
 	settings.beginGroup("arduino");
 	extraArduinoLibsSearchPaths = settings.value("extraArduinoLibsSearchPaths", "").toString();
 	settings.endGroup();
 	
 	settings.beginGroup("ui");
-	editorFontName = settings.value("editorFontName", "Consolas").toString();
-	editorFontSize = settings.value("editorFontSize", "12").toInt();
-	settings.endGroup();
+	editorFontName  = settings.value("editorFontName", "Consolas").toString();
+	editorFontSize  = settings.value("editorFontSize", "12").toInt();
+	editorColorName = settings.value("editorColorName", "#182022").toString();
 
+	settings.endGroup();
 
 	settings.beginGroup("compiler");
 	hideCompilerWarnings = settings.value("hideCompilerWarnings", "0").toBool();
@@ -66,8 +85,16 @@ int Config::Load(void)
 
 int Config::LoadHardwareDefinitions(void)
 {
-	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
-			QDir::separator() + "hardware.xml");
+	//QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
+	//										QDir::separator() + "hardware.xml");
+
+	QString filepath= configUserPath + "/hardware.xml";
+	if(!QFile::exists(filepath)) {
+		filepath = configPath + "/hardware.xml";
+	}
+
+	qDebug() << "Loading " << filepath;
+
 	QFile file(filepath);
 	
 	if (file.open(QIODevice::ReadOnly) == false) {
@@ -79,7 +106,9 @@ int Config::LoadHardwareDefinitions(void)
 		file.close();
 		return 102;
 	}
+
 	file.close();
+
 	QDomElement docElem = doc.documentElement();
 	QDomNode xmlHw = docElem.firstChild();
 	
@@ -182,7 +211,6 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 		dictionary.insert (pair <QString, QString> ("$(ARDUINO_VARIANT)", variantPath));
 	}
 
-	//QString qApp->applicationDirPath() + ;
 	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", appPath + "/arduino/arduino/libraries"));
 
 	dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
@@ -199,27 +227,7 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 		}
 	}
 		
-	/*if ((board != boards.end() && build != builds.end()) {
-		QString corePath = appPath + "/" + board->second.build_core; 
-		corePath += "/" + board->second.build_core + "/cores"; 
-		corePath += "/" + board->second.build_core;	
-		int pos = outputText.indexOf("$(ARDUINO_CORE)");
-		while (pos >= 0) {
-			outputText.remove(pos, QString("$(ARDUINO_CORE)").size());
-			outputText.insert(pos, corePath);
-			pos = outputText.indexOf("$(ARDUINO_CORE)");
-		}
-	}
 
-	QString variantPath = appPath + "/" + board->second.build_core; 
-	variantPath += "/" + board->second.build_core + "/variants"; 
-	variantPath += "/" + board->second.build_variant;
-	pos = outputText.indexOf("$(ARDUINO_VARIANT)");
-	while (pos >= 0) {
-		outputText.remove(pos, QString("$(ARDUINO_VARIANT)").size());
-		outputText.insert(pos, variantPath);
-		pos = outputText.indexOf("$(ARDUINO_VARIANT)");
-	}*/
 	return outputText;
 }
 
@@ -244,17 +252,17 @@ bool Config::Save(void)
 		"MariaMole", "config");
 
 	settings.beginGroup("main");
-    settings.setValue("workspace", workspace);
+	settings.setValue("workspace", workspace);
 	settings.setValue("useMenuButton", useMenuButton);
-	
-    settings.endGroup();
+	settings.endGroup();
 	
 	settings.beginGroup("build");
 	settings.setValue("includePaths", includePaths);
 	settings.setValue("libPaths", libPaths);
 	settings.setValue("libs", libs);
-	//settings.setValue("coreLibsPath", coreLibsPath);	
-	settings.setValue("uploadTimeout", uploadTimeout);		
+	settings.setValue("arduinoCoreOpt", arduinoCoreOpt);
+	settings.setValue("uploadTimeout", uploadTimeout);	
+	settings.setValue("avrPath", avrPath);	
 	settings.endGroup();
 
 	settings.beginGroup("arduino");
@@ -264,6 +272,7 @@ bool Config::Save(void)
 	settings.beginGroup("ui");
 	settings.setValue("editorFontName", editorFontName);			
 	settings.setValue("editorFontSize", editorFontSize);			
+	settings.setValue("editorColorName", editorColorName);
 	settings.endGroup();
 
 	settings.beginGroup("compiler");
@@ -303,7 +312,7 @@ QString Config::DecodeLibraryPath(QString libPath)
 		if (dirPath.length() < 2) {
 			continue;
 		}
-        if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
+		if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
 			dirPath = dirPath.left(dirPath.length()-1);
 		}
 		dirPath = path1 + dirPath + path2;
@@ -326,7 +335,7 @@ QString Config::LocateFileUsingSearchPaths(QString filename, QString searchPaths
 		if (dirPath.length() < 2) {
 			continue;
 		}
-        if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
+		if ( (dirPath.at(dirPath.length()-1) == '/') || (dirPath.at(dirPath.length()-1) == '\\')) {
 			dirPath = dirPath.left(dirPath.length()-1);
 		}
 		dirPath += "/" + filename;
