@@ -83,7 +83,7 @@ bool ProjectProperties::Edit(Project * project)
 	// set board names combobox
 	ui.cbBoardName->clear();
 	map <QString, BoardDef>::iterator board;
-	for (board = config.boards.begin(); board != config.boards.end() ;board++) {
+    for (board = config.boards.begin(); board != config.boards.end(); board++) {
 		ui.cbBoardName->addItem(board->first);
 		if (board->first == project->boardName) {
 			ui.cbBoardName->setCurrentIndex(ui.cbBoardName->count()-1);

@@ -111,9 +111,9 @@ void Preferences::OnLoadCore(void)
 void Preferences::PageChange ( QListWidgetItem * current, QListWidgetItem * previous )
 {
 	int index = ui.menuList->currentRow();
-	if (index < 0) {
+
+    if (index < 0)
 		index = 0;
-	}
 
 	ui.stackedWidget->setCurrentIndex(index);
 }
