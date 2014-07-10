@@ -67,7 +67,8 @@ public:
 	QString includePaths;
 	QString libPaths;
 	QString libs;
-    QString arduinoCoreOpt;
+    //QString arduinoCoreOpt;
+	QString arduinoInstall;
 	QString extraArduinoLibsSearchPaths;
 	QString avrPath;
 	//QString coreLibsPath;

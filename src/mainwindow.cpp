@@ -63,12 +63,14 @@ MainWindow::MainWindow(QWidget *parent)
 	CreateTreeContextMenu();
 
 	// Load stylesheet
-	QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
+	LoadStyleSheet(ui.messageTabs, "style_main.css");
+	/*QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream css(&cssFile);
 	QString styleText = css.readAll();
-	ui.messageTabs->setStyleSheet(styleText);
+	ui.messageTabs->setStyleSheet(styleText);*/
+
 	ui.actionSave_Workspace->setData(0);
 	if (QDir(config.workspace).exists()){
 		OpenWorkspace();	
