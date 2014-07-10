@@ -15,11 +15,9 @@ SerialMonitor::SerialMonitor(QWidget *parent)
 	connect (ui.btnSend, SIGNAL(clicked()), this, SLOT(SendData()));
 	connect (ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(SendData()));
 
+	bool c = connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
 	
-	//QTimer *timer = new QTimer();
-	//connect(timer, SIGNAL(timeout()), this, SLOT(ReadSerialPort()));
-    //timer->start(100);
-	//QComboBox::currentIndexChanged ( int index ) 
+	LoadStyleSheet(this, "style_serial_monitor.css");
 
 	portId = "";
 	portSpeed = "9600";
@@ -105,8 +103,7 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 	serialPort.setDataBits(QSerialPort::Data8);
 	if (serialPort.open(QIODevice::ReadWrite)) {		
 		//serialPort.setDataTerminalReady(true);
-		//serialPort.setRequestToSend(true);
-        connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+		//serialPort.setRequestToSend(true);        
 		CRT(">> Serial port [" + portId + "] open at " + portSpeed + "!\n\r");		
 		return true;
 	} else {

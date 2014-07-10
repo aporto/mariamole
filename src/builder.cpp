@@ -207,16 +207,17 @@ bool Builder::Upload(void)
 	progress->SetPhase(BuildWindowTypes::uploading);
 	SetPercentage(0);
 
-	QString uploaderPath = config.avrPath + "avrdude";
+	QString uploaderPath = config.avrPath + "/avrdude";
 	
 	msg.AddOutput("Uploading program to board " + project->boardName, false);	
 
 	QString outputFile = buildPath + "/" + project->name + ".hex";
 	QStringList arguments;
 #if defined(Q_OS_WIN)
-    QString confPath = qApp->applicationDirPath() + "/arduino/avr/etc/avrdude.conf";
+	QString confPath = config.arduinoInstall + "/hardware/tools/avr/etc/avrdude.conf";
 #elif defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    QString confPath = "/etc/avrdude.conf";
+    //QString confPath = "/etc/avrdude.conf";
+	QString confPath = config.arduinoInstall + "/hardware/tools/avrdude.conf";
 #endif
 	arguments << "-C" << confPath;
 	//arguments << "-q" << "-q"; // ultra quiet mode
@@ -340,9 +341,9 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	QString compilerPath = config.avrPath;
 
 	if (QFileInfo(inputFile).suffix().toUpper() == "CPP") {
-        compilerPath += "avr-g++";
+        compilerPath += "/avr-g++";
 	} else {
-        compilerPath += "avr-gcc";
+        compilerPath += "/avr-gcc";
 	}
 
 	// Get the argument values from the project configuration
@@ -373,9 +374,9 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	QStringList includes;
 	includes << QFileInfo(inputFile).path();
 
-
-
-#if defined(Q_OS_WIN)
+	QString core = config.DecodeMacros("$(ARDUINO_CORE)", project);
+	includes <<  core;
+/*#if defined(Q_OS_WIN)
     includes <<  qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
 #endif
 
@@ -383,9 +384,11 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
     qDebug() << "arduinoCoreOpt" << config.arduinoCoreOpt;
     includes << config.arduinoCoreOpt + "/arduino/cores/" + board->second.build_core;
 #endif
-	includes << config.DecodeMacros("$(ARDUINO_VARIANT)", project);
-	for (int l=0; l < projectIncludes.count(); l++) {
+*/
+	QString variant = config.DecodeMacros("$(ARDUINO_VARIANT)", project);
+	includes << variant;
 
+	for (int l=0; l < projectIncludes.count(); l++) {
 		projectIncludes[l] = projectIncludes[l].trimmed();
 		if (projectIncludes[l].length() < 2) {
 			continue;
@@ -434,7 +437,7 @@ void Builder::GetBinarySize(void)
 	// If yes, we won't compile it again to gain time
 
 	// Get the compiler path	
-	QString linkerPath = config.avrPath + "avr-size";
+	QString linkerPath = config.avrPath + "/avr-size";
 
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
@@ -468,7 +471,7 @@ bool Builder::Link(void)
 	msg.AddOutput("Linking project:" + project->name, false);	
 
 	// Get the compiler path	
-	QString linkerPath = config.avrPath + "avr-gcc";
+	QString linkerPath = config.avrPath + "/avr-gcc";
 
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
@@ -495,7 +498,7 @@ bool Builder::Link(void)
 	// Finally, convert the elf file into hex format
 	if (ok) {
 		msg.AddOutput("Converting ELF to HEX...");
-		linkerPath = config.avrPath + "avr-objcopy";
+		linkerPath = config.avrPath + "/avr-objcopy";
 		arguments.clear();
 		arguments << "-O" << "ihex" << "-R" << ".eeprom";
 		arguments << binFile;
@@ -531,7 +534,7 @@ bool Builder::BuildCoreLib(void)
 	int oldPercent = GetPercentage();
 	SetPercentage(0);
 
-	QString linkerPath = config.avrPath + "avr-ar";
+	QString linkerPath = config.avrPath + "/avr-ar";
 	
 	msg.AddOutput("Linking core lib for board :" + project->boardName, false);	
 	
@@ -663,7 +666,8 @@ void Builder::ImportDeclarations(void)
 	}
 
 	for (int i=0; i < lines.count(); i++) {
-		QStringList words = lines[i].trimmed().split(" ");
+		QRegExp rx("(\\ |\\,|\\(|\\)|\\.|\\:|\\t)"); //RegEx for ' ' or ',' or '.' or ':' or '\t'
+		QStringList words = lines[i].trimmed().split(rx);
 		int w = 0;
 		while (w < words.count()) {
 			words[w] = words[w].trimmed().toUpper();
@@ -779,7 +783,7 @@ bool Builder::BurnBootLoader(void)
 	progress->SetPhase(BuildWindowTypes::bootloader);
 	SetPercentage(0);
 
-	QString uploaderPath = config.avrPath + "avrdude";
+	QString uploaderPath = config.avrPath + "/avrdude";
 	
 	msg.AddOutput("Burning bootloader to board " + blbBoardName, false);	
 

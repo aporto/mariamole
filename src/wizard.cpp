@@ -397,7 +397,7 @@ QString Wizard::GetSelectedExamplePath(void)
 	}
 
 	if (selected->text(0) == "arduino") {
-		path = qApp->applicationDirPath() + "/arduino/arduino/examples/" + path;
+		path = config.arduinoInstall + "/examples/" + path;
 		path = path + "/" + QFileInfo(path).fileName() + ".ino";
 	} else {
 		path = selected->text(0) + "/examples/" + path;// + "/" + path + ".ino";
@@ -408,8 +408,6 @@ QString Wizard::GetSelectedExamplePath(void)
 		}
 	}
 
-	//path = qApp->applicationDirPath() + "/arduino/" + path + "/" + name + ".ino";
-
 	return path;
 }
 
@@ -417,7 +415,8 @@ QString Wizard::GetSelectedExamplePath(void)
 
 void Wizard::ListExamples(QStringList &examples)
 {
-	QString allPaths = qApp->applicationDirPath() + "/arduino/arduino";
+	//QString allPaths = qApp->applicationDirPath() + "/arduino/arduino";
+	QString allPaths = config.arduinoInstall  + "/examples";
 	allPaths +=";" + config.extraArduinoLibsSearchPaths;
 	
 	QStringList paths;

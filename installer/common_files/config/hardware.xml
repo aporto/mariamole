@@ -46,7 +46,26 @@
 			<build.variant>standard</build.variant>
 		</board>		
 		
-		
+		<board name="Arduino Leonardo">
+			<type>arduino</type>
+			<upload.protocol>avr109</upload.protocol>
+			<upload.maxsize>28672</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<upload.disable_flushing>1</upload.disable_flushing>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
+			<bootloader.extended_fuses>0xcb</bootloader.extended_fuses>
+			<bootloader.path>caterina</bootloader.path>
+			<bootloader.file>Caterina-Leonardo.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega32u4</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>leonardo</build.variant>
+			<build.vid>0x2341</build.vid>
+			<build.pid>0x8036</build.pid>
+		</board>		
 		
 		<board name="Arduino Diecimila or Duemilanove w/ ATmega168">
 			<type>arduino</type>
@@ -138,6 +157,47 @@
 			<build.variant>mega</build.variant>			
 		</board>	
 		
+		<board name="Arduino Esplora">
+			<type>arduino</type>
+			<upload.protocol>avr109</upload.protocol>
+			<upload.maxsize>28672</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<upload.disable_flushing>1</upload.disable_flushing>
+			<bootloader.low_fuses>0xFF></bootloader.low_fuses>
+			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
+			<bootloader.extended_fuses>0xcb</bootloader.extended_fuses>
+			<bootloader.path>caterina</bootloader.path>
+			<bootloader.file>Caterina-Micro.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x2F</bootloader.lock_bits>
+			<build.mcu>atmega32u4</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.vid>0x2341</build.vid>
+			<build.pid>0x803C</build.pid>
+			<build.core>arduino</build.core>
+			<build.variant>leonardo</build.variant>			
+		</board>	
+		
+		<board name="Arduino Micro">
+			<type>arduino</type>
+			<upload.protocol>avr109</upload.protocol>
+			<upload.maxsize>28672</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<upload.disable_flushing>1</upload.disable_flushing>
+			<bootloader.low_fuses>0xFF></bootloader.low_fuses>
+			<bootloader.high_fuses>0xd8</bootloader.high_fuses>
+			<bootloader.extended_fuses>0xcb</bootloader.extended_fuses>
+			<bootloader.path>caterina</bootloader.path>
+			<bootloader.file>Caterina-Micro.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x2F</bootloader.lock_bits>
+			<build.mcu>atmega32u4</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.vid>0x2341</build.vid>
+			<build.pid>0x8037</build.pid>
+			<build.core>arduino</build.core>
+			<build.variant>micro</build.variant>			
+		</board>	
 		
 		<board name="Arduino Mini w/ ATmega328">
 			<type>arduino</type>

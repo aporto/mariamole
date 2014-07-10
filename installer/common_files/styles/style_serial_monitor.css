@@ -1,0 +1,41 @@
+QWidget {
+	color:rgb(150,150,150);
+	background-color: rgb(22, 30, 32);
+	bl: rgb(14, 22, 24);
+	selection-background-color: rgb(50, 150, 50);
+	selection-color: rgb(0,0,0);
+}
+QLineEdit {
+     border: 1px solid rgb(32, 40, 42);     
+ }
+
+QPlainTextEdit {
+	color:rgb(50, 140, 70);
+	font-family:"Courier";
+     border: 1px solid rgb(32, 40, 42);     
+ }
+
+QPushButton {
+	border: 2px solid rgb(32, 40, 42);     
+	min-width: 80px;
+ }
+
+QPushButton:checked {
+     background-color: rgb(52, 60, 62);     
+ }
+
+QComboBox {
+	border: 2px solid rgb(32, 40, 42);     
+	border-color: rgb(60,60,60);
+	min-width: 80px;
+ }
+
+QTreeView::item { 
+	border: 0px solid black; 
+}
+
+ QMenu {
+     background-color: rgb(52, 60, 62); 
+     border: 1px solid black;
+	 color: rgb(140, 140, 140);
+ }

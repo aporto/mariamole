@@ -63,19 +63,22 @@ MainWindow::MainWindow(QWidget *parent)
 	CreateTreeContextMenu();
 
 	// Load stylesheet
-	QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
+	LoadStyleSheet(ui.messageTabs, "style_main.css");
+	/*QString cssFileName =  qApp->applicationDirPath() + "/config/style_main.css";
 	QFile cssFile(cssFileName);
 	cssFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream css(&cssFile);
 	QString styleText = css.readAll();
-	ui.messageTabs->setStyleSheet(styleText);
+	ui.messageTabs->setStyleSheet(styleText);*/
+
 	ui.actionSave_Workspace->setData(0);
 	if (QDir(config.workspace).exists()){
 		OpenWorkspace();	
 	}
 
     builder = new Builder(this);
-    launcher = new Launcher(this);
+	builder->setVisible(false);
+    launcher = new Launcher(this);	
 }
 
 //-----------------------------------------------------------------------------
@@ -85,7 +88,7 @@ void MainWindow::CreateMainMenuContext(void)
 	//ui.actionTemp1->setVisible(false);
 	//ui.actionTemp2->setVisible(false);
 
-	//LoadStyleSheet(ui.menuFile, "style_menu.css");
+	LoadStyleSheet(ui.menuFile, "style_menu.css");
 	LoadStyleSheet(ui.menuEdit, "style_menu.css");
 	LoadStyleSheet(ui.menuProject, "style_menu.css");
 	LoadStyleSheet(ui.menuHelp, "style_menu.css");
@@ -218,6 +221,7 @@ void MainWindow::SetDefaultProject(void)
 void MainWindow::EditProjectProperties(void)
 {
 	if (ui.tree->selectedItems().count() != 1) {
+		ErrorMessage("No project selected!");		
 		return;
 	}
 
@@ -226,12 +230,14 @@ void MainWindow::EditProjectProperties(void)
 	//QString text = item->text(0);
 
 	if (item->data(0,255) != WorskspaceTree::Project) {
+		ErrorMessage("No project selected!");		
 		return;
 	}
 
 	workspace.SetCurrentProject(item->text(0));
 
 	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");		
 		return;
 	}
 
@@ -603,30 +609,45 @@ void MainWindow::open()
 
 void MainWindow::BuildProject()
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");
+		return;
+	}
 	SaveWorkspace();
 	ui.buildMessages->clear();
 	//buildWindow->Build(false);
     builder->Build(false);
+	OnBuildComplete();
 }
 
 //-----------------------------------------------------------------------------
 
 void MainWindow::UploadProgram()
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");
+		return;
+	}
 	SaveWorkspace();
 	ui.buildMessages->clear();
 	tabsEditor->EnableAllSerialPorts(false);
 	//buildWindow->Build(true);	
     builder->Build(true);
+	OnBuildComplete();
 }
 
 //-----------------------------------------------------------------------------
 
 void MainWindow::CleanProject()
 {
+	if (workspace.GetCurrentProject() == NULL) {
+		ErrorMessage("No project selected!");
+		return;
+	}
 	ui.buildMessages->clear();
     builder->Clean();
     ui.buildStatus->setCurrentIndex(builder->GetLastBuildStatus());
+	OnBuildComplete();
 }
 
 //-----------------------------------------------------------------------------

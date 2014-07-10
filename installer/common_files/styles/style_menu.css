@@ -11,13 +11,13 @@ QQWidget {
 	 color: rgb(140, 140, 140);
  }
  
- QMenu::item#menuFile  {
+ QMenu::item#menuFile_lala  {
     /* sets background of menu item. set this to something non-transparent
         if you want menu color and menu item color to be different */
     background-color: red;
 }
 
-QMenu::item[text="File"]
+QMenu::item[text="File_lalal"]
     /* sets background of menu item. set this to something non-transparent
         if you want menu color and menu item color to be different */
     background-color: red;

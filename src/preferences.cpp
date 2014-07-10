@@ -69,7 +69,8 @@ void Preferences::OnApply(void)
     ok = true;
 
     config.uploadTimeout = ui.uploadTimeout->value();
-    config.arduinoCoreOpt = ui.arduinoCore->text();
+    //config.arduinoCoreOpt = ui.arduinoCore->text();
+	config.arduinoInstall= ui.arduinoInstall->text();
     config.extraArduinoLibsSearchPaths = ui.userLibraries->text();
     config.editorFontName  = ui.editorFontName->currentFont().family();
     config.editorFontSize  = ui.editorFontSize->value();
@@ -92,16 +93,16 @@ void Preferences::OnCancel(void)
 void Preferences::OnLoadCore(void)
 {
     QString path = "";
-    if (QDir(config.arduinoCoreOpt).exists()) {
-        path = config.arduinoCoreOpt;
+    if (QDir(config.arduinoInstall).exists()) {
+        path = config.arduinoInstall;
     }
-    path = QFileDialog::getExistingDirectory(this, tr("Arduino Core libs path"),
+    path = QFileDialog::getExistingDirectory(this, tr("Arduino install path"),
                                                 path,
                                                 QFileDialog::ShowDirsOnly
                                                 | QFileDialog::DontResolveSymlinks);
 
     if (QDir(path).exists()) {
-        ui.arduinoCore->setText(path);
+        ui.arduinoInstall->setText(path);
     }
 }
 
@@ -126,7 +127,7 @@ bool Preferences::Edit(void)
 	ui.stackedWidget->setCurrentIndex(0);
 
 	ui.uploadTimeout->setValue(config.uploadTimeout);
-    ui.arduinoCore->setText(config.arduinoCoreOpt);
+    ui.arduinoInstall->setText(config.arduinoInstall);
 	ui.userLibraries->setText(config.extraArduinoLibsSearchPaths);	
 	ui.editorFontSize->setValue(config.editorFontSize);
 	ui.embedMenu->setChecked(config.useMenuButton);

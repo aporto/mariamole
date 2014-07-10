@@ -142,12 +142,12 @@
             <bool>true</bool>
            </property>
           </widget>
-          <widget class="QLineEdit" name="arduinoCore">
+          <widget class="QLineEdit" name="arduinoInstall">
            <property name="geometry">
             <rect>
              <x>20</x>
              <y>70</y>
-             <width>361</width>
+             <width>391</width>
              <height>22</height>
             </rect>
            </property>
@@ -156,21 +156,21 @@
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>40</y>
+             <y>50</y>
              <width>231</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>Arduino Core (optional)</string>
+            <string>Arduino install:</string>
            </property>
           </widget>
           <widget class="QPushButton" name="btnLoadCore">
            <property name="geometry">
             <rect>
-             <x>390</x>
+             <x>410</x>
              <y>70</y>
-             <width>51</width>
+             <width>21</width>
              <height>21</height>
             </rect>
            </property>
@@ -184,7 +184,7 @@
           <zorder>userLibraries</zorder>
           <zorder>label_5</zorder>
           <zorder>label_6</zorder>
-          <zorder>arduinoCore</zorder>
+          <zorder>arduinoInstall</zorder>
           <zorder>label_8</zorder>
           <zorder>btnLoadCore</zorder>
          </widget>

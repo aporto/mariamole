@@ -22,6 +22,7 @@ Config::~Config(void)
 
 int Config::Load(void)
 {
+	appPath = qApp->applicationDirPath();
 
 	QSettings settings(QSettings::IniFormat, QSettings::UserScope, 
 		"MariaMole", "config");
@@ -35,37 +36,40 @@ int Config::Load(void)
 	includePaths = settings.value("includePaths", "").toString();
 	libPaths = settings.value("libPaths", "").toString();
 	libs = settings.value("libs", "").toString();
-	arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
+	//arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
+	
     uploadTimeout = settings.value("uploadTimeout", 30).toInt();
+
 #ifdef Q_OS_WIN
+	arduinoInstall = settings.value("arduinoInstall", appPath +"/arduino").toString();
+#else
+	arduinoInstall = settings.value("arduinoInstall", "/usr/share/arduino").toString();
+#endif
+
+#ifdef Q_OS_WIN	
     configPath = appPath + "/config";
-    configUserPath = QDir::homePath() + "/MariaMole/config";
-    appPath = qApp->applicationDirPath();
+    configUserPath = QDir::homePath() + "/MariaMole/config";    
 #endif
 
 #ifdef Q_OS_LINUX
     configUserPath = QDir::homePath() + "/.mariamole/config";
-    configPath = "/etc/mariamole/config";
-    appPath = (arduinoCoreOpt.length() > 0) ? arduinoCoreOpt : qApp->applicationDirPath();
+    configPath = "/etc/mariamole/config";    
 #endif
 
 #ifdef Q_OS_MAC
     configUserPath = QDir::homePath() + "/Library/mariamole";
-    configPath = "/etc/mariamole/config";
-    appPath = (arduinoCoreOpt.length() > 0) ? arduinoCoreOpt : qApp->applicationDirPath();
+    configPath = "/etc/mariamole/config";    
 #endif
 
+//#ifdef Q_OS_WIN
+    avrPath = settings.value("avrPath", arduinoInstall + "/hardware/tools/avr/bin").toString();
+//#endif
 
-
-#ifdef Q_OS_WIN
-    avrPath = settings.value("avrPath", qApp->applicationDirPath() + "/arduino/avr/bin/").toString();
-#endif
-
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    avrPath = settings.value("avrPath","/usr/bin/").toString(); //MUST BE CHANGED, SHOULD NOT USE ANY HARDCODED PATH
-    qDebug() << "avrPath: " << avrPath;
-    qDebug() << "appPath: " << appPath;
-#endif
+//#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+//    avrPath = settings.value("avrPath","/usr/bin/").toString(); //MUST BE CHANGED, SHOULD NOT USE ANY HARDCODED PATH
+    //qDebug() << "avrPath: " << avrPath;
+    //qDebug() << "appPath: " << appPath;
+//#endif
     settings.endGroup();
 	
 	settings.beginGroup("arduino");
@@ -210,34 +214,36 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 	map <QString, QString> dictionary;
 
 	if ( (board != boards.end() && build != builds.end() ) ) {
-#if defined(Q_OS_WIN)
-        QString corePath = appPath + "/" + board->second.build_core;
-        corePath += "/" + board->second.build_core + "/cores";
-        corePath += "/" + board->second.build_core;
-#else
-        QString corePath = appPath + "/" + board->second.build_core + "/cores/" + board->second.build_core;
-#endif
+//#if defined(Q_OS_WIN)
+        QString corePath = arduinoInstall + "/hardware/arduino/cores/" + board->second.build_core;
+			//appPath + "/" + board->second.build_core;
+  //      corePath += "/" + board->second.build_core + "/cores";
+    //    corePath += "/" + board->second.build_core;
+//#else
+  //      QString corePath = appPath + "/" + board->second.build_core + "/cores/" + board->second.build_core;
+//#endif
 
 		dictionary.insert (pair <QString, QString> ("$(ARDUINO_CORE)", corePath));
-#if defined(Q_OS_WIN)
-		QString variantPath = appPath + "/" + board->second.build_core; 
-		variantPath += "/" + board->second.build_core + "/variants"; 
-		variantPath += "/" + board->second.build_variant;
-#else
-        QString variantPath = appPath + "/" + board->second.build_core + "/variants/" + board->second.build_variant;
-#endif
+//#if defined(Q_OS_WIN)
+		QString variantPath = arduinoInstall + "/hardware/arduino/variants/" + board->second.build_variant;
+		//QString variantPath = appPath + "/" + board->second.build_core; 
+		//variantPath += "/" + board->second.build_core + "/variants"; 
+		//variantPath += "/" + board->second.build_variant;
+//#else
+        //QString variantPath = appPath + "/" + board->second.build_core + "/variants/" + board->second.build_variant;
+//#endif
 		dictionary.insert (pair <QString, QString> ("$(ARDUINO_VARIANT)", variantPath));
 	}
 
-	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", appPath + "/arduino/arduino/libraries"));
-    qDebug() << "appPath:" << appPath;
-#if defined(Q_OS_LINUX) || defined (Q_OS_MAC)
-    dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
-#endif
+	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", arduinoInstall + "/libraries"));
 
-#if defined(Q_OS_WIN)
-    dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
-#endif
+
+//#if defined(Q_OS_LINUX) || defined (Q_OS_MAC)
+    dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + arduinoInstall + "/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
+//#endif
+//#if defined(Q_OS_WIN)
+  //  dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
+//#endif
 
     //qDebug() << "libPath: " << projectLibPaths << ";" << appPath << "/arduino/arduino/libraries;" << libPaths << ";" << config.extraArduinoLibsSearchPaths;
 
@@ -287,7 +293,8 @@ bool Config::Save(void)
 	settings.setValue("includePaths", includePaths);
 	settings.setValue("libPaths", libPaths);
 	settings.setValue("libs", libs);
-	settings.setValue("arduinoCoreOpt", arduinoCoreOpt);
+	//settings.setValue("arduinoCoreOpt", arduinoCoreOpt);
+	settings.setValue("arduinoInstall", arduinoInstall);
 	settings.setValue("uploadTimeout", uploadTimeout);	
 	settings.setValue("avrPath", avrPath);	
 	settings.endGroup();
