@@ -88,7 +88,7 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
     portId = port;
     portSpeed = speed;
 
-    CRT("BAUD: " + ui.cbSpeed->currentText() + "\n\r");
+    //CRT("BAUD: " + ui.cbSpeed->currentText() + "\n\r");
 
 
     serialPort.setPortName(portId);
