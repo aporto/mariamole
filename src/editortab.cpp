@@ -186,6 +186,26 @@ void EditorTab::closeTab(int index)
 #endif
 }
 
+
+
+
+//check if all files are saved
+bool EditorTab::allSaved(void)
+{
+    bool saved = true;
+
+    for (int i = 0; i < count(); i++) {
+        if (tabType(i) == MM::codeTab) {
+            Editor * editor = (Editor *)widget(i);
+            if(editor->isModified())
+                saved = false;
+        }
+    }
+    return saved;
+}
+
+
+
 bool EditorTab::saveFile(int index) 
 {
 	Editor * editor = (Editor *)widget(index);

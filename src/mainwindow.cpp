@@ -1233,13 +1233,21 @@ void MainWindow::OnSearchGO(void)
 
 void MainWindow::closeEvent ( QCloseEvent * event )
 {  
-	event->ignore();	    
-	if (QMessageBox::Yes == QMessageBox::question(NULL, "Close Confirmation?",
-							"Are you sure you want to exit?", 
-							QMessageBox::Yes|QMessageBox::No))
-	{
-	event->accept();
-	}
+    event->ignore();
+
+    if(tabsEditor->allSaved() == false) {
+        //if (QMessageBox::Yes == QMessageBox::question(NULL, "Close Confirmation?",
+        //                                              "Are you sure you want to exit?",
+        //                                              QMessageBox::Yes|QMessageBox::No))
+        if (QMessageBox::Yes == QMessageBox::question(NULL, "Close Confirmation?",
+                                                      "There are some unsaved files! Do you really want to exit before saving them? :D",
+                                                      QMessageBox::Yes|QMessageBox::No))
+        {
+            event->accept();
+        }
+    }
+    else
+        event->accept();
 } 
 
 //-----------------------------------------------------------------------------
