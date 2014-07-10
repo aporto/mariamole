@@ -136,6 +136,7 @@ bool SerialMonitor::ClosePort(void)
 	} else {
 		
 		CRT(">> Serial port [" + portId + "] closed!\n\r");
+
 		return true;
 	}	
 }

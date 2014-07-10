@@ -156,23 +156,32 @@ void EditorTab::onEditorTextChanged(void)
 
 void EditorTab::closeTab(int index)
 {
-	if (tabType(index) == MM::codeTab) {
-		Editor * editor = (Editor *)widget(index);
-		if (editor->isModified()) {
-			if (GetUserConfirmation("This file is being closed, but has unsaved changes. Do you want to save it?\n" + editor->GetFileName())) {
-			/*QMessageBox::StandardButton reply;
-			reply = QMessageBox::question(this, "File modified", "File was modified. Do you want to save it?\n" + editor->GetFileName(),
-								QMessageBox::Yes|QMessageBox::No);
-			if (reply == QMessageBox::Yes) {*/
-				saveFile(index);
-			}
-		}
-	}
-	
+    switch(tabType(index)) {
+
+        case MM::codeTab:
+        {
+            Editor * ed = (Editor*)widget(index);
+            if (ed->isModified()) {
+                if (GetUserConfirmation("This file is being closed, but has unsaved changes. Do you want to save it?\n" + ed->GetFileName()))
+                  saveFile(index);
+
+            }
+        }
+            break;
+
+        case MM::serialTab:
+        {
+            SerialMonitor * serial = (SerialMonitor*)widget(index);
+            serial->ClosePort();
+        }
+            break;
+
+    }
+
 	// removeTab doesnt delete the widget
-	QWidget * w = widget(index); //
 	this->removeTab(index);
 #if !defined(Q_OS_LINUX)
+    QWidget * w = widget(index);
 	delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
 #endif
 }

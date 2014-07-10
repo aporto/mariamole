@@ -17,7 +17,7 @@ Wizard::Wizard(QWidget *parent)
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(btnCancelClicked()));	
 
 	connect(ui.rbEmptyProject, SIGNAL(clicked()), this, SLOT(rbEmptyProject()));	
-	connect(ui.rbImportSketch, SIGNAL(clicked()), this, SLOT(rbEmptyProject()));	
+    connect(ui.rbImportSketch, SIGNAL(clicked()), this, SLOT(rbEmptyProject()));
 	connect(ui.rbImportExample, SIGNAL(clicked()), this, SLOT(rbImportExample()));	
 
 	connect(ui.listLibs, SIGNAL(itemClicked (QListWidgetItem *)), this, SLOT(listLibsClicked(QListWidgetItem *)));		
