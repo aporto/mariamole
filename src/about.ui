@@ -166,7 +166,7 @@ QScrollBar::handle {
     </property>
     <item>
      <property name="text">
-      <string>Scintilla code, Linux port, Mac port</string>
+      <string>Some code, Scintilla code, Linux port, Mac port</string>
      </property>
     </item>
    </item>
