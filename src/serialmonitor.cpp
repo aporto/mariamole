@@ -15,12 +15,17 @@ SerialMonitor::SerialMonitor(QWidget *parent)
 	connect (ui.btnSend, SIGNAL(clicked()), this, SLOT(SendData()));
 	connect (ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(SendData()));
 
-	bool c = connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+    connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
 	
 	LoadStyleSheet(this, "style_serial_monitor.css");
 
 	portId = "";
-	portSpeed = "9600";
+    int index = ui.cbSpeed->findText("9600");
+    ui.cbSpeed->setCurrentIndex(index);
+    //ui.cbSpeed->setCurrentText("9600");
+    portSpeed = "9600";
+
+
 }
 
 //-----------------------------------------------------------------------------
@@ -62,14 +67,14 @@ void SerialMonitor::CRT(QString text)
 
 QString SerialMonitor::GetPort(void)
 {
-	return portId;
+    return portId;
 }
 
 //-----------------------------------------------------------------------------
 
 bool SerialMonitor::OpenPort(void)
 {
-	return OpenPort(portId, portSpeed);
+    return OpenPort(portId, ui.cbSpeed->currentText());
 }
 
 //-----------------------------------------------------------------------------
@@ -78,36 +83,36 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 {
 	if (serialPort.isOpen()) {
 		return true;
-	} 
+    }
 		
-	portId = port;
-	portSpeed = speed;
+    portId = port;
+    portSpeed = speed;
 
-	int index = ui.cbSpeed->findText(portSpeed);
-	if (index < 0) {
-		portSpeed = "9600";
-	}
+    CRT("BAUD: " + ui.cbSpeed->currentText() + "\n\r");
 
-	serialPort.setPortName(portId);
-	ui.cbSpeed->setCurrentText(portSpeed);
+
+    serialPort.setPortName(portId);
+    //ui.cbSpeed->setCurrentText(speed);
 
 	if (PrepareSerialPort(portId, portSpeed) == false) {
-		CRT(">> Failed to open serial port [" + portId + "] at " + portSpeed + "!\n\r");		
+        CRT(">> Failed to open serial port [" + portId + "] at " + portSpeed + "!\n\r");
 		return false;
 	}
 
-	serialPort.setFlowControl(QSerialPort::NoFlowControl);
-	serialPort.setBaudRate(portSpeed.toInt());
-	serialPort.setParity(QSerialPort::NoParity);
-	serialPort.setStopBits(QSerialPort::OneStop);
-	serialPort.setDataBits(QSerialPort::Data8);
-	if (serialPort.open(QIODevice::ReadWrite)) {		
+
+
+    if (serialPort.open(QIODevice::ReadWrite)) {
+        serialPort.setFlowControl(QSerialPort::NoFlowControl);
+        serialPort.setBaudRate(portSpeed.toInt());
+        serialPort.setParity(QSerialPort::NoParity);
+        serialPort.setStopBits(QSerialPort::OneStop);
+        serialPort.setDataBits(QSerialPort::Data8);
 		//serialPort.setDataTerminalReady(true);
-		//serialPort.setRequestToSend(true);        
-		CRT(">> Serial port [" + portId + "] open at " + portSpeed + "!\n\r");		
+        //serialPort.setRequestToSend(true);
+        CRT(">> Serial port [" + portId + "] open at " + ui.cbSpeed->currentText() + "!\n\r");
 		return true;
 	} else {
-		CRT(">> Failed to open serial port [" + portId + "] at " + portSpeed + "!\n\r");		
+        CRT(">> Failed to open serial port [" + portId + "] at " + ui.cbSpeed->currentText() + "!\n\r");
 		return false;
 	}
 }
@@ -144,7 +149,8 @@ void SerialMonitor::ReOpenPort(void)
 {
 	if (serialPort.isOpen()) {
 		if (ClosePort()) {
-			OpenPort();
+            connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+            OpenPort();
 		}
 	} 	
 }
