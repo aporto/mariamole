@@ -197,8 +197,10 @@ bool EditorTab::allSaved(void)
     for (int i = 0; i < count(); i++) {
         if (tabType(i) == MM::codeTab) {
             Editor * editor = (Editor *)widget(i);
-            if(editor->isModified())
+            if(editor->isModified()) {
                 saved = false;
+                break; //if at least one file is not saved, why continue?
+            }
         }
     }
     return saved;
