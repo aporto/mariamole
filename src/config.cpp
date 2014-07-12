@@ -41,9 +41,21 @@ int Config::Load(void)
 
 #ifdef Q_OS_WIN
 	arduinoInstall = settings.value("arduinoInstall", appPath +"/arduino").toString();
-#else
+#endif
+
+#ifdef Q_OS_MAC	
 	arduinoInstall = settings.value("arduinoInstall", "/usr/share/arduino").toString();
 #endif
+
+#ifdef Q_OS_MAC
+	//arduinoInstall = settings.value("arduinoInstall", "").toString();
+	arduinoInstall = arduinoInstall.length() > 0
+					? arduinoInstall
+					: qApp->applicationDirPath();
+#endif		
+
+	qDebug() << "arduinoInstall" << arduinoInstall;
+
 
 #ifdef Q_OS_WIN	
     configPath = appPath + "/config";
@@ -61,6 +73,8 @@ int Config::Load(void)
 #endif
 
     avrPath = settings.value("avrPath", arduinoInstall + "/hardware/tools/avr/bin").toString();
+	//avrPath = arduinoInstall + "/hardware/tools/avr/bin";
+    //qDebug() << "avrPath" << avrPath;
     settings.endGroup();
 	
 	settings.beginGroup("arduino");
@@ -207,7 +221,9 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 
 	if ( (board != boards.end() && build != builds.end() ) ) {
 //#if defined(Q_OS_WIN)
+
         QString corePath = arduinoInstall + "/hardware/arduino/cores/" + board->second.build_core;
+        qDebug() << "corePath" << corePath;
 			//appPath + "/" + board->second.build_core;
   //      corePath += "/" + board->second.build_core + "/cores";
     //    corePath += "/" + board->second.build_core;

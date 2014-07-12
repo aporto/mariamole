@@ -112,6 +112,8 @@ void MainWindow::CreateMainMenuContext(void)
 		ui.actionMenu3->setVisible(false);		
 		ui.menuBar->setVisible(true);	
 	}
+
+	qDebug() << "Here is:" << qApp->applicationDirPath();
 }
 
 //-----------------------------------------------------------------------------

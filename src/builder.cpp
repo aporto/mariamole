@@ -6,6 +6,7 @@ Builder::Builder(QWidget *parent)
 {
 	lastBuildStatus = 0;
 	running = false;
+	config.avrPath = config.arduinoInstall + "/hardware/tools/avr/bin";
 }
 
 //-----------------------------------------------------------------------------
@@ -85,6 +86,7 @@ void Builder::SetPercentage(int value)
 //-----------------------------------------------------------------------------
 int Builder::Build(bool upload)
 {	
+	config.avrPath = config.arduinoInstall + "/hardware/tools/avr/bin";
 	msg.ClearOutput();
 	msg.ClearBuildMessages();
 
@@ -216,7 +218,6 @@ bool Builder::Upload(void)
 #if defined(Q_OS_WIN)
 	QString confPath = config.arduinoInstall + "/hardware/tools/avr/etc/avrdude.conf";
 #elif defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    //QString confPath = "/etc/avrdude.conf";
 	QString confPath = config.arduinoInstall + "/hardware/tools/avrdude.conf";
 #endif
 	arguments << "-C" << confPath;
