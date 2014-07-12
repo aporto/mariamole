@@ -39,16 +39,19 @@ public slots:
 	void closeAllButThis(void);
 	void onEditorTextChanged(void);
 	void FormatCode(void);
-	void ShowEditorMenu(const QPoint point);
+	void ShowEditorMenu(const QPoint point);	
 
 signals:
      void codeChanged(void);
+
+protected:
+	bool eventFilter(QObject *obj, QEvent *event);
 
 private:
 	MM::TabType tabType(int index);
 	bool saveFile(int index);	
 	QMenu * context;
-
+	
 	
 };
 

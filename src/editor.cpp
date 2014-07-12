@@ -23,19 +23,85 @@ Editor::Editor(QWidget *parent)
 
 	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
 
+	context= new QMenu(this);		
+	LoadStyleSheet(context, "style_menu.css");
+	actionHelpWithThis = context->addAction("Help with this code");
+	connect(actionHelpWithThis, SIGNAL(triggered()), this, SLOT(HelpWithThis()));
+	context->addSeparator();
+	
+	QAction * action = context->addAction("Undo");
+	action->setShortcut(tr("Ctrl+Z"));
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuUndo()));
+	
+	action = context->addAction("Redo");
+	action->setShortcut(tr("Ctrl+Y"));
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuRedo()));
+	
+	context->addSeparator();
+	
+	action = context->addAction("Cut");
+	action->setShortcut(tr("Ctrl+X"));
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuCut()));
+
+	action = context->addAction("Copy");
+	action->setShortcut(tr("Ctrl+C"));
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuCopy()));
+
+	action = context->addAction("Paste");
+	action->setShortcut(tr("Ctrl+V"));
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuPaste()));
+
+	/*action = context->addAction("Delete");
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuDelete()));
+	*/
+
+	context->addSeparator();
+	
+	action = context->addAction("Select all");
+	action->setShortcut(tr("Ctrl+A"));
+	connect(action, SIGNAL(triggered()), this, SLOT(MenuSelectAll()));
+		
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
+					this,SLOT(ShowEditorMenu(const QPoint )));	
+	
+	connect(this, SIGNAL(cursorPositionChanged (int , int)), this, SLOT(cursorPositionChanged (int, int)));
+	
+	lblCursorPosition = new QLabel(this);
+	LoadStyleSheet(lblCursorPosition, "style_cursorpos.css");
+	lblCursorPosition->setVisible(true);
+
+	QVBoxLayout * vl = new QVBoxLayout(this);	
+	//QVBoxLayout * vl2 = new QVBoxLayout(this);	
+	
+	
+	int scrollbarw = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+
+
+	QHBoxLayout * hl = new QHBoxLayout(this);		
+	hl->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Fixed));
+	hl->addWidget(lblCursorPosition);
+	hl->addSpacerItem(new QSpacerItem (scrollbarw,0, QSizePolicy::Fixed, QSizePolicy::Fixed));
+	vl->addLayout(hl);
+	vl->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Fixed,QSizePolicy::Expanding ));
+	
+	//hl->addLayout(vl2);		
+	//vl2->addWidget(lblCursorPosition);
+	//vl2->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding,QSizePolicy::Expanding ));	
+	
+	//vl->addLayout(hl);		
+//	vl->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding,QSizePolicy::Expanding ));
+
+	lastModifiedTime = QDateTime::currentDateTime();
+
 	setEditorStyle();
-
-	setAttribute(Qt::WA_DeleteOnClose); 
-
-    lastModifiedTime = QDateTime::currentDateTime();
 }
 
 
 Editor::~Editor()
 {
    delete lexer;
-   //QSciScintilla::~QsciScintilla();
-   //delete api; api parent's (lexer) will delete it
+   delete actionHelpWithThis;   
 }
 
 void Editor::SetFileName(QString filename)
@@ -53,6 +119,7 @@ void Editor::setEditorStyle (void)
 	//QFont font ("Consolas", 14, QFont::Normal, false);
 	QFont font (config.editorFontName, config.editorFontSize, QFont::Normal, false);
 
+	lblCursorPosition->setFont(font);
 	QFontMetrics fontMetrics(font);
 
     //QColor backColor = QColor(22, 30, 32);
@@ -318,4 +385,88 @@ bool Editor::Save(void)
 void Editor::Configure(void)
 {
 	setEditorStyle();
+}
+
+void Editor::ShowEditorMenu(const QPoint point)
+{
+	if (GetRefenceForWordUnderCursor() != "") {
+		int line, index;
+		getCursorPosition(&line, &index);
+		QString word = wordAtLineIndex(line, index);// wordAtPoint(mapToGlobal(QCursor::pos()));
+		actionHelpWithThis->setText("Help with this code: " + word);
+		actionHelpWithThis->setVisible(true);
+	} else {
+		actionHelpWithThis->setText("Help with this code");
+		actionHelpWithThis->setVisible(false);
+	}
+
+	context->popup(mapToGlobal(point));
+}
+
+QString Editor::GetRefenceForWordUnderCursor(void)
+{
+	int line, index;
+	getCursorPosition(&line, &index);
+	QString word = wordAtLineIndex(line, index);// wordAtPoint(mapToGlobal(QCursor::pos()));
+	if (word != "") {
+		QString fileName = (word + ".html").toUpper();
+		QDir dir(config.arduinoInstall + "/reference");
+		if (dir.entryList().contains(fileName, Qt::CaseInsensitive)) {
+			for (int i=0; i < dir.entryList().count(); i++) {
+				if (dir.entryList().at(i).toUpper() == fileName) {
+					return config.arduinoInstall + "/reference/" + dir.entryList().at(i);
+				}
+			}
+		}
+	}
+
+	return "";
+}
+void Editor::HelpWithThis(void)
+{
+	QString file = GetRefenceForWordUnderCursor();
+	if (file != "") {
+		QDesktopServices::openUrl(QUrl(file));
+	}
+//	QString word = wordAtPosition (();
+}
+
+void Editor::MenuUndo(void)
+{
+	undo();
+}
+
+void Editor::MenuRedo(void)
+{
+	redo();
+}
+
+void Editor::MenuCut(void)
+{
+	cut();
+}
+
+void Editor::MenuCopy(void)
+{
+	copy();
+}
+
+void Editor::MenuPaste(void)
+{
+	paste();
+}
+
+/*void Editor::MenuDelete(void)
+{
+	this->era
+}*/
+
+void Editor::MenuSelectAll(void)
+{
+	selectAll();
+}
+
+void Editor::cursorPositionChanged (int line, int index) 
+{
+	lblCursorPosition->setText("lin:" + QString::number(line) + ", col:" + QString::number(index));
 }

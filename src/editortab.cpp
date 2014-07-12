@@ -18,15 +18,50 @@ EditorTab::EditorTab(QWidget *parent)
 	action = context->addAction("Close all but this");
 	connect(action, SIGNAL(triggered()), this, SLOT(closeAllButThis()));
 
-    setAttribute(Qt::WA_DeleteOnClose);
+	tabBar()->installEventFilter( this );
 
-    //projectContext->addAction(action);
-	//projectContext->addSeparator();
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 EditorTab::~EditorTab()
 {
     closeAll();
+}
+
+bool EditorTab::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj != tabBar()) {
+	    return QObject::eventFilter(obj, event);
+	}
+     
+    if (event->type() != QEvent::MouseButtonPress) {
+		return QObject::eventFilter(obj, event);
+	}
+     
+    // compute the tab number
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    QPoint position = mouseEvent->pos();
+    int c = tabBar()->count();
+    int clickedItem = -1;
+     
+    for (int i=0; i<c; i++) {
+	    if ( tabBar()->tabRect(i).contains( position ) ) {
+		    clickedItem = i;
+			break;
+		}
+    }     
+    if (clickedItem == -1) {
+		return QObject::eventFilter(obj, event);
+	}
+
+    if (mouseEvent->button() == Qt::RightButton) {
+		this->setCurrentIndex(clickedItem);     
+		QPoint point = mapToGlobal(position);
+		context->popup(point);
+		return true;
+	}
+
+	return QObject::eventFilter(obj, event);
 }
 
 MM::TabType EditorTab::tabType(int index)
@@ -131,9 +166,6 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		addTab(textEdit, QFileInfo(filename).fileName());
 		setCurrentIndex(count() - 1);		
 
-		connect(textEdit, SIGNAL(customContextMenuRequested(const QPoint &)),
-					this,SLOT(ShowEditorMenu(const QPoint )));
-		textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
 
 		QApplication::restoreOverrideCursor();
 	}
@@ -182,9 +214,9 @@ void EditorTab::closeTab(int index)
     }
 
 	// removeTab doesnt delete the widget
+	QWidget * w = widget(index);
 	this->removeTab(index);
-#if !defined(Q_OS_LINUX2)
-    QWidget * w = widget(index);
+#ifndef Q_OS_LINUX    
 	delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
 #endif
 }
@@ -312,3 +344,5 @@ void EditorTab::closeAllButThis(void)
 		closeTab(1);
 	}
 }
+
+

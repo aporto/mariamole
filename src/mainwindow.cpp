@@ -243,7 +243,7 @@ void MainWindow::EditProjectProperties(void)
 	}
 
 	if (workspace.GetCurrentProject()->name == item->text(0)) {
-		ProjectProperties * prop = new ProjectProperties();
+		ProjectProperties * prop = new ProjectProperties(this);
 		if (prop->Edit(workspace.GetCurrentProject())) {
 			workspace.GetCurrentProject()->rebuild = true;
 			SetProjectModified();
@@ -484,17 +484,19 @@ void MainWindow::OpenWorkspaceFolder(void)
 
 void MainWindow::ImportLibrary(void)
 {	
-	if (workspace.GetCurrentProject() == NULL) {
+	Project * project = GetSelectedProject();
+	if (project == NULL) {
+		ErrorMessage("You need to create a new project first");
 		return;
 	}
-
-	Wizard * wizard = new Wizard();
-	bool ok = wizard->ImportLibrary();	
+	
+	Wizard * wizard = new Wizard(this);
+	bool ok = wizard->ImportLibrary(project->name);	
 	
 	if (ok) {
 		QString libName = wizard->GetLibraryName();
 		if (libName != "") {
-			workspace.ImportLibrary(workspace.GetCurrentProject(), libName);
+			workspace.ImportLibrary(project, libName);
 		}
 		SetProjectModified();
 		AdjustWorkspaceTree();
@@ -503,17 +505,18 @@ void MainWindow::ImportLibrary(void)
 	delete wizard;	
 }
 
-
 //-----------------------------------------------------------------------------
 
 void MainWindow::AddNewFileToProject(void)
 {
-	if (workspace.GetCurrentProject() == NULL) {
+	Project * project = GetSelectedProject();
+	if (project == NULL) {
 		ErrorMessage("You need to create a new project first");
 		return;
 	}
-	Wizard * wizard = new Wizard();
-	bool ok = wizard->NewFile();	
+
+	Wizard * wizard = new Wizard(this);
+	bool ok = wizard->NewFile(project);	
 	
 	if (ok) {
 		QString file = wizard->GetNewFileName();
@@ -529,11 +532,11 @@ void MainWindow::AddNewFileToProject(void)
 	
 void MainWindow::AddNewProject(void)
 {
-	Wizard * wizard = new Wizard();
+	Wizard * wizard = new Wizard(this);
 	bool ok = wizard->NewProject();
 	delete wizard;
 	if (ok) {
-		ProjectProperties * prop = new ProjectProperties();
+		ProjectProperties * prop = new ProjectProperties(this);
 		prop->Edit(workspace.GetCurrentProject());
 		delete prop;
 		SetProjectModified();
@@ -545,7 +548,7 @@ void MainWindow::AddNewProject(void)
 
 void MainWindow::ConfigureCurrentProject(void)
 {
-    ProjectProperties * prop = new ProjectProperties();
+    ProjectProperties * prop = new ProjectProperties(this);
     prop->Edit(workspace.GetCurrentProject());
     delete prop;
 	AdjustWorkspaceTree();
@@ -710,7 +713,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::SetWorkspacePath(void)
 {
-	SetWorkspace * setWorkspace = new SetWorkspace();
+	SetWorkspace * setWorkspace = new SetWorkspace(this);
 	if (setWorkspace->Select()) {
 		tabsEditor->closeAll();
 		OpenWorkspace();
@@ -1002,7 +1005,7 @@ void MainWindow::OnProjectModified(void)
 
 void MainWindow::ShowAboutWindow(void)
 {
-	About * about = new About(this);
+	About * about = new About(NULL);
 	about->Display();	
 }
 
@@ -1265,6 +1268,27 @@ void MainWindow::StartBurnBootloader(void)
 	}
 	delete select;	
 }
+
+//-----------------------------------------------------------------------------
+
+// Get the currently selected project on tree
+Project * MainWindow::GetSelectedProject(void)
+{
+	if (ui.tree->hasFocus()) {
+		if (ui.tree->selectedItems().count() != 1) {
+			return NULL;
+		}
+	
+		QTreeWidgetItem * item = ui.tree->selectedItems().at(0);
+		if (item->data(0,255) != WorskspaceTree::Project) {
+			return NULL;
+		}
+		return workspace.FindProject(item->text(0));
+	}
+	return workspace.GetCurrentProject();
+}
+
+//-----------------------------------------------------------------------------
 
 /*
 

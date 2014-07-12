@@ -155,7 +155,7 @@ void Wizard::btnFinishClicked(void)
 		if (ui.ebNewFile->text().trimmed().at(0) == '.') {
 			return;
 		}
-		newFile = config.workspace + "/" + workspace.GetCurrentProject()->name + "/source/" + ui.ebNewFile->text();
+		newFile = config.workspace + "/" + currentProject->name + "/source/" + ui.ebNewFile->text();
 		if (ui.rbCppFile->isChecked() ) {
 			newFile += ".cpp";
 		} else if (ui.rbCFile->isChecked() ) {
@@ -163,7 +163,7 @@ void Wizard::btnFinishClicked(void)
 		} else {
 			newFile += ".h";
 		}
-		if (workspace.AddNewFile(newFile)) {
+		if (workspace.AddNewFile(currentProject->name, newFile)) {
 			ok = true;
 			close();			
 		}
@@ -200,9 +200,10 @@ bool Wizard::Display(void)
 
 //-----------------------------------------------------------------------------
 
-bool Wizard::NewFile(void)
+bool Wizard::NewFile(Project * project)
 {
-	ui.lblTitle->setText("Create a new file:");
+	currentProject = project;
+	ui.lblTitle->setText("Add a new file to '" + project->name +"':");
 	
 	ui.stackedWidget->setCurrentIndex(5);
 	ui.btnCancel->setEnabled(true);
@@ -257,14 +258,14 @@ bool Wizard::NewProject(void)
 
 //-----------------------------------------------------------------------------
 
-bool Wizard::ImportLibrary(void)
+bool Wizard::ImportLibrary(QString projectName)
 {
 	ui.stackedWidget->setCurrentIndex(1);
 	ui.btnCancel->setEnabled(true);
 	ui.btnFinish->setEnabled(false);
 	ui.btnPrevious->setEnabled(false);
 	ui.btnNext->setEnabled(false);
-	ui.lblTitle->setText("Import library:");
+	ui.lblTitle->setText("Import library to '" + projectName + "':");
 
 	PopulateLibrariesList();
 

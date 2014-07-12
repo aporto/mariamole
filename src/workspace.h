@@ -31,7 +31,7 @@ public:
 	bool Save(void);
 	bool SetCurrentProject(QString projectName);
 	bool AddProject(QString name, QString importSketch);
-	bool AddNewFile(QString fullPath);
+	bool AddNewFile(QString projectName, QString fullPath);
 	bool IsModified(void);
 	Project * GetCurrentProject(void);
 	QString GetFullFilePath(QString projectName, QString filename);
@@ -42,6 +42,7 @@ public:
 	void RemoveProject(QString projectName);
 	void RenameProject(QString projectName);
 	void ExportProjectToSketch(QString projectName, QString path);
+	Project * FindProject(QString name);	
 
 	vector <Project> projects;
 
@@ -52,7 +53,7 @@ private:
 	bool CopyFileToProject(QString input, QString outoput, Project * project);	
 	void ImportLibraryFilesRecursively(Project * project, QString path, QString libPath);
 	void ImportFilesFromSketchDirectory(Project * project, QString sketchPath);
-	Project * FindProject(QString name);	
+	
 	
 };
 

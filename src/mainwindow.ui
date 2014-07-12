@@ -21,7 +21,17 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMenu {
+   <string notr="true"/>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonTextBesideIcon</enum>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="styleSheet">
+    <string notr="true">QMenu {
      background-color: rgb(52, 60, 62); 
      border: 1px solid black;
 	 color: rgb(140, 140, 140);
@@ -98,14 +108,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     background: none;
 }</string>
-  </property>
-  <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonTextBesideIcon</enum>
-  </property>
-  <property name="unifiedTitleAndToolBarOnMac">
-   <bool>false</bool>
-  </property>
-  <widget class="QWidget" name="centralWidget">
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
      <number>0</number>
@@ -823,7 +826,7 @@ padding: 5px;</string>
      <x>0</x>
      <y>0</y>
      <width>1112</width>
-     <height>20</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="styleSheet">

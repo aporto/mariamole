@@ -432,9 +432,9 @@ QString Workspace::GetFullFilePath(QString projectName, QString filename)
 
 //-----------------------------------------------------------------------------
 
-bool Workspace::AddNewFile(QString fullPath)
+bool Workspace::AddNewFile(QString projectName, QString fullPath)
 {
-	Project * project = GetCurrentProject();
+	Project * project = FindProject(projectName); //GetCurrentProject();
 	if (project == NULL) {
 		return false;
 	}

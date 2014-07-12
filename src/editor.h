@@ -4,10 +4,17 @@
 
 #include <qwidget.h>
 #include <QFileInfo>
+#include <QLabel>
 #include <QTextStream>
 #include <QApplication>
 #include <QColor>
+#include <QMenu>
 #include <QDateTime>
+#include <QDesktopServices>
+#include <QSpacerItem>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QStyle>
 //QScintilla
 #include <Qsci/qsciscintilla.h>
 #include <Qsci/qscilexercpp.h>
@@ -32,7 +39,16 @@ public:
 	void Configure(void);
 
 public slots:
-    //void onCursorPositionChanged(int line, int index);
+    void ShowEditorMenu(const QPoint point);
+	void HelpWithThis(void);
+	void MenuUndo(void);
+	void MenuRedo(void);
+	void MenuCut(void);
+	void MenuCopy(void);
+	void MenuPaste(void);
+	//void MenuDelete(void);
+	void MenuSelectAll(void);
+	void cursorPositionChanged (int line, int index); 
 
 protected: 
 	void focusInEvent ( QFocusEvent * event );
@@ -43,9 +59,13 @@ private:
     QsciLexerCPP *lexer;
 	QString file;
     QDateTime lastModifiedTime;
+	QMenu * context;
+	QAction * actionHelpWithThis;
+	QLabel * lblCursorPosition;
 	
 	void SetFileName(QString filename);
 	void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);
+	QString GetRefenceForWordUnderCursor(void);
 };
 
 #endif // EDITOR_H

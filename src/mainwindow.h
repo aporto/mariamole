@@ -109,7 +109,7 @@ private:
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);
 	void SetProjectModified(void);
-	
+	Project * GetSelectedProject(void);
 };
 
 #endif // MAINWINDOW_H

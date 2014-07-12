@@ -26,9 +26,9 @@ public:
 	Wizard(QWidget *parent = 0);
 	~Wizard();
 
-	bool NewFile(void);
+	bool NewFile(Project * project);
 	QString GetNewFileName(void);
-	bool ImportLibrary(void);
+	bool ImportLibrary(QString projectName);
 	bool NewProject(void);	
 	QString GetLibraryName(void);
 
@@ -57,6 +57,9 @@ private slots:
 	void listLibsClicked (QListWidgetItem * item);
 	void examplesTreeClicked (QTreeWidgetItem * item, int column);
 	void OnSelectSketchFile(void);
+
+private:
+	Project * currentProject;
 
 };
 
