@@ -14,13 +14,10 @@ QSerialSelector::~QSerialSelector()
 
 void QSerialSelector::focusInEvent(QFocusEvent * e)
 {
-#ifndef Q_OS_WIN
-	// this is not working on windows, but takes a long time to run only on linux, so...
 	if (e->reason() != Qt::MouseFocusReason) {
 		QComboBox::focusInEvent(e);
 		return;
 	}	
-#endif	
     QString curr = "N/A";
 	if (currentIndex() >= 0) {
 		curr = itemText(currentIndex());

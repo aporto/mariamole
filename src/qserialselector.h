@@ -2,6 +2,7 @@
 #define QSERIALSELECTOR_H
 
 #include <QWidget>
+#include <QFocusEvent>
 #include <QComboBox>
 #include "ui_qserialselector.h"
 #include <QtSerialPort/QSerialPortInfo>
