@@ -17,7 +17,10 @@ EditorTab::EditorTab(QWidget *parent)
 	connect(action, SIGNAL(triggered()), this, SLOT(closeThis()));
 	action = context->addAction("Close all but this");
 	connect(action, SIGNAL(triggered()), this, SLOT(closeAllButThis()));
-	//projectContext->addAction(action);
+
+    setAttribute(Qt::WA_DeleteOnClose);
+
+    //projectContext->addAction(action);
 	//projectContext->addSeparator();
 }
 
@@ -180,7 +183,7 @@ void EditorTab::closeTab(int index)
 
 	// removeTab doesnt delete the widget
 	this->removeTab(index);
-#if !defined(Q_OS_LINUX)
+#if !defined(Q_OS_LINUX2)
     QWidget * w = widget(index);
 	delete w; // For some reason, this is causing a segfault on Linux. Data can't be freed for while :(
 #endif

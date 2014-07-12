@@ -79,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
     builder = new Builder(this);
 	builder->setVisible(false);
     launcher = new Launcher(this);	
+
 }
 
 //-----------------------------------------------------------------------------

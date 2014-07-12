@@ -423,13 +423,13 @@ void Wizard::ListExamples(QStringList &examples)
 
 	examples.clear();	
 	for (int i=0; i < paths.size(); i++) {		
-		GetExamplesDirectoriesRecursivelly(config.DecodeMacros(paths[i], NULL), examples);				
+        GetExamplesDirectoriesRecursivelly(0, config.DecodeMacros(paths[i], NULL), examples);
 	}
 }
 
 //-----------------------------------------------------------------------------
 
-void Wizard::GetExamplesDirectoriesRecursivelly(QString path, QStringList &examples)
+void Wizard::GetExamplesDirectoriesRecursivelly(int level, QString path, QStringList &examples)
 {
 	QDir dir(path);    
 	QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries); 
@@ -443,7 +443,9 @@ void Wizard::GetExamplesDirectoriesRecursivelly(QString path, QStringList &examp
 				baseName = QFileInfo(baseName).fileName();
 				GetExamplesNamesRecursivelly(baseName, currentPath, examples);
 			} else {
-				GetExamplesDirectoriesRecursivelly(path + "/" + dirName, examples);
+                if (level < 2) { // limit the maximum depth for seaching on directories tree. Arduino examples shall be up to the 2nd level. Any 'examples' folder found beyond that is something else, and shall be ignored
+                    GetExamplesDirectoriesRecursivelly(level + 1, path + "/" + dirName, examples);
+                }
 			}
 		}
 	}

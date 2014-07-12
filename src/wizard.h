@@ -41,7 +41,7 @@ private:
 	void PopulateLibrariesList(void);
 	void PopulateExamplesTree(void);
 	void ListExamples(QStringList &examples);	
-	void GetExamplesDirectoriesRecursivelly(QString path, QStringList &examples);
+    void GetExamplesDirectoriesRecursivelly(int level, QString path, QStringList &examples);
 	void GetExamplesNamesRecursivelly(QString hierarchy, QString path, QStringList &examples);
 	bool CreateTheSelectedProject(void);
 	
