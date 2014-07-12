@@ -823,7 +823,7 @@ padding: 5px;</string>
      <x>0</x>
      <y>0</y>
      <width>1112</width>
-     <height>26</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -864,6 +864,8 @@ padding: 5px;</string>
     </property>
     <addaction name="actionAdd_a_new_project"/>
     <addaction name="separator"/>
+    <addaction name="actionImport_arduino_library"/>
+    <addaction name="separator"/>
     <addaction name="actionRename_project"/>
     <addaction name="actionRemove_project"/>
     <addaction name="actionExport_to_sketch"/>
@@ -871,8 +873,8 @@ padding: 5px;</string>
     <addaction name="actionProject_configurations"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_serial_port_2"/>
-    <addaction name="actionClean_current_project"/>
     <addaction name="actionBuild_project"/>
+    <addaction name="actionClean_current_project"/>
     <addaction name="actionBuild_and_upload_project"/>
    </widget>
    <widget class="QMenu" name="menuHelp">

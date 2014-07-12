@@ -54,6 +54,7 @@ SOURCES += \
     ../../src/mm_utils.cpp \
     ../../src/preferences.cpp \
     ../../src/project.cpp \
+    ../../src/qserialselector.cpp \
     ../../src/projectproperties.cpp \
     ../../src/serialmonitor.cpp \
     ../../src/setworkspace.cpp \
@@ -76,6 +77,7 @@ HEADERS  += \
     ../../src/mm_utils.h \
     ../../src/preferences.h \
     ../../src/project.h \
+    ../../src/qserialselector.h \
     ../../src/projectproperties.h \
     ../../src/serialmonitor.h \
     ../../src/setworkspace.h \
@@ -89,6 +91,7 @@ FORMS    += \
     ../../src/getuserstring.ui \
     ../../src/mainwindow.ui \
     ../../src/preferences.ui \
+    ../../src/qserialselector.ui \
     ../../src/projectproperties.ui \
     ../../src/serialmonitor.ui \
     ../../src/setworkspace.ui \
