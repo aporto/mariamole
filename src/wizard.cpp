@@ -415,16 +415,12 @@ QString Wizard::GetSelectedExamplePath(void)
 
 void Wizard::ListExamples(QStringList &examples)
 {
-	//QString allPaths = qApp->applicationDirPath() + "/arduino/arduino";
-	QString allPaths = config.arduinoInstall  + "/examples";
+	QString allPaths = config.arduinoInstall;//  + "/examples";
 	allPaths +=";" + config.extraArduinoLibsSearchPaths;
 	
 	QStringList paths;
 	paths = allPaths.split(";");
 
-	//paths.append("C:/docs/Programas/lixo/original/");
-	//paths.append("C:/docs/Programas/lixo/libraries/");
-	//paths.append("C:/docs/lixo2/libraries");
 	examples.clear();	
 	for (int i=0; i < paths.size(); i++) {		
 		GetExamplesDirectoriesRecursivelly(config.DecodeMacros(paths[i], NULL), examples);				

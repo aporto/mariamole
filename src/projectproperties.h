@@ -23,7 +23,8 @@ public:
 		void Cancel(void);
 		void DisableProgrammer(void);
 		void EnableProgrammer(void);
-		void OnSerialPortSelected(int index);
+		//void OnSerialPortSelected(int index);
+		//void OnSerialPortGetFocus(QFocusEvent * e);
 		
 
 private:

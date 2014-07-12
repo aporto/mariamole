@@ -14,7 +14,9 @@ ProjectProperties::ProjectProperties(QWidget *parent)
 	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
 		this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
 
-    connect(ui.cbSerialPort, SIGNAL(activated(int)), this, SLOT(OnSerialPortSelected(int)));
+    //connect(ui.cbSerialPort, SIGNAL(activated(int)), this, SLOT(OnSerialPortSelected(int)));
+
+	//bool c = connect(ui.cbSerialPort, SIGNAL(focusInEvent(QFocusEvent *)), this, SLOT(OnSerialPortGetFocus(QFocusEvent *)));
 }
 
 //-----------------------------------------------------------------------------
@@ -98,14 +100,20 @@ bool ProjectProperties::Edit(Project * project)
     // get list of serial ports
 	ui.cbSerialPort->clear();	
     ui.cbSerialPort->addItem("N/A");
-    OnSerialPortSelected(0);
 	ui.cbSerialPort->setCurrentIndex(0);
+
+	if (project->serialPort != "") {
+		ui.cbSerialPort->addItem(project->serialPort);
+		ui.cbSerialPort->setCurrentIndex(1);
+	}
+    //OnSerialPortSelected(0);
+	/*ui.cbSerialPort->setCurrentIndex(0);
 	for (int i=0; i < ui.cbSerialPort->count(); i++) {
 		if (project->serialPort == ui.cbSerialPort->itemText(i)) {
 			ui.cbSerialPort->setCurrentIndex(i);
 		}
     }
-
+	*/
 	// populate programmers list
 	ui.cbExternalProgrammer->clear();
 	map <QString, ProgrammerDef>::iterator prog;
@@ -153,54 +161,7 @@ bool ProjectProperties::Edit(Project * project)
 
 //-----------------------------------------------------------------------------
 
-void ProjectProperties::OnSerialPortSelected(int index)
-{
-    QString curr = "N/A";
-	if (ui.cbSerialPort->currentIndex() >= 0) {
-		curr = ui.cbBoardName->itemText(ui.cbBoardName->currentIndex());
-	}
+//void ProjectProperties::OnSerialPortSelected(int index)
+//void ProjectProperties::OnSerialPortGetFocus(QFocusEvent * e)
 
-	QSerialPortInfo serial;
-
-	// add all new serial ports
-	for (int i=0; i < serial.availablePorts().count();i++) {
-		bool exists = false;
-		for (int j=0; j < ui.cbSerialPort->count(); j++) {
-			if (ui.cbSerialPort->itemText(j) == serial.availablePorts().at(i).portName()) {
-				exists = true;
-				break;
-			}
-		}
-		if (exists == false) {
-			ui.cbSerialPort->addItem(serial.availablePorts().at(i).portName());
-		}
-	}
-
-	// remove all serial ports that no longer exist 
-	int j = 0;
-	while (j < ui.cbSerialPort->count()) {
-		bool exists = false;
-		for (int i=0; i < serial.availablePorts().count();i++) {
-			QString pName = serial.availablePorts().at(i).portName();
-			QString cName = ui.cbSerialPort->itemText(j);
-			if ( (cName == pName) || (cName == "N/A") ){
-				exists = true;
-				break;
-			}
-		}
-		if (exists == false) {
-			ui.cbSerialPort->removeItem(j);
-		} else {
-			j++;
-		}
-	}
-
-	// retorna a escolher o item que ja existia
-    /*ui.cbSerialPort->setCurrentIndex(0);
-	for (int i=0; i < ui.cbSerialPort->count(); i++) {
-		if (curr == ui.cbSerialPort->itemText(i)) {
-			ui.cbSerialPort->setCurrentIndex(i);
-		}
-    }*/
-}
 

@@ -36,7 +36,6 @@ int Config::Load(void)
 	includePaths = settings.value("includePaths", "").toString();
 	libPaths = settings.value("libPaths", "").toString();
 	libs = settings.value("libs", "").toString();
-	//arduinoCoreOpt = settings.value("arduinoCoreOpt", "").toString();
 	
     uploadTimeout = settings.value("uploadTimeout", 30).toInt();
 
@@ -61,15 +60,7 @@ int Config::Load(void)
     configPath = "/etc/mariamole/config";    
 #endif
 
-//#ifdef Q_OS_WIN
     avrPath = settings.value("avrPath", arduinoInstall + "/hardware/tools/avr/bin").toString();
-//#endif
-
-//#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-//    avrPath = settings.value("avrPath","/usr/bin/").toString(); //MUST BE CHANGED, SHOULD NOT USE ANY HARDCODED PATH
-    //qDebug() << "avrPath: " << avrPath;
-    //qDebug() << "appPath: " << appPath;
-//#endif
     settings.endGroup();
 	
 	settings.beginGroup("arduino");
@@ -99,12 +90,13 @@ int Config::Load(void)
 
 int Config::LoadHardwareDefinitions(void)
 {
-	//QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
-	//										QDir::separator() + "hardware.xml");
-
 	QString filepath= configUserPath + "/hardware.xml";
+	
 	if(!QFile::exists(filepath)) {
 		filepath = configPath + "/hardware.xml";
+	}
+	if(!QFile::exists(filepath)) {
+		filepath = appPath + "/config/hardware.xml";
 	}
 
 	qDebug() << "Loading " << filepath;

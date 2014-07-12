@@ -186,9 +186,6 @@ void EditorTab::closeTab(int index)
 #endif
 }
 
-
-
-
 //check if all files are saved
 bool EditorTab::allSaved(void)
 {

@@ -25,6 +25,8 @@ Editor::Editor(QWidget *parent)
 
 	setEditorStyle();
 
+	setAttribute(Qt::WA_DeleteOnClose); 
+
     lastModifiedTime = QDateTime::currentDateTime();
 }
 

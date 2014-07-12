@@ -104,7 +104,7 @@
             <string>Serial port (Select any port to refresh this list)</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="cbSerialPort">
+          <widget class="QSerialSelector" name="cbSerialPort">
            <property name="geometry">
             <rect>
              <x>22</x>
@@ -200,6 +200,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QSerialSelector</class>
+   <extends>QComboBox</extends>
+   <header location="global">qserialselector.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
