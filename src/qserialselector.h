@@ -4,8 +4,9 @@
 #include <QWidget>
 #include <QFocusEvent>
 #include <QComboBox>
-#include "ui_qserialselector.h"
+
 #include <QtSerialPort/QSerialPortInfo>
+#include "ui_qserialselector.h"
 
 class QSerialSelector : public QComboBox
 {
