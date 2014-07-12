@@ -26,7 +26,8 @@ public:
 	int portIndex(QString port);
 	bool openFile(QString filename, int highlightLine=-1);	
 	bool openSerialPort(QString port, QString speed);	
-	bool saveAllFiles(void);	
+    bool saveAllFiles(void);
+    bool allSaved(void);
 	void closeAll(void);	
 	void EnableAllSerialPorts(bool enable);
 	void ConfigureAllTabs(void);

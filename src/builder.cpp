@@ -242,7 +242,7 @@ bool Builder::Upload(void)
 	if (communication == "serial") {
 		if (board->second.name == "Arduino Leonardo") {
 			QString leoPort = GetLeonardoSerialPort(project->serialPort);
-			arguments << "-P\\\\.\\" + leoPort;
+            //arguments << "-P\\\\.\\" + leoPort;
 
 #ifdef Q_OS_WIN
             arguments << "-P\\\\.\\" + leoPort;

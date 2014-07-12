@@ -333,7 +333,7 @@ void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, Q
 		if (files.at(f).isDir()) {
 			QString pref = files.at(f).fileName();
 			if (pref.toUpper() != "EXAMPLES") {
-				ImportLibraryFilesRecursively(project, path + "/" + pref, libPath);
+                ImportLibraryFilesRecursively(project, path + "/" + pref, libPath);
 				//ok = ok & ImportLibrary(project, libPath + "/" + pref, pref + "/");
 			}
 		} else {
