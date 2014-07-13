@@ -21,8 +21,6 @@ Editor::Editor(QWidget *parent)
     setAutoCompletionThreshold(1);
     setAutoCompletionSource(QsciScintilla::AcsAll);
 
-	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
-
 	context= new QMenu(this);		
 	LoadStyleSheet(context, "style_menu.css");
 	actionHelpWithThis = context->addAction("Help with this code");
@@ -62,10 +60,8 @@ Editor::Editor(QWidget *parent)
 	connect(action, SIGNAL(triggered()), this, SLOT(MenuSelectAll()));
 		
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
-					this,SLOT(ShowEditorMenu(const QPoint )));	
-	
-	connect(this, SIGNAL(cursorPositionChanged (int , int)), this, SLOT(cursorPositionChanged (int, int)));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,SLOT(ShowEditorMenu(const QPoint )));		
+	connect(this, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(onCursorPositionChanged(int, int)));
 	
 	lblCursorPosition = new QLabel(this);
 	LoadStyleSheet(lblCursorPosition, "style_cursorpos.css");
@@ -205,12 +201,6 @@ void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool
 	lexer->setColor(foreground, style);
 	lexer->setPaper(background, style);		
 }
-
-
-/*void Editor::onCursorPositionChanged(int line, int index)
-{
-
-}*/
 
 void Editor::mousePressEvent ( QMouseEvent * event )
 {
@@ -459,7 +449,7 @@ void Editor::MenuSelectAll(void)
 	selectAll();
 }
 
-void Editor::cursorPositionChanged (int line, int index) 
+void Editor::onCursorPositionChanged (int line, int index) 
 {
 	lblCursorPosition->setText("lin:" + QString::number(line) + ", col:" + QString::number(index));
 }

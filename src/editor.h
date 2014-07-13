@@ -48,7 +48,7 @@ public slots:
 	void MenuPaste(void);
 	//void MenuDelete(void);
 	void MenuSelectAll(void);
-	void cursorPositionChanged (int line, int index); 
+	void onCursorPositionChanged (int line, int index); 
 
 protected: 
 	void focusInEvent ( QFocusEvent * event );

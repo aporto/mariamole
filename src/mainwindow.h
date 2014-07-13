@@ -83,7 +83,7 @@ public slots:
 	void ExportToSketch(void);
 	void EditPreferences(void);
 	void StartBurnBootloader(void);
-
+	void AdjustWorkspaceTree(void);
 	void OnSearchKeyPress(const QString&);
 	void OnSearchGO(void);
 	
@@ -104,8 +104,7 @@ private:
 
 	void CreateMainMenuContext(void);
 	void CreateTreeContextMenu(void);
-	void OpenWorkspace(void);
-	void AdjustWorkspaceTree(void);
+	void OpenWorkspace(void);	
     void AdjustProjectFilesOnTree(int pwi, QTreeWidgetItem *);
     void setupActions(void);
 	void SetProjectModified(void);
