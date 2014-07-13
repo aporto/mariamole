@@ -85,13 +85,6 @@ Editor::Editor(QWidget *parent)
 	vl->addLayout(hl);
 	vl->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Fixed,QSizePolicy::Expanding ));
 	
-	//hl->addLayout(vl2);		
-	//vl2->addWidget(lblCursorPosition);
-	//vl2->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding,QSizePolicy::Expanding ));	
-	
-	//vl->addLayout(hl);		
-//	vl->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding,QSizePolicy::Expanding ));
-
 	lastModifiedTime = QDateTime::currentDateTime();
 
 	setEditorStyle();
