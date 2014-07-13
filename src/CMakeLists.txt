@@ -11,10 +11,6 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 find_package(Qt5Core)
 
-
-## Pre compiler flags: Define git version
-add_definitions(-DGIT_VERSION=$ENV{GIT_VERSION})
-
 ## Compiler flags
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC -O2")        ## Optimize
