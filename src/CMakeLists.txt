@@ -1,9 +1,8 @@
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
-
+EXEC_PROGRAM(bash ARGS ${PROJECT_SOURCE_DIR}/src/get_git_version_unix.sh > ${PROJECT_SOURCE_DIR}/src/git_version.h)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
@@ -16,6 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC -O2")        ## Optimize
     set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
 endif()
+
+
 
 
 

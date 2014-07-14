@@ -37,13 +37,13 @@ int Config::Load(void)
 	libPaths = settings.value("libPaths", "").toString();
 	libs = settings.value("libs", "").toString();
 	
-    uploadTimeout = settings.value("uploadTimeout", 30).toInt();
+  uploadTimeout = settings.value("uploadTimeout", 30).toInt();
 
 #ifdef Q_OS_WIN
 	arduinoInstall = settings.value("arduinoInstall", appPath +"/arduino").toString();
 #endif
 
-#ifdef Q_OS_MAC	
+#ifdef Q_OS_LINUX	
 	arduinoInstall = settings.value("arduinoInstall", "/usr/share/arduino").toString();
 #endif
 
