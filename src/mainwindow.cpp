@@ -427,7 +427,7 @@ void MainWindow::setupActions()
 	connect (ui.actionRemove_project, SIGNAL(triggered()), this, SLOT(RemoveProject()));
 	connect (ui.actionExport_to_sketch, SIGNAL(triggered()), this, SLOT(ExportToSketch()));
 	
-	connect (ui.actionRefresh_workspace_tree, SIGNAL(triggered()), this, SLOT(AdjustWorkspace()));
+	connect (ui.actionRefresh_workspace_tree, SIGNAL(triggered()), this, SLOT(AdjustWorkspaceTree()));
 	
 	connect (ui.actionFormat_code, SIGNAL(triggered()), tabsEditor, SLOT(FormatCode()));
 	

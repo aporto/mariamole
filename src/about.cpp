@@ -16,6 +16,7 @@ About::~About()
 void About::Display(void)
 {
 	ui.treeWidget->expandAll();
+	ui.lblVersion->setText(QString("Version: ") + GIT_VERSION_STRING);
 	this->setModal(true);
 	show();	
 }

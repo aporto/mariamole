@@ -4,7 +4,6 @@ QTabWidget{
  
  QTabWidget::pane { /* The tab widget frame */
      border-top: 1px solid rgb(35, 43, 50);	 
-	 _eee: rgb(25, 40,50);
 	border-bottom: none;
  }
 
@@ -18,7 +17,6 @@ QTabWidget{
 	color: rgb(140,140, 140);
      background: rgb(35, 43, 50);
      border: 1px solid rgb(25, 40,50);
-     _border-bottom-color: #C2C7CB; /* same as the pane color */
      border-top-left-radius: 4px;
      border-top-right-radius: 4px;
      min-width: 8ex;
@@ -27,13 +25,10 @@ QTabWidget{
 
  QTabBar::tab:selected, QTabBar::tab:hover {
      background: rgb(95, 103, 110);
-	_font-weight:bold;
-
  }
 
  QTabBar::tab:selected {
 	background: rgb(60, 68, 75);
-     _border-bottom-color: #C2C7CB; /* same as pane color */
  }
 
  QMenu {
@@ -44,13 +39,11 @@ QTabWidget{
  QScrollBar:horizontal {
      border: 1px solid rgb(34, 30, 32);
 	min-height: 15px;
-     _background: rgb(20, 26, 18);
      margin: 0px 20px 0 20px;
  }
  QScrollBar:vertical {
      border: 1px solid rgb(34, 30, 32);
 	min-height: 15px;
-     _background: rgb(20, 26, 18);
      margin: 20px 0px 20px 0px;
  }
  QScrollBar::handle {

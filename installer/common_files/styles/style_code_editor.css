@@ -1,17 +1,11 @@
 QQQQWidget {
 	background-color: rgb(30, 40, 40);
-	def2: rgb(30, 38, 40); 
-	def1: rgb(22, 30, 32);
 	border: 0px solid rgb(50,50,50);
-	__selection-color: red;
-	s__election-background-color:blue;
 } 
 
 QListWidget {
 /*  auto-complete menu is a QListWidget */
 	background-color: rgb(30, 40, 40);
-	def2: rgb(30, 38, 40); 
-	def1: rgb(22, 30, 32);
 	border: 2px solid rgb(80,80,80);
 	selection-color: red;
 	selection-background-color:blue;
@@ -30,20 +24,18 @@ QListView::item:selected {
 QScrollBar:horizontal {
      border: 0px solid rgb(34, 30, 32);
 	min-height: 15px;
-     _background: rgb(20, 26, 18);
      margin: 0px 20px 0 20px;
 	background-color: rgb(24, 32, 34);
  }
  QScrollBar:vertical {
      border: 0px solid rgb(34, 30, 32);
 	min-height: 15px;
-     _background: rgb(20, 26, 18);
      margin: 20px 0px 20px 0px;
 	 background-color: rgb(24, 32, 34);
  }
  QScrollBar::handle {
-     background: rgb(44, 50, 52);     
-	 min-width: 20px;
+	background: rgb(44, 50, 52);     
+	min-width: 20px;
  }
   QScrollBar::add-line:horizontal {
 	image: url(":/MainWindow/resources/scrollbars/arrow_right.png");  
