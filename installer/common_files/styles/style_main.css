@@ -1,6 +1,5 @@
  QTabWidget::pane { /* The tab widget frame */
      border-top: 1px solid rgb(35, 43, 50);
-	 _eee: rgb(25, 40,50);
 	border-bottom: none;
  }
 
@@ -13,7 +12,6 @@
  QTabBar::tab {
      background: rgb(35, 43, 50);
      border: 1px solid rgb(25, 40,50);
-     _border-bottom-color: #C2C7CB; /* same as the pane color */
      border-top-left-radius: 4px;
      border-top-right-radius: 4px;
      min-width: 8ex;
@@ -22,13 +20,10 @@
 
  QTabBar::tab:selected, QTabBar::tab:hover {
      background: rgb(95, 103, 110);
-	_font-weight:bold;
-
  }
 
  QTabBar::tab:selected {
 	background: rgb(60, 68, 75);
-     _border-bottom-color: #C2C7CB; /* same as pane color */
  }
 
 

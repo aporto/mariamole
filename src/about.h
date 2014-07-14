@@ -3,7 +3,10 @@
 
 #include <QWidget>
 #include <QDialog>
+
 #include "ui_about.h"
+
+#include "git_version.h"
 
 class About : public QDialog
 {

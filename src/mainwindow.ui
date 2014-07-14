@@ -40,7 +40,6 @@
 QWidget {
 color:blue;
 	color:rgb(140, 140, 140);
-	bbbe: rgb(200,200,200);
 	background-color: rgb(22, 30, 32);
 	selection-background-color: rgb(68, 85, 89);
 }
@@ -53,14 +52,12 @@ background-color:blue;
 QScrollBar:horizontal {
      border: 0px solid rgb(34, 30, 32);
 	min-height: 15px;
-     _background: rgb(20, 26, 18);
      margin: 0px 20px 0 20px;
 	background-color: rgb(24, 32, 34);
  }
  QScrollBar:vertical {
      border: 0px solid rgb(34, 30, 32);
 	min-height: 15px;
-     _background: rgb(20, 26, 18);
      margin: 20px 0px 20px 0px;
 	 background-color: rgb(24, 32, 34);
  }
@@ -130,8 +127,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       <widget class="QSplitter" name="splitter">
        <property name="styleSheet">
         <string notr="true">border: 0px solid;
-background-color: rgb(22, 30, 32);
-aaa: rgb(14, 22, 24);</string>
+background-color: rgb(22, 30, 32);</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -146,8 +142,7 @@ aaa: rgb(14, 22, 24);</string>
         <property name="styleSheet">
          <string notr="true"> QTreeView {
 	background-color: rgb(22, 30, 32);
-	color:rgb(145, 157, 167);
-	_color:rgb(140,140,140);
+	color:rgb(145, 157, 167);	
 	outline: 0;
 	border-image: none;
 	border-right: 2px solid rgb(30, 38, 40);
@@ -252,7 +247,6 @@ aaa: rgb(14, 22, 24);</string>
  QTabBar::tab {
      background: rgb(45, 53,60);
      border: 1px solid rgb(55, 60,70);
-     _border-bottom-color: #C2C7CB; /* same as the pane color */
      border-top-left-radius: 4px;
      border-top-right-radius: 4px;
      min-width: 8ex;
@@ -261,13 +255,10 @@ aaa: rgb(14, 22, 24);</string>
 
  QTabBar::tab:selected, QTabBar::tab:hover {
      background: rgb(115, 123, 130);
-	_font-weight:bold;
-
  }
 
  QTabBar::tab:selected {
-          background: rgb(95, 103,110);
-     _border-bottom-color: #C2C7CB; /* same as pane color */
+          background: rgb(95, 103,110);     
  }
 </string>
        </property>
@@ -302,9 +293,7 @@ aaa: rgb(14, 22, 24);</string>
              <height>0</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">_background-color: rgb(18, 26, 28);</string>
-           </property>
+           
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -538,9 +527,8 @@ QImage {
                     </property>
                     <property name="styleSheet">
                      <string notr="true"> QProgressBar {
-     border: 2px solid grey;
-     _text-align: center;
-color:white;
+     border: 2px solid grey;     
+	color:white;
  }
 QProgressBar:horizontal {
 border: 0px solid rgb(68, 85, 89);
@@ -549,7 +537,6 @@ padding: 1px;
 }
 QProgressBar::chunk:horizontal {
 background: rgb(120, 192, 255);
-ss: rgb(69, 143, 208);
 }
 </string>
                     </property>
@@ -592,7 +579,6 @@ ss: rgb(69, 143, 208);
                     <property name="styleSheet">
                      <string notr="true"> QProgressBar {
      border: 2px solid grey;
-     _text-align: center;
 	color:white;
  }
 QProgressBar:horizontal {
@@ -602,7 +588,6 @@ padding: 1px;
 }
 QProgressBar::chunk:horizontal {
 background: rgb(235, 236, 175);
-ss: rgb(69, 143, 208);
 }
 </string>
                     </property>
@@ -645,7 +630,6 @@ ss: rgb(69, 143, 208);
                     <property name="styleSheet">
                      <string notr="true"> QProgressBar {
      border: 2px solid grey;
-     _text-align: center;
 color:white;
  }
 QProgressBar:horizontal {
@@ -654,7 +638,6 @@ background: rgb(40,48,50);padding: 1px;
 }
 QProgressBar::chunk:horizontal {
 background:rgb(176, 255, 170);
-ss: rgb(69, 143, 208);
 }
 </string>
                     </property>
@@ -902,7 +885,6 @@ padding: 5px;</string>
    <property name="styleSheet">
     <string notr="true">QToolBar {
 	color: white;
-	_background-color: rgb(22, 30, 32);
 	border:none;
 	border-bottom: 1px solid rgb(44, 52, 54);
 	border-top: 1px solid rgb(80,80,80);
