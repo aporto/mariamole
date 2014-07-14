@@ -35,9 +35,8 @@ add_executable(${CMAKE_PROJECT_NAME}
   ${RESOURCE_FILES}
 )
 
-
 if(APPLE)
-	set(LINK_LIBS "-L/Users/gduarte/Qt/5.3/clang_64/lib -F/Users/gduarte/Qt/5.3/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework QtXml -framework QtSerialPort -lqscintilla2")
+	set(LINK_LIBS "-L$ENV{HOME}/Qt/5.3/clang_64/lib -F$ENV{HOME}/Qt/5.3/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework QtXml -framework QtSerialPort -lqscintilla2")
 else()
 	set(LINK_LIBS Qt5::Widgets Qt5Xml Qt5SerialPort qt5scintilla2)
 endif(APPLE)
