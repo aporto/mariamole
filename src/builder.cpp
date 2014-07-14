@@ -215,9 +215,9 @@ bool Builder::Upload(void)
 
 	QString outputFile = buildPath + "/" + project->name + ".hex";
 	QStringList arguments;
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
 	QString confPath = config.arduinoInstall + "/hardware/tools/avr/etc/avrdude.conf";
-#elif defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#elif defined(Q_OS_LINUX)
 	QString confPath = config.arduinoInstall + "/hardware/tools/avrdude.conf";
 #endif
 	arguments << "-C" << confPath;

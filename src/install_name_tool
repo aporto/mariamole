@@ -1,3 +1,5 @@
+install_name_tool -change /Users/gduarte/Qt/5.3/clang_64/lib/QtWidgets.framework/Versions/5/QtWidgets @executable_path/../Frameworks/QtWidgets.framework/Versions/5/QtWidgets mariamole
+
 install_name_tool -change /Users/gduarte/Qt/5.3/clang_64/lib/QtGui.framework/Versions/5/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui mariamole
 
 install_name_tool -change /Users/gduarte/Qt/5.3/clang_64/lib/QtCore.framework/Versions/5/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/5/QtCore mariamole
@@ -5,3 +7,6 @@ install_name_tool -change /Users/gduarte/Qt/5.3/clang_64/lib/QtCore.framework/Ve
 install_name_tool -change /Users/gduarte/Qt/5.3/clang_64/lib/QtXml.framework/Versions/5/QtXml @executable_path/../Frameworks/QtXml.framework/Versions/5/QtXml mariamole
 
 install_name_tool -change /Users/gduarte/Qt/5.3/clang_64/lib/QtSerialPort.framework/Versions/5/QtSerialPort @executable_path/../Frameworks/QtSerialPort.framework/Versions/5/QtSerialPort mariamole
+
+
+install_name_tool -change libqscintilla2.11.dylib @executable_path/libqscintilla2.11.dylib mariamole

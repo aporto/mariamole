@@ -1,15 +1,18 @@
 #include "qserialselector.h"
 
+
 QSerialSelector::QSerialSelector(QWidget *parent)
 	: QComboBox(parent)
 {
 	ui.setupUi(this);
+
 }
 
 QSerialSelector::~QSerialSelector()
 {
 
 }
+
 
 
 void QSerialSelector::focusInEvent(QFocusEvent * e)
@@ -25,9 +28,11 @@ void QSerialSelector::focusInEvent(QFocusEvent * e)
 
 	QSerialPortInfo serial;
 	QStringList info;
-	for (int i=0; i < serial.availablePorts().count();i++) {
-		info << serial.availablePorts().at(i).portName();
-	}
+
+    foreach (const QSerialPortInfo &list, QSerialPortInfo::availablePorts()) {
+        info << list.portName();
+    }
+
 
 	// add all new serial ports
 	for (int i=0; i < info.count();i++) {
