@@ -54,28 +54,28 @@ int Config::Load(void)
 					: qApp->applicationDirPath();
 #endif		
 
-	qDebug() << "arduinoInstall" << arduinoInstall;
+  qDebug() << "arduinoInstall" << arduinoInstall;
 
 
 #ifdef Q_OS_WIN	
-    configPath = appPath + "/config";
-    configUserPath = QDir::homePath() + "/MariaMole/config";    
+  configPath = appPath;
+  configUserPath = QDir::homePath() + "/MariaMole";    
 #endif
 
 #ifdef Q_OS_LINUX
-    configUserPath = QDir::homePath() + "/.mariamole/config";
-    configPath = "/etc/mariamole/config";    
+  configUserPath = QDir::homePath() + "/.mariamole";
+  configPath = "/etc/mariamole";    
 #endif
 
 #ifdef Q_OS_MAC
-    configUserPath = QDir::homePath() + "/Library/mariamole";
-    configPath = "/etc/mariamole/config";    
+  configUserPath = QDir::homePath() + "/Library/mariamole";
+  configPath = "/etc/mariamole";    
 #endif
 
-    avrPath = settings.value("avrPath", arduinoInstall + "/hardware/tools/avr/bin").toString();
+  avrPath = settings.value("avrPath", arduinoInstall + "/hardware/tools/avr/bin").toString();
 	//avrPath = arduinoInstall + "/hardware/tools/avr/bin";
-    //qDebug() << "avrPath" << avrPath;
-    settings.endGroup();
+  //qDebug() << "avrPath" << avrPath;
+  settings.endGroup();
 	
 	settings.beginGroup("arduino");
 	extraArduinoLibsSearchPaths = settings.value("extraArduinoLibsSearchPaths", "").toString();
@@ -104,10 +104,10 @@ int Config::Load(void)
 
 int Config::LoadHardwareDefinitions(void)
 {
-	QString filepath= configUserPath + "/hardware.xml";
+	QString filepath = configUserPath + "config/hardware.xml";
 	
 	if(!QFile::exists(filepath)) {
-		filepath = configPath + "/hardware.xml";
+		filepath = configPath + "/config/hardware.xml";
 	}
 	if(!QFile::exists(filepath)) {
 		filepath = appPath + "/config/hardware.xml";
@@ -220,43 +220,32 @@ QString Config::DecodeMacros(QString inputText, Project const * const project)
 	map <QString, QString> dictionary;
 
 	if ( (board != boards.end() && build != builds.end() ) ) {
-//#if defined(Q_OS_WIN)
 
-        QString corePath = arduinoInstall + "/hardware/arduino/cores/" + board->second.build_core;
-        qDebug() << "corePath" << corePath;
-			//appPath + "/" + board->second.build_core;
-  //      corePath += "/" + board->second.build_core + "/cores";
-    //    corePath += "/" + board->second.build_core;
-//#else
-  //      QString corePath = appPath + "/" + board->second.build_core + "/cores/" + board->second.build_core;
-//#endif
+
+    QString corePath = arduinoInstall + "/hardware/arduino/cores/" + board->second.build_core;
+    qDebug() << "corePath" << corePath;
 
 		dictionary.insert (pair <QString, QString> ("$(ARDUINO_CORE)", corePath));
-//#if defined(Q_OS_WIN)
+
 		QString variantPath = arduinoInstall + "/hardware/arduino/variants/" + board->second.build_variant;
-		//QString variantPath = appPath + "/" + board->second.build_core; 
-		//variantPath += "/" + board->second.build_core + "/variants"; 
-		//variantPath += "/" + board->second.build_variant;
-//#else
-        //QString variantPath = appPath + "/" + board->second.build_core + "/variants/" + board->second.build_variant;
-//#endif
+
 		dictionary.insert (pair <QString, QString> ("$(ARDUINO_VARIANT)", variantPath));
 	}
 
 	dictionary.insert (pair <QString, QString> ("$(ARDUINO_LIBS)", arduinoInstall + "/libraries"));
 
 
-//#if defined(Q_OS_LINUX) || defined (Q_OS_MAC)
-    dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + arduinoInstall + "/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
-//#endif
-//#if defined(Q_OS_WIN)
-  //  dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths + ";" + appPath + "/arduino/arduino/libraries;" + libPaths + ";" + config.extraArduinoLibsSearchPaths ));
-//#endif
+  dictionary.insert (pair <QString, QString> ("$(LIBRARIES)", projectLibPaths
+																															+ ";"
+																															+ arduinoInstall
+																															+ "/libraries;"
+																															+ libPaths +
+																															";" +
+																															config.extraArduinoLibsSearchPaths));
 
-    //qDebug() << "libPath: " << projectLibPaths << ";" << appPath << "/arduino/arduino/libraries;" << libPaths << ";" << config.extraArduinoLibsSearchPaths;
 
 	dictionary.insert (pair <QString, QString> ("$(INCLUDES)", includePaths + ";" + projectIncludePaths));
-    //qDebug() << "includePath: " <<  includePaths << ";" << projectIncludePaths;
+  
 
 	map <QString, QString>::iterator dict;
 	for (dict = dictionary.begin(); dict != dictionary.end(); dict++) {

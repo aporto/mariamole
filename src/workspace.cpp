@@ -33,9 +33,8 @@ bool Workspace::Open(QString workPath)
 
 	projects.clear();
 
-	if (dir.exists() == false) {
+	if (dir.exists() == false)
 		return false;
-	}
 
 	config.workspace = workPath;
 
@@ -151,10 +150,20 @@ bool Workspace::AddProject(QString name, QString importSketch)
 	Project project;
 	project.name = name;	
 
-	if (importSketch == "") {		
+	if (importSketch == "") {
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)		
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/main.cpp", project.name + ".cpp", &project);
 		//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", &project);		
 		CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", &project);		
+#endif
+
+#if defined(Q_OS_LINUX)
+		CopyFileToProject(config.ConfigPath() + "/templates/main.cpp", project.name + ".cpp", &project);
+		//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", &project);		
+		CopyFileToProject(config.ConfigPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", &project);		
+		//qDebug() << config.ConfigPath()  << "/templates/mariamole_auto_generated.h"
+#endif
+
 	} else {
 
 		if (ImportSketch(&project, importSketch) == false) {
@@ -216,8 +225,14 @@ bool Workspace::ImportSketch(Project * project, QString sketchFullPath)
 	pfile.type = ptSource;
 	project->files.push_back(pfile);
 
-	//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);		
+	//CopyFileToProject(qApp->applicationDirPath() + "/templates/main.h", "main.h", project);
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
     CopyFileToProject(qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);
+#endif
+
+#if defined(Q_OS_LINUX)
+		CopyFileToProject(config.ConfigPath() + "/templates/mariamole_auto_generated.h", "mariamole_auto_generated.h", project);
+#endif
 
 	ImportFilesFromSketchDirectory(project, path);
 
@@ -267,8 +282,12 @@ bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefix
 
 	ImportLibraryFilesRecursively(project, libPath, libPath);
 
-	// Add the list of all .h files to the automatically generated header file	
-	QString autoFileName = qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h";// config.workspace + "/" + project->name + "/source/mariamole_auto_generated.h";
+	// Add the list of all .h files to the automatically generated header file
+#if defined(Q_OS_LINUX)
+	QString autoFileName = qApp->applicationDirPath() + "/templates/mariamole_auto_generated.h";
+#else
+	QString autoFileName = config.ConfigPath() + "/templates/mariamole_auto_generated.h";
+#endif
 	QFile autoFile(autoFileName);
 	autoFile.open(QFile::ReadOnly | QFile::Text);
     QTextStream stream(&autoFile);

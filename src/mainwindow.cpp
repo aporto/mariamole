@@ -1249,6 +1249,7 @@ void MainWindow::closeEvent ( QCloseEvent * event )
                                                       "There are some unsaved files! Do you really want to exit before saving them? :D",
                                                       QMessageBox::Yes|QMessageBox::No))
         {
+					  tabsEditor->closeAll();
             event->accept();
             QCoreApplication::exit(0);
         }
