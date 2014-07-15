@@ -1,0 +1,11 @@
+source: mariamole
+Maintainer: Gabriel Duarte <gduarte.costa@globomail.com>
+Section: misc
+Priority: optional
+Standards-Version: 
+Build-Depends: debhelper (>= 9)
+
+Package: mariamole
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt5serialport5, libqt5scintilla2-11, libqt5xml5, libqt5core5, libqt5gui5
+Description: MariaMole is a multi-platform IDE for Arduino
