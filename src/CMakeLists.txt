@@ -46,7 +46,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_LIBS})
 
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/config DESTINATION /etc/mariamole)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/ DESTINATION /etc/mariamole)
 
 
 
