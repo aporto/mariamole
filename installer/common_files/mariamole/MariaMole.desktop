@@ -1,11 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-Version=12.0.4
-Name=MUAN
+Name=MariaMole
 Comment=Arduino IDE for advanced develpers (and begginers too)
-Comment[es]=Stop Motion Animation System for Education
-Comment[pt_BR]=Sistema de Animação Stop Motion para Educação
-Exec=muan_ae %u
+Comment[pt_BR]=IDE Arduino para usuários avançados (e iniciantes também)
+Exec=mariamole %u
 Terminal=false
 X-MultipleArgs=false
 Type=Application
