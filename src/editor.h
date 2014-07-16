@@ -64,7 +64,8 @@ private:
 	QLabel * lblCursorPosition;
 	
 	void SetFileName(QString filename);
-	void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);
+	void setLexerStyle(int styleId, QString styleName);
+	//void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);
 	QString GetRefenceForWordUnderCursor(void);
 };
 

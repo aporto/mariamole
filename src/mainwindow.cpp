@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
 			case 202:
 			case 203:
 			case 204: msg = "Error reading configuration file 'hardware.xml'"; break;
+			
+			case 205: 
+			case 206: msg = "Error reading configuration file 'color_themes.xml'"; break;
 			default: msg = "Generic error while loadinh the configuration file";
 		}
 		QMessageBox msgBox;
@@ -1179,10 +1182,18 @@ void MainWindow::ExportToSketch(void)
 void MainWindow::EditPreferences(void)
 {
 	Preferences * pref = new Preferences(NULL);
+	bool c = connect(pref, SIGNAL(apply()), this, SLOT(OnEditPreferencesApply()));
 	bool ok = pref->Edit();
 	delete pref;
 
-	if (ok) {
+	/*if (ok) {		
+	}*/
+}
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OnEditPreferencesApply(void)
+{
 		if (config.useMenuButton) {
 			ui.actionMainMenu2->setVisible(true);	
 			ui.actionMenu3->setVisible(true);		
@@ -1197,7 +1208,6 @@ void MainWindow::EditPreferences(void)
 
 		config.Save();
 	}
-}
 
 //-----------------------------------------------------------------------------
 

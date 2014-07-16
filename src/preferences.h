@@ -24,6 +24,10 @@ public slots:
     void OnLoadCore(void);
 	void PageChange (QListWidgetItem * current, QListWidgetItem * previous);
     void ColorPick (void);
+	//void OnThemeChanged(int idx);	
+
+signals:
+	void apply(void);
 
 private:
 	Ui::Preferences ui;

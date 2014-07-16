@@ -82,6 +82,7 @@ int Config::Load(void)
 	settings.endGroup();
 	
 	settings.beginGroup("ui");
+	themeName  = settings.value("themeName", "MariaMole").toString();	
 	editorFontName  = settings.value("editorFontName", "Consolas").toString();
 	editorFontSize  = settings.value("editorFontSize", "12").toInt();
 	editorColorName = settings.value("editorColorName", "#182022").toString();
@@ -97,7 +98,9 @@ int Config::Load(void)
 		return res;
 	}
 
-	return 0;
+	res = LoadStyles();
+
+	return res;
 }
 
 //-----------------------------------------------------------------------------
@@ -193,6 +196,150 @@ int Config::LoadHardwareDefinitions(void)
 			}
 		}
 		xmlHw = xmlHw.nextSibling();		
+	}		
+	return 0;
+}
+
+//-----------------------------------------------------------------------------
+
+void Config::GetThemeStyle(QString themeName, QString styleName, TextStyle &style)
+{
+	map <QString, ColorTheme>::iterator theme;
+	map <QString, ColorTheme>::iterator themeDef;
+	theme = colorThemes.find(themeName);
+	
+	themeDef = colorThemes.find(themeName);
+	if (themeDef == colorThemes.end()) {
+		return;
+	}
+	if (themeDef->second.styles.find("DEFAULT") == themeDef->second.styles.end()) {
+		return;
+	}
+	TextStyle defStyle = themeDef->second.styles.find("DEFAULT")->second;
+	if (defStyle.fontName == "") {		
+		style.fontName = config.editorFontName;
+	} else {
+		style.fontName = defStyle.fontName;
+	}
+	if (defStyle.fontSize < 1) {		
+		style.fontSize = config.editorFontSize;
+	} else {
+		style.fontSize = defStyle.fontSize;
+	}
+	style.backColor = defStyle.backColor;//QColor (120, 120, 120);
+	style.foreColor = defStyle.foreColor; //QColor (24, 30, 32);
+	style.bold = defStyle.bold;
+	style.italic = defStyle.italic;
+	style.underline = defStyle.underline;
+
+	if (theme == colorThemes.end()) {
+		theme = themeDef;
+	}
+	
+	if (theme != colorThemes.end()) {
+		map <QString, TextStyle>::iterator fStyle;
+		fStyle = theme->second.styles.find(styleName);
+		if (fStyle != theme->second.styles.end()) {
+			if (fStyle->second.fontName != "") {
+				style.fontName = fStyle->second.fontName;
+			}
+			if (fStyle->second.fontSize > 0) {
+				style.fontSize = fStyle->second.fontSize;
+			}
+
+			style.italic = fStyle->second.italic;
+			style.bold = fStyle->second.bold;
+			style.underline = fStyle->second.underline;
+
+			int alpha = fStyle->second.foreColor.alpha();
+			if (alpha != 100) {
+				style.foreColor = fStyle->second.foreColor;
+			}			
+			alpha = fStyle->second.backColor.alpha();
+			if (alpha != 100) {
+				style.backColor = fStyle->second.backColor;
+			}
+		}
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+
+int Config::LoadStyles(void)
+{
+	QString filepath = QDir::cleanPath(appPath + QDir::separator() + "config" + 
+											QDir::separator() + "color_themes.xml");
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+	if(!QFile::exists(filepath))
+		filepath = "/etc/mariamole/config/color_themes.xml";
+#endif
+
+	QFile file(filepath);
+	
+	if (file.open(QIODevice::ReadOnly) == false) {
+		return 205;
+	}
+
+	QDomDocument doc("mydocument");
+	if (doc.setContent(&file) == false) {
+		file.close();
+		return 206;
+	}
+
+	file.close();
+
+	QDomElement docElem = doc.documentElement();
+	QDomNode xmlThemes = docElem.firstChild();
+	
+	//if (xmlThemes.isNull() == false) {
+	//QDomNode xmlTheme = xmlThemes.firstChild();
+	QDomNode xmlTheme = docElem.firstChild();
+	while (xmlTheme.isNull() == false) {
+		ColorTheme theme;
+		QDomElement elemName = xmlTheme.toElement();
+		theme.name = elemName.attribute("name");
+		QDomNode xmlStyle = xmlTheme.firstChild();			
+		while (xmlStyle.isNull() == false) {
+			TextStyle style;
+			QDomElement elStyle = xmlStyle.toElement();
+			QString styleName = elStyle.attribute("name");
+			style.fontName = elStyle.attribute("fontName", "");
+			style.fontSize = elStyle.attribute("fontSize", "-1").toInt();
+			style.foreColor = QColor(0,0,0,100);
+			style.backColor = QColor(0,0,0,100);
+			QString str = "#" + elStyle.attribute("foreColor", "");
+			if (str != "#") {
+				style.foreColor = QColor(str);
+			}
+			str = "#" + elStyle.attribute("backColor", "");
+			if (str != "#") {
+				style.backColor = QColor(str);
+			}
+			/*if (c >= 0) {
+				style.foreColor = c;
+			} else {
+				style.foreColor = QColor(0,0,0,100);
+			}
+			c = elStyle.attribute("backColor", "-1").toInt();
+			if (c >= 0) {
+				style.backColor = c;
+			} else {
+				style.backColor = QColor(0,0,0,100);
+			}*/
+			style.bold = (elStyle.attribute("bold", "0") == "1");
+			style.underline = (elStyle.attribute("underline", "0") == "1");
+			style.italic = (elStyle.attribute("italic", "0") == "1");				
+
+			if (styleName != "") {
+				theme.styles.insert(pair <QString, TextStyle> (styleName, style));
+			}
+			xmlStyle = xmlStyle.nextSibling();
+		}
+			
+		colorThemes.insert (pair <QString, ColorTheme> (theme.name, theme));
+		xmlTheme = xmlTheme.nextSibling();
 	}		
 	return 0;
 }
@@ -301,6 +448,7 @@ bool Config::Save(void)
 	settings.endGroup();
 
 	settings.beginGroup("ui");
+	settings.setValue("themeName", themeName);			
 	settings.setValue("editorFontName", editorFontName);			
 	settings.setValue("editorFontSize", editorFontSize);			
 	settings.setValue("editorColorName", editorColorName);
