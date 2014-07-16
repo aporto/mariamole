@@ -5,7 +5,7 @@
 Launcher * launcher;
 
 Launcher::Launcher(QObject *parent)
-	: QObject(parent)
+    : QObject(parent)
 {
 }
 
@@ -19,59 +19,59 @@ Launcher::~Launcher()
 
 bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut, BuildWindow * const progress)
 {
-	/*if (cancel) {
-		return false;
-	}*/
+    /*if (cancel) {
+        return false;
+    }*/
 
-	proc = new QProcess(NULL);
-	proc->setProcessChannelMode(QProcess::MergedChannels);    
-	bool c = connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(OnReadStandardOutput()));
+    proc = new QProcess(NULL);
+    proc->setProcessChannelMode(QProcess::MergedChannels);    
+    bool c = connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(OnReadStandardOutput()));
 
     QString txt = ">> " + cmd;
     for (unsigned int i=0; i < args.count(); i++) {
-		txt = txt + " " + args[i];
-	}
-	msg.AddOutput(txt, false);
+        txt = txt + " " + args[i];
+    }
+    msg.AddOutput(txt, false);
     
-	enable = true;
+    enable = true;
     proc->start(cmd, args);
-	//cancel = false;
-	bool ok = false;
-	if (timeOut > 0) {
-		unsigned int timeOutCounter = 0;
-		bool running = true;
-		// timeout * 10 because out time resolution here is 100 ms
-		while (running && (timeOutCounter < timeOut * 10)) {
-			percentage = 10 * timeOutCounter / timeOut;
-			progress->setValue(percentage);			
-			running = !(proc->waitForFinished(70));
-			qApp->processEvents();			
-			QThread::msleep(30);
-			timeOutCounter++;
-			if (progress->wasCanceled()) {
-				break;
-			}
-		}
+    //cancel = false;
+    bool ok = false;
+    if (timeOut > 0) {
+        unsigned int timeOutCounter = 0;
+        bool running = true;
+        // timeout * 10 because out time resolution here is 100 ms
+        while (running && (timeOutCounter < timeOut * 10)) {
+            percentage = 10 * timeOutCounter / timeOut;
+            progress->setValue(percentage);            
+            running = !(proc->waitForFinished(70));
+            qApp->processEvents();            
+            QThread::msleep(30);
+            timeOutCounter++;
+            if (progress->wasCanceled()) {
+                break;
+            }
+        }
 
-		ok = true;
-		if (running) {
-			proc->kill();
-			ok = false;
-		}
-	} else {
-		proc->waitForFinished();
-		ok = (proc->exitStatus() == QProcess::NormalExit);
-	}
+        ok = true;
+        if (running) {
+            proc->kill();
+            ok = false;
+        }
+    } else {
+        proc->waitForFinished();
+        ok = (proc->exitStatus() == QProcess::NormalExit);
+    }
 
-	enable = false;
+    enable = false;
     
-	if (ok) {
+    if (ok) {
         int ec = proc->exitCode();
         ok = (ec == 0);
     }
 
     c = disconnect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(OnReadStandardOutput()));
-	delete proc;
+    delete proc;
     
     return ok;
 }
@@ -80,9 +80,9 @@ bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut, B
 
 void Launcher::OnReadStandardOutput(void)
 {
-	if (enable == false) {
-		return;
-	}
+    if (enable == false) {
+        return;
+    }
     QTextStream computerOutput(proc->readAll());
     while (computerOutput.atEnd() == false) {
         msg.AddOutput(computerOutput.readLine());
@@ -93,28 +93,28 @@ void Launcher::OnReadStandardOutput(void)
 /*
 bool Launcher::GetCancel(void)
 {
-	return cancel;
+    return cancel;
 }
 
 //-----------------------------------------------------------------------------
 */
 /*void Launcher::SetCancel(bool value)
 {
-	cancel = value;
+    cancel = value;
 }
 
 //-----------------------------------------------------------------------------
 
 void Launcher::SetPercentage(int value)
 {
-	percentage = value;
+    percentage = value;
 }
 
 //-----------------------------------------------------------------------------
 
 int Launcher::GetPercentage(void)
 {
-	return percentage;
+	    return percentage;
 }
 */
 //-----------------------------------------------------------------------------

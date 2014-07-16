@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=MariaMole
+Comment=Arduino IDE for advanced develpers (and begginers too)
+Comment[pt_BR]=IDE Arduino para usuários avançados (e iniciantes também)
+Exec=mariamole %u
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/usr/share/mariamole/mariamole.png
+Categories=Development
+

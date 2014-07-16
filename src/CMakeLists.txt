@@ -1,9 +1,8 @@
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
-
+EXEC_PROGRAM(bash ARGS ${PROJECT_SOURCE_DIR}/src/get_git_version_unix.sh > ${PROJECT_SOURCE_DIR}/src/git_version.h)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
@@ -16,6 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC -O2")        ## Optimize
     set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
 endif()
+
+
 
 
 
@@ -34,9 +35,8 @@ add_executable(${CMAKE_PROJECT_NAME}
   ${RESOURCE_FILES}
 )
 
-
 if(APPLE)
-	set(LINK_LIBS "-L/Users/gduarte/Qt/5.3/clang_64/lib -F/Users/gduarte/Qt/5.3/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework QtXml -framework QtSerialPort -lqscintilla2")
+	set(LINK_LIBS "-L$ENV{HOME}/Qt/5.3/clang_64/lib -F$ENV{HOME}/Qt/5.3/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework QtXml -framework QtSerialPort -lqscintilla2")
 else()
 	set(LINK_LIBS Qt5::Widgets Qt5Xml Qt5SerialPort qt5scintilla2)
 endif(APPLE)
@@ -46,8 +46,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LINK_LIBS})
 
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/config DESTINATION /etc/mariamole)
-
-
-
-
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/ DESTINATION /etc/mariamole)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/ DESTINATION /etc/mariamole)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/installer/common_files/mariamole DESTINATION /usr/share)
+INSTALL(FILES ${PROJECT_SOURCE_DIR}/installer/common_files/mariamole/MariaMole.desktop DESTINATION /usr/share/applications/)

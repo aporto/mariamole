@@ -467,7 +467,7 @@ bool Builder::Link(void)
 		return false;
 	}
 	
-    msg.buildStage = 2;
+        msg.buildStage = 2;
 
 	msg.AddOutput("Linking project:" + project->name, false);	
 
@@ -492,7 +492,7 @@ bool Builder::Link(void)
 	arguments << coreLib;		
 	arguments << "-lm";	
 
-    bool ok = launcher->RunCommand(linkerPath, arguments);
+        bool ok = launcher->RunCommand(linkerPath, arguments);
 
 	SetPercentage(90);
 
