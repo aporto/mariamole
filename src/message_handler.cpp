@@ -176,15 +176,11 @@ void MessageHandler::ParseCompilerMessage(QString text, MMBuildMessage &bm)
 
 void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 {
-	//QString subText = text.right(text.length() - 3);
-	//int pos = subText.indexOf(":") + 3;
-	//QString part1 = text.left(pos);
-	//QString part2 = text.right(text.length() - part1.length() - 1);
+
 	QStringList list = text.split(":");
+	QStringList list = text.split(":");
+	qDebug() << list;
 			
-	// in windows, paths have a ":" for separating the drive letter. 
-	// So, we need to check if the first ":" is the driver separator OR the
-	// compiler result separator
 	if (list[0].size() == 1) {
 		list[0] += ":" + list[1];
 		list.erase(list.begin() + 1);
@@ -228,43 +224,11 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 	}
 
 	bm.text = list[0];
+	
 	while (list.count() > 1) {
 		list.removeAt(0);
 		bm.text = bm.text + ":" + list[0];
 	}
-			
-	/*bm.file = list[0];			
-	if (list.size() > 1) {
-		bm.line = list[1].toInt();
-		if (list.count() > 2) {
-			bm.column = list[2].toInt();
-		} else {
-			bm.column = -1;
-		}
-	} else {
-		bm.line = -1;
-		bm.column = -1;
-	}
-	*/
-	/*list = part2.split(":");
-	int i=0;
-	while (i < list.count()) {
-		if (list[i].trimmed() == "") {
-			list.removeAt(i);
-		} else {
-			i++;
-		}
-	}
-	if (list.count() > 1) {
-		bm.type = mtError;
-		bm.line = list[0].toInt();
-		bm.column = -1;
-		bm.text = list[1];
-		for (int k=2; k < list.count(); k++) {
-			bm.text += ":" + list[k];
-		}
-						
-	}*/
 }
 
 //-----------------------------------------------------------------------------
