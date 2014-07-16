@@ -294,34 +294,35 @@ bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefix
 	QString fileContent = stream.readAll();
 	autoFile.close();
 
-	// Remove the last #endif from the file
-	while (fileContent.at(fileContent.length()-1) != '#') {
+	if (fileContent.length() > 1) {
+		// Remove the last #endif from the file
+		while (fileContent.at(fileContent.length()-1) != '#') {
+			fileContent.remove(fileContent.length()-1, 1);
+		}
 		fileContent.remove(fileContent.length()-1, 1);
-	}
-	fileContent.remove(fileContent.length()-1, 1);
-	//fileContent; += "\n\n";
+		//fileContent; += "\n\n";
 
-	// add all header files
-    for (unsigned int i=0; i < project->files.size(); i++) {
-		if (project->files.at(i).type == ptExternal) {
-			QString name = QFileInfo(project->files.at(i).name).fileName();
-			QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
-			if ( (ext == "H") || (ext == "HPPC") ) {
-				fileContent += "#include <" + name + ">\n";
+		// add all header files
+		for (unsigned int i=0; i < project->files.size(); i++) {
+			if (project->files.at(i).type == ptExternal) {
+				QString name = QFileInfo(project->files.at(i).name).fileName();
+				QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
+				if ( (ext == "H") || (ext == "HPPC") ) {
+					fileContent += "#include <" + name + ">\n";
+				}
 			}
 		}
+		fileContent += "\n#endif\n";
+
+		autoFileName = config.workspace + "/" + project->name + "/source/mariamole_auto_generated.h";
+		QFile autoFileOutput(autoFileName);	
+		autoFileOutput.open(QFile::WriteOnly);
+		//autoFileOutput.setlin
+		//setEolMode(QsciScintilla::EolUnix);
+		QTextStream streamOutput(&autoFileOutput);	
+		streamOutput << fileContent;
+		autoFileOutput.close();
 	}
-	fileContent += "\n#endif\n";
-
-	autoFileName = config.workspace + "/" + project->name + "/source/mariamole_auto_generated.h";
-	QFile autoFileOutput(autoFileName);	
-	autoFileOutput.open(QFile::WriteOnly);
-	//autoFileOutput.setlin
-	//setEolMode(QsciScintilla::EolUnix);
-    QTextStream streamOutput(&autoFileOutput);	
-	streamOutput << fileContent;
-	autoFileOutput.close();
-
 	modified = true;
 
 	return true;
