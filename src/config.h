@@ -60,6 +60,7 @@ public:
 	QString DecodeMacros(QString inputText, Project const * const project);
 	QString LocateFileUsingSearchPaths(QString filename, QString searchPaths, bool isDir);
 	QString DecodeLibraryPath(QString libPath);
+	QString ConfigPath(void) { return configPath; }
 
 	bool useMenuButton;
 	bool hideCompilerWarnings;
@@ -67,7 +68,7 @@ public:
 	QString includePaths;
 	QString libPaths;
 	QString libs;
-    //QString arduinoCoreOpt;
+  //QString arduinoCoreOpt;
 	QString arduinoInstall;
 	QString extraArduinoLibsSearchPaths;
 	QString avrPath;
@@ -78,7 +79,7 @@ public:
 	map <QString, BuildDef> builds;
 
 	QString editorFontName;
-    QString editorColorName;
+   QString editorColorName;
 	unsigned int editorFontSize;
 	
 private:	

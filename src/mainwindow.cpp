@@ -112,6 +112,8 @@ void MainWindow::CreateMainMenuContext(void)
 		ui.actionMenu3->setVisible(false);		
 		ui.menuBar->setVisible(true);	
 	}
+
+	//qDebug() << "Here is:" << qApp->applicationDirPath();
 }
 
 //-----------------------------------------------------------------------------
@@ -1013,11 +1015,11 @@ void MainWindow::ShowAboutWindow(void)
 
 void MainWindow::ExitSoftware(void)
 {
-	if (GetUserConfirmation("Exit MariaMole ?"))  {
-		tabsEditor->closeAll();
-		QCoreApplication::exit(0);
-	}
-		
+	//if (GetUserConfirmation("Exit MariaMole ?"))  {
+	//	tabsEditor->closeAll();
+	//	QCoreApplication::exit(0);
+	this->close();
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -1247,7 +1249,9 @@ void MainWindow::closeEvent ( QCloseEvent * event )
                                                       "There are some unsaved files! Do you really want to exit before saving them? :D",
                                                       QMessageBox::Yes|QMessageBox::No))
         {
+					  tabsEditor->closeAll();
             event->accept();
+            QCoreApplication::exit(0);
         }
     }
     else

@@ -2,7 +2,7 @@
 #define PROJECTPROPERTIES_H
 
 #include <QDialog>
-#include <QtSerialPort/QSerialPortInfo>
+//#include <QtSerialPort/QSerialPortInfo>
 
 #include "ui_projectproperties.h"
 

@@ -70,7 +70,10 @@ void Preferences::OnApply(void)
 
     config.uploadTimeout = ui.uploadTimeout->value();
     //config.arduinoCoreOpt = ui.arduinoCore->text();
-	config.arduinoInstall= ui.arduinoInstall->text();
+    if(ui.arduinoInstall->text().length() > 0)
+	   config.arduinoInstall = ui.arduinoInstall->text();
+    else
+        config.arduinoInstall =  qApp->applicationDirPath();
     config.extraArduinoLibsSearchPaths = ui.userLibraries->text();
     config.editorFontName  = ui.editorFontName->currentFont().family();
     config.editorFontSize  = ui.editorFontSize->value();

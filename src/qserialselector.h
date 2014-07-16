@@ -7,6 +7,7 @@
 #include "ui_qserialselector.h"
 #include <QtSerialPort/QSerialPortInfo>
 
+
 class QSerialSelector : public QComboBox
 {
 	Q_OBJECT
