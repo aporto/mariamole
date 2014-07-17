@@ -55,7 +55,7 @@ font-size:14pt;</string>
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page">
         <widget class="QTreeWidget" name="examplesTree">
@@ -192,6 +192,12 @@ font-size:14pt;</string>
            <width>251</width>
            <height>331</height>
           </rect>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOn</enum>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QAbstractScrollArea::AdjustIgnored</enum>
          </property>
         </widget>
         <widget class="QLabel" name="label_5">
@@ -494,8 +500,6 @@ font-size:14pt;</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="mainwindow.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
