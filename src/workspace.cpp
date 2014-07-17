@@ -268,7 +268,7 @@ void Workspace::ImportFilesFromSketchDirectory(Project * project, QString sketch
 bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefixPath)
 {
 
-    qDebug() << "ImportLibrary";
+    //qDebug() << "ImportLibrary";
 
 	// first, find the library path
 	if (libPath.indexOf("/") < 0) {
@@ -333,8 +333,8 @@ bool Workspace::ImportLibrary(Project * project, QString libPath, QString prefix
 void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, QString libPath)
 {
 
-    qDebug() << "ImportLibraryFilesRecursively";
 	QString libName = QFileInfo(libPath).fileName();
+	qDebug() << libName;
 
 	int pathLen = path.length() - libPath.length();				
 	QString pref;
@@ -352,6 +352,7 @@ void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, Q
 	for (int f=0; f < files.size(); f++) {	
 		if (files.at(f).isDir()) {
 			QString pref = files.at(f).fileName();
+			qDebug() << pref;
 			if (pref.toUpper() != "EXAMPLES") {
                 ImportLibraryFilesRecursively(project, path + "/" + pref, libPath);
 				//ok = ok & ImportLibrary(project, libPath + "/" + pref, pref + "/");

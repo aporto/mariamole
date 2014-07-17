@@ -305,8 +305,9 @@ void Wizard::PopulateLibrariesList(void)
 		QDir dir(paths[i]);                            
 		QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries); 
 		for (int f=0; f < files.size(); f++) {			
-			if (files.at(f).isDir()) {
+            if (files.at(f).isDir()) {
 				QString dirName = QFileInfo(files.at(f).absoluteFilePath()).fileName();
+                qDebug() << dirName;
 				ui.listLibs->addItem(dirName);
 			}
 		}
