@@ -48,10 +48,11 @@ int Config::Load(void)
 #endif
 
 #ifdef Q_OS_MAC
+	arduinoInstall = settings.value("arduinoInstall", appPath).toString();
 	//arduinoInstall = settings.value("arduinoInstall", "").toString();
-	arduinoInstall = arduinoInstall.length() > 0
-					? arduinoInstall
-					: qApp->applicationDirPath();
+	//arduinoInstall = arduinoInstall.length() > 0
+	//				? arduinoInstall
+	//				: qApp->applicationDirPath();
 #endif		
 
   qDebug() << "arduinoInstall" << arduinoInstall;

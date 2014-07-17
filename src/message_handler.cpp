@@ -181,7 +181,7 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 	//QString part1 = text.left(pos);
 	//QString part2 = text.right(text.length() - part1.length() - 1);
 	QStringList list = text.split(":");
-			
+
 	// in windows, paths have a ":" for separating the drive letter. 
 	// So, we need to check if the first ":" is the driver separator OR the
 	// compiler result separator
@@ -243,6 +243,7 @@ void MessageHandler::ParseLinkerMessage(QString text, MMBuildMessage &bm)
 		bm.text = bm.text + ":" + list[0];
 	}
 }
+
 
 //-----------------------------------------------------------------------------
 
