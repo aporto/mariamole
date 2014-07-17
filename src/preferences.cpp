@@ -20,12 +20,30 @@ Preferences::Preferences(QWidget *parent)
 
     color = QColor(config.editorColorName);
 
-
+	ui.colorPicked->setVisible(false);
+	ui.btnColorPicker->setVisible(false);
     QPalette palette = ui.colorPicked->palette();
     palette.setColor(QPalette::Background, color);
     ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
     ui.colorPicked->setPalette(palette);
 
+	//editor->setText("#include <Arduino.h>\n\n// single line comment \n/*\nMultiple line comment\n*/\n\n void function (int index) {\n\tchar * value = \"Test\";\n\tchar c='65';\n}");
+	//editor->setReadOnly(true);
+	ui.cbThemes->clear();
+	map <QString, ColorTheme>::iterator theme;
+	for (theme = config.colorThemes.begin(); theme != config.colorThemes.end(); theme++) {
+		ui.cbThemes->addItem(theme->first);
+	}
+
+	if (ui.cbThemes->count() >= 0) {
+		ui.cbThemes->setCurrentIndex(0);
+		for (int i=0; i < ui.cbThemes->count(); i++) {
+			if (ui.cbThemes->itemText(i) == config.themeName) {
+				ui.cbThemes->setCurrentIndex(i);
+				break;
+			}
+		}
+	}
     //qDebug() << "Color: " << color;
 }
 
@@ -80,8 +98,11 @@ void Preferences::OnApply(void)
     config.editorColorName = ui.colorPicked->palette().color(ui.colorPicked->backgroundRole()).name();
     config.useMenuButton   = ui.embedMenu->isChecked();
     config.hideCompilerWarnings = ui.hideWarnings->isChecked();
+	config.themeName = ui.cbThemes->currentText();
 
     config.Save();
+
+	emit apply();
 }
 
 //-----------------------------------------------------------------------------

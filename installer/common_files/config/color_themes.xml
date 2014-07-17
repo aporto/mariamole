@@ -1,0 +1,69 @@
+<themes>
+	<theme name="MariaMole">
+		<style name="DEFAULT" foreColor="787878" backColor="161E20" fontName=""  fontSize="" />		
+		<style name="COMMENT" foreColor="505050" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT LINE" foreColor="505050" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT DOC" foreColor="505050" backColor="" fontName=""  fontSize="" />
+		<style name="NUMBER"  foreColor="007800" backColor="" fontName=""  fontSize="" />
+		<style name="DOUBLE QUOTED STRING" foreColor="007878" backColor="" fontName=""  fontSize="" />
+		<style name="SINGLE QUOTED STRING" foreColor="007878" backColor="" fontName=""  fontSize="" />
+		<style name="PREPROCESSOR" foreColor="6E508C" backColor="" fontName=""  fontSize="" />		
+		<style name="IDENTIFIER"  foreColor="8C8C8C" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="UNCLOSED STRING"  foreColor="007878" backColor="" fontName=""  bold="1" fontSize="" />
+		<style name="UUID" foreColor="969696" backColor="" fontName=""  fontSize="" />
+		<style name="VERBATIM STRING" foreColor="969696" backColor="" fontName=""  fontSize="" />
+		<style name="KEYWORD" foreColor="8C6400" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="KEYWORD SET 2" foreColor="969696" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="OPERATOR" foreColor="8C8C32" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="GLOBAL CLASS"  foreColor="678CB1" backColor="" fontName=""  fontSize="" />		
+		<style name="REGEX" foreColor="969696" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT LINE DOC" foreColor="969696" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT DOC KEYWORD"  foreColor="969696" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="COMMENT DOC KEYWORD ERROR" foreColor="969696" backColor="" fontName="" bold="0" fontSize="" /><style name="SELECTION" foreColor="969696" backColor="343C3E" fontName="" bold="0" fontSize="" />
+		<style name="CARET" foreColor="DCC8C8" backColor="C8C8C8" fontName="" bold="0" fontSize="" />		
+	</theme>		
+
+	<theme name="Brigadeiro">
+		<style name="PREPROCESSOR" foreColor="A082BD" backColor="343028" fontName=""  fontSize="" />
+		<style name="DEFAULT" foreColor="E0E2E4" backColor="" fontName=""  fontSize="" />
+		<style name="INSTRUCTION WORD" foreColor="93C763" backColor="" fontName="" bold="0" fontSize="" keywordClass="instre1" />
+		<style name="GLOBAL CLASS" foreColor="678CB1" backColor="" fontName=""  fontSize="" keywordClass="type1" />
+		<style name="NUMBER" foreColor="FFCD22" backColor="" fontName=""  fontSize="" />
+		<style name="DOUBLE QUOTED STRING" foreColor="EC7600" backColor="" fontName=""  fontSize="" />
+		<style name="SINGLE QUOTED STRING" foreColor="FF8409" backColor="" fontName=""  fontSize="" />
+		<style name="OPERATOR"  foreColor="E8E2B7" backColor="" fontName=""  fontSize="" />
+		<style name="VERBATIM STRING"  foreColor="E0E2E4" backColor="" fontName=""  fontSize="" />
+		<style name="REGEX"  foreColor="D39745" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT" foreColor="66747B" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT LINE" foreColor="66747B" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT DOC" foreColor="6C788C" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT LINE DOC"  foreColor="6C788C" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT DOC KEYWORD" foreColor="6C788C" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="COMMENT DOC KEYWORD ERROR" foreColor="6C788C" backColor="" fontName="" bold="0" fontSize="" />
+		<style name="SELECTION" foreColor="969696" backColor="343C3E" fontName="" bold="0" fontSize="" />
+		<style name="CARET" foreColor="DCC8C8" backColor="" fontName="" bold="0" fontSize="" />
+	</theme>			
+
+	<theme name="Arduino">
+		<style name="DEFAULT" foreColor="000000" backColor="FFFFFF" fontName=""  fontSize="" />
+		<style name="CARET" foreColor="" backColor="" fontName="" bold="0" fontSize="" />		
+		<style name="PREPROCESSOR" foreColor="A082BD" backColor="" fontName=""  fontSize="" />		
+		<style name="KEYWORD" foreColor="0000FF" backColor="" fontName=""  fontSize="" keywordClass="instre1" />	
+		<style name="KEYWORD SET 2" foreColor="0000FF" backColor="" fontName=""  fontSize="" keywordClass="instre1" />	
+		<style name="GLOBAL CLASS" foreColor="000080" backColor="" fontName=""  fontSize="" keywordClass="type1" />	
+		<style name="NUMBER" foreColor="FF8000" backColor="" fontName=""  fontSize="" />
+		<style name="DOUBLE QUOTED STRING" foreColor="808080" backColor="" fontName=""  fontSize="" />
+		<style name="SINGLE QUOTED STRING" foreColor="000000" backColor="" fontName=""  fontSize="" />
+		<style name="OPERATOR"  foreColor="8000FF" backColor="" fontName=""  fontSize="" />
+		<style name="VERBATIM STRING"  foreColor="000000" backColor="" fontName=""  fontSize="" />
+		<style name="REGEX" foreColor="000000" backColor="" fontName=""  fontSize="" />	
+		<style name="COMMENT" foreColor="008000" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT LINE" foreColor="008000" backColor="" fontName=""  fontSize="" />	
+		<style name="COMMENT DOC" foreColor="008000" backColor="" fontName=""  fontSize="" />	
+		<style name="COMMENT LINE DOC" foreColor="6C788C" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT DOC KEYWORD" foreColor="6C788C" backColor="" fontName=""  fontSize="" />
+		<style name="COMMENT DOC KEYWORD ERROR" foreColor="6C788C" backColor="" fontName=""  fontSize="" />
+		<style name="SELECTION" foreColor="969696" backColor="343C3E" fontName="" bold="0" fontSize="" />
+		
+	</theme>			
+</themes>

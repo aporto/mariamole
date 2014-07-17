@@ -18,7 +18,7 @@ Editor::Editor(QWidget *parent)
 
 	LoadStyleSheet(this, "style_code_editor.css");
 	
-    setAutoCompletionThreshold(1);
+    setAutoCompletionThreshold(-1);
     setAutoCompletionSource(QsciScintilla::AcsAll);
 
 	context= new QMenu(this);		
@@ -112,9 +112,11 @@ void Editor::setEditorStyle (void)
 	QFontMetrics fontMetrics(font);
 
     //QColor backColor = QColor(22, 30, 32);
-    QColor backColor = QColor(config.editorColorName);
+	TextStyle style;
+	config.GetThemeStyle(config.themeName, "DEFAULT", style);
+	QColor backColor = style.backColor;//QColor(config.editorColorName);
 
-    //this->setColor(backColor);
+    setColor(backColor);
 	
 	// margin
 	setMarginLineNumbers(100, true);
@@ -136,10 +138,11 @@ void Editor::setEditorStyle (void)
 	setMarkerForegroundColor(Qt::white, 0);
 
 	// caret
-	setCaretLineVisible(true);
+	setCaretLineVisible(false);
 	setCaretWidth(2);
-	setCaretForegroundColor(QColor(220, 200, 200));
-	setCaretLineBackgroundColor(QColor(24, 32, 34));
+	config.GetThemeStyle(config.themeName, "CARET", style);
+	setCaretForegroundColor(style.foreColor);//QColor(220, 200, 200));
+	setCaretLineBackgroundColor(style.backColor);//QColor(24, 32, 34));
 
 	//SendScintilla (SC_TECHNOLOGY_DIRECTWRITE, 1);
 	//SendScintilla (SCI_SETBUFFEREDDRAW, 1);
@@ -154,45 +157,60 @@ void Editor::setEditorStyle (void)
 	setUnmatchedBraceForegroundColor(QColor(255, 0, 0));
 
 	// selection
-	setSelectionForegroundColor(QColor(150, 150, 150));
-	setSelectionBackgroundColor(QColor(52, 60, 62));
+	config.GetThemeStyle(config.themeName, "SELECTION", style);
+	setSelectionForegroundColor(style.foreColor);//QColor(150, 150, 150));
+	setSelectionBackgroundColor(style.backColor);//QColor(52, 60, 62));
 	
 	// maim cpp styles
-	setLexerStyle(-1, QColor (120, 120, 120),backColor);	
+	setLexerStyle(-1, "DEFAULT");//QColor (120, 120, 120),backColor);	
 	//setLexerStyle(-1, Qt::red, Qt::blue);	
 	//setLexerStyle(QsciLexerCPP::Default, Qt::blue, Qt::yellow);
-	setLexerStyle(QsciLexerCPP::Default, QColor (0, 0, 120),backColor);
+	setLexerStyle(QsciLexerCPP::Default, "DEFAULT");
 	//setLexerStyle(QsciLexerCPP::callSTYLE_CALLTIP, QColor (255,0,0), QColor(255,255,255));
 	
-	setLexerStyle(QsciLexerCPP::Comment, QColor (80, 80, 80),backColor);
-	setLexerStyle(QsciLexerCPP::CommentDoc, QColor (80, 80, 80),backColor);		
-	setLexerStyle(QsciLexerCPP::CommentLine, QColor (80, 80, 80),backColor);
-	setLexerStyle(QsciLexerCPP::Number, QColor (0, 120, 0),backColor);
-	setLexerStyle(QsciLexerCPP::Keyword, QColor (140, 100, 0),backColor);
-	setLexerStyle(QsciLexerCPP::DoubleQuotedString, QColor (0, 120, 120),backColor);
-	setLexerStyle(QsciLexerCPP::SingleQuotedString, QColor (0, 120, 120),backColor);
-	setLexerStyle(QsciLexerCPP::PreProcessor, QColor (110, 80, 140),backColor);
-	setLexerStyle(QsciLexerCPP::Operator, QColor (140, 140, 50),backColor);
-	setLexerStyle(QsciLexerCPP::Identifier, QColor (140, 140, 140),backColor);
-	setLexerStyle(QsciLexerCPP::UnclosedString, QColor (0, 255, 255),backColor);
+	setLexerStyle(QsciLexerCPP::Comment, "COMMENT");
+	setLexerStyle(QsciLexerCPP::CommentDoc, "COMMENT DOC");		
+	setLexerStyle(QsciLexerCPP::CommentLine, "COMMENT LIN E DOC");
+	setLexerStyle(QsciLexerCPP::Number, "NUMBER");
+	setLexerStyle(QsciLexerCPP::Keyword, "KEYWORD");
+	setLexerStyle(QsciLexerCPP::DoubleQuotedString, "DOUBLE QUOTED STRING");
+	setLexerStyle(QsciLexerCPP::SingleQuotedString, "SINGLE QUOTED STRING");
+	setLexerStyle(QsciLexerCPP::PreProcessor, "PREPROCESSOR");
+	setLexerStyle(QsciLexerCPP::Operator, "OPERATOR");
+	setLexerStyle(QsciLexerCPP::Identifier, "IDENTIFIER");
+	setLexerStyle(QsciLexerCPP::UnclosedString, "UNCLOSED STRING");
 	
 	// secondary styles
-	setLexerStyle(QsciLexerCPP::UUID, QColor (150, 150, 150),backColor);	
-	setLexerStyle(QsciLexerCPP::VerbatimString, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::Regex, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::CommentLineDoc, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::KeywordSet2, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::CommentDocKeyword, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::CommentDocKeywordError, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::GlobalClass, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::RawString, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::TripleQuotedVerbatimString, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::HashQuotedString, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::PreProcessorComment, QColor (150, 150, 150),backColor);
-	setLexerStyle(QsciLexerCPP::PreProcessorCommentLineDoc, QColor (150, 150, 150),backColor); 	
+	setLexerStyle(QsciLexerCPP::UUID, "UUID");	
+	setLexerStyle(QsciLexerCPP::VerbatimString, "VERBATIM STRING");
+	setLexerStyle(QsciLexerCPP::Regex, "REGEX");
+	setLexerStyle(QsciLexerCPP::CommentLineDoc, "COMMENT LINE DOC");
+	setLexerStyle(QsciLexerCPP::KeywordSet2, "KEYWORD SET 2");
+	setLexerStyle(QsciLexerCPP::CommentDocKeyword, "COMMENT DOC KEYWORD");
+	setLexerStyle(QsciLexerCPP::CommentDocKeywordError, "COMMENT DOC KEYWORD ERROR");
+	setLexerStyle(QsciLexerCPP::GlobalClass, "GLOBAL CLASS");
+	setLexerStyle(QsciLexerCPP::RawString, "DOUBLE QUOTED STRING");
+	setLexerStyle(QsciLexerCPP::TripleQuotedVerbatimString, "VERBATIM STRING");
+	setLexerStyle(QsciLexerCPP::HashQuotedString, "VERBATIM STRING");
+	setLexerStyle(QsciLexerCPP::PreProcessorComment, "PREPROCESSOR");
+	setLexerStyle(QsciLexerCPP::PreProcessorCommentLineDoc, "PREPROCESSOR"); 		
+}
 	
+void Editor::setLexerStyle(int styleId, QString styleName)
+{
+	TextStyle style;
+	config.GetThemeStyle(config.themeName, styleName, style);
+
+	QFont font (style.fontName, style.fontSize, QFont::Normal, false);
+	font.setBold(style.bold);
+	font.setItalic(style.italic);
+	font.setUnderline(style.underline);
+	lexer->setFont(font, styleId);
+	lexer->setColor(style.foreColor, styleId);
+	lexer->setPaper(style.backColor, styleId);		
 }
 
+/*
 void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool bold, bool italic, bool underline)
 {
 	//QFont font("Consolas", -1, QFont::Normal, false);
@@ -201,6 +219,7 @@ void Editor::setLexerStyle(int style, QColor foreground, QColor background, bool
 	lexer->setColor(foreground, style);
 	lexer->setPaper(background, style);		
 }
+*/
 
 void Editor::mousePressEvent ( QMouseEvent * event )
 {

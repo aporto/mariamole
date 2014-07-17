@@ -86,6 +86,7 @@ public slots:
 	void AdjustWorkspaceTree(void);
 	void OnSearchKeyPress(const QString&);
 	void OnSearchGO(void);
+	void OnEditPreferencesApply(void);
 	
 protected:
 	void resizeEvent(QResizeEvent *event);

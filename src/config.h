@@ -5,6 +5,7 @@
 #include <qstring.h>
 #include <qsettings.h>
 #include <QDir>
+#include <QColor>
 #include <QtXml/QtXml>
 #include <QtXml/QDomNode>
 
@@ -46,6 +47,20 @@ struct BuildDef {
 	QString coreLibs;	
 };
 
+struct TextStyle {
+	QString fontName;
+	int fontSize;
+	QColor foreColor;
+	QColor backColor;
+	bool italic;
+	bool underline;
+	bool bold;
+};
+
+struct ColorTheme {
+	QString name;
+	std::map <QString, TextStyle> styles;
+};
 
 //-----------------------------------------------------------------------------
 
@@ -61,6 +76,8 @@ public:
 	QString LocateFileUsingSearchPaths(QString filename, QString searchPaths, bool isDir);
 	QString DecodeLibraryPath(QString libPath);
 	QString ConfigPath(void) { return configPath; }
+	void GetThemeStyle(QString themeName, QString styleName, TextStyle &style);
+
 
 	bool useMenuButton;
 	bool hideCompilerWarnings;
@@ -72,11 +89,13 @@ public:
 	QString arduinoInstall;
 	QString extraArduinoLibsSearchPaths;
 	QString avrPath;
+	QString themeName;
 	//QString coreLibsPath;
 	unsigned int uploadTimeout;
 	map <QString, BoardDef> boards;
 	map <QString, ProgrammerDef> programmers;
 	map <QString, BuildDef> builds;
+	map <QString, ColorTheme> colorThemes;
 
 	QString editorFontName;
    QString editorColorName;
@@ -89,6 +108,7 @@ private:
 	vector <QString> macros;
 
 	int LoadHardwareDefinitions(void);
+	int LoadStyles(void);
 	QString ReadXMLNode(QDomNode xml, QString attribute, QString defaultValue);
 };
 
