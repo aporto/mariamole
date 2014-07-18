@@ -21,7 +21,8 @@ public slots:
 	void OnOk(void);
     void OnApply(void);
 	void OnCancel(void);
-    void OnLoadCore(void);
+    void OnLoadCore(void);    
+    void OnLoadUserLibs(void);
 	void PageChange (QListWidgetItem * current, QListWidgetItem * previous);
     void ColorPick (void);
 	//void OnThemeChanged(int idx);	

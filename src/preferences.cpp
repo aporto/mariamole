@@ -13,6 +13,7 @@ Preferences::Preferences(QWidget *parent)
     connect(ui.btnApply, SIGNAL(clicked()), this, SLOT(OnApply()));
     connect(ui.btnColorPicker  , SIGNAL(clicked()), this, SLOT(ColorPick()));
     connect(ui.btnLoadCore, SIGNAL(clicked()), this, SLOT(OnLoadCore()));
+    connect(ui.btnLoadUserLibs, SIGNAL(clicked()), this, SLOT(OnLoadUserLibs()));
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(OnCancel()));
 	connect(ui.menuList, SIGNAL(currentItemChanged( QListWidgetItem * , QListWidgetItem * )), 
         this, SLOT(PageChange( QListWidgetItem * , QListWidgetItem * )));
@@ -128,6 +129,30 @@ void Preferences::OnLoadCore(void)
     if (QDir(path).exists()) {
         ui.arduinoInstall->setText(path);
     }
+}
+
+
+
+void Preferences::OnLoadUserLibs(void)
+{
+    QString path = "";
+
+    path = QFileDialog::getExistingDirectory(this, tr("User libraries paths"),
+                                                QDir::homePath(),
+                                                QFileDialog::ShowDirsOnly
+                                                | QFileDialog::DontResolveSymlinks);
+
+    qDebug() << path.length();
+
+    if (path.length() > 0)
+    {
+        if (config.extraArduinoLibsSearchPaths.length() > 0)
+            config.extraArduinoLibsSearchPaths += ";" + path;
+        else
+            config.extraArduinoLibsSearchPaths = path;
+    }
+
+    ui.userLibraries->setText(config.extraArduinoLibsSearchPaths);
 }
 
 
