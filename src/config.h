@@ -78,7 +78,7 @@ public:
 	QString ConfigPath(void) { return configPath; }
 	void GetThemeStyle(QString themeName, QString styleName, TextStyle &style);
 
-
+	bool highlightBraces;
 	bool useMenuButton;
 	bool hideCompilerWarnings;
 	QString workspace;

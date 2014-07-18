@@ -53,3 +53,4 @@ projects/msvc10/GeneratedFiles
 /src/git_version.h
 /temp
 /projects/msvc10/temp
+/src/preferences.old.ui

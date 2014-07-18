@@ -18,7 +18,7 @@ Editor::Editor(QWidget *parent)
 
 	LoadStyleSheet(this, "style_code_editor.css");
 	
-    setAutoCompletionThreshold(-1);
+    setAutoCompletionThreshold(3);
     setAutoCompletionSource(QsciScintilla::AcsAll);
 
 	context= new QMenu(this);		
@@ -118,11 +118,17 @@ void Editor::setEditorStyle (void)
 
     setColor(backColor);
 	
+	QString css = "color:" + style.foreColor.name() + ";";
+	css += "background-color:" + style.backColor.name() + ";";
+	css += "border: 1px solid " + style.foreColor.name() + ";";
+	lblCursorPosition->setStyleSheet(css);
+	
 	// margin
 	setMarginLineNumbers(100, true);
 	setMarginsFont(font);
-	setMarginsBackgroundColor(backColor);//QColor(24,32,34));//QColor(20,28,30));
-	setMarginsForegroundColor(QColor(42,50,52));
+	config.GetThemeStyle(config.themeName, "MARGIN", style);
+	setMarginsBackgroundColor(style.backColor);//QColor(24,32,34));//QColor(20,28,30));
+	setMarginsForegroundColor(style.foreColor); //QColor(42,50,52));
 	setMarginWidth(0, fontMetrics.width("00000") + 6);	
 	
 	// General editor things
@@ -138,19 +144,24 @@ void Editor::setEditorStyle (void)
 	setMarkerForegroundColor(Qt::white, 0);
 
 	// caret
-	setCaretLineVisible(false);
+	setCaretLineVisible(true);
 	setCaretWidth(2);
 	config.GetThemeStyle(config.themeName, "CARET", style);
 	setCaretForegroundColor(style.foreColor);//QColor(220, 200, 200));
-	setCaretLineBackgroundColor(style.backColor);//QColor(24, 32, 34));
-
+	caretLineBackColor = style.backColor;
+	setCaretLineBackgroundColor(caretLineBackColor);//QColor(24, 32, 34));
+	//setCaretLineBackgroundColor(QColor(255, 0, 0, 100));
 	//SendScintilla (SC_TECHNOLOGY_DIRECTWRITE, 1);
 	//SendScintilla (SCI_SETBUFFEREDDRAW, 1);
 	//SendScintilla (SCI_SETTWOPHASEDRAW, 1);
 	//SendScintilla (SCI_SETFONTQUALITY,  SC_EFF_QUALITY_NON_ANTIALIASED);//SC_EFF_QUALITY_DEFAULT);	
 
 	// matched and unmatched braces coloring
-	setBraceMatching(QsciScintilla::SloppyBraceMatch);
+	if (config.highlightBraces) {
+		setBraceMatching(QsciScintilla::SloppyBraceMatch);
+	} else {
+		setBraceMatching(QsciScintilla::NoBraceMatch);
+	}
 	setMatchedBraceBackgroundColor(backColor);
 	setMatchedBraceForegroundColor(QColor(220, 220, 50));
 	setUnmatchedBraceBackgroundColor(QColor(0,0,0));
@@ -226,7 +237,7 @@ void Editor::mousePressEvent ( QMouseEvent * event )
 	QsciScintilla::mousePressEvent(event);
 	long res = this->SendScintilla(SCI_GETCARETLINEBACK, 0);
 	if (res != 0x00222018) {
-		setCaretLineBackgroundColor(QColor(24, 32, 34));
+		setCaretLineBackgroundColor(caretLineBackColor);//QColor(24, 32, 34));
 	}
 	markerDeleteAll();
 }

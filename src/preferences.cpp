@@ -28,6 +28,8 @@ Preferences::Preferences(QWidget *parent)
     ui.colorPicked->setAutoFillBackground(true); // IMPORTANT!
     ui.colorPicked->setPalette(palette);
 
+	ui.cbBraceHighlight->setChecked(config.highlightBraces);
+
 	//editor->setText("#include <Arduino.h>\n\n// single line comment \n/*\nMultiple line comment\n*/\n\n void function (int index) {\n\tchar * value = \"Test\";\n\tchar c='65';\n}");
 	//editor->setReadOnly(true);
 	ui.cbThemes->clear();
@@ -92,7 +94,7 @@ void Preferences::OnApply(void)
     if(ui.arduinoInstall->text().length() > 0)
 	   config.arduinoInstall = ui.arduinoInstall->text();
     else
-        config.arduinoInstall =  qApp->applicationDirPath();
+        config.arduinoInstall =  qApp->applicationDirPath() + "/arduino";
     config.extraArduinoLibsSearchPaths = ui.userLibraries->text();
     config.editorFontName  = ui.editorFontName->currentFont().family();
     config.editorFontSize  = ui.editorFontSize->value();
@@ -100,6 +102,7 @@ void Preferences::OnApply(void)
     config.useMenuButton   = ui.embedMenu->isChecked();
     config.hideCompilerWarnings = ui.hideWarnings->isChecked();
 	config.themeName = ui.cbThemes->currentText();
+	config.highlightBraces = ui.cbBraceHighlight->isChecked();
 
     config.Save();
 

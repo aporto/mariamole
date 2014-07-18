@@ -62,7 +62,7 @@ private:
 	QMenu * context;
 	QAction * actionHelpWithThis;
 	QLabel * lblCursorPosition;
-	
+	QColor caretLineBackColor;
 	void SetFileName(QString filename);
 	void setLexerStyle(int styleId, QString styleName);
 	//void setLexerStyle (int style, QColor foreground, QColor background, bool bold = false, bool italic = false, bool underline = false);

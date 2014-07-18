@@ -87,6 +87,7 @@ int Config::Load(void)
 	editorFontName  = settings.value("editorFontName", "Consolas").toString();
 	editorFontSize  = settings.value("editorFontSize", "12").toInt();
 	editorColorName = settings.value("editorColorName", "#182022").toString();
+	highlightBraces = settings.value("highlightBraces", "1").toBool();
 
 	settings.endGroup();
 
@@ -453,6 +454,7 @@ bool Config::Save(void)
 	settings.setValue("editorFontName", editorFontName);			
 	settings.setValue("editorFontSize", editorFontSize);			
 	settings.setValue("editorColorName", editorColorName);
+	settings.setValue("highlightBraces", highlightBraces);	
 	settings.endGroup();
 
 	settings.beginGroup("compiler");
