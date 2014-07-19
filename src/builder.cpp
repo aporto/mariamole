@@ -252,14 +252,24 @@ bool Builder::Upload(void)
 #endif
 			msg.AddOutput("Leonardo board: Uploading to alternative serial port '" + leoPort + "' (Please check Leonardo docs if you have any questions about this)", false);			
 		} else {
-#ifdef Q_OS_WIN
+
+#if  defined(Q_OS_WIN)
             arguments << "-P\\\\.\\" + project->serialPort;
-#else
+#endif
+
+#if  defined(Q_OS_LINUX)
             arguments << "-P/dev/" + project->serialPort;
 #endif
+
+#if  defined(Q_OS_MAC)
+            arguments << "-P/dev/tty." + project->serialPort;
+#endif
+
+
+
 		}
 		if (speed != "") {
-			arguments << "-b" + speed;
+            arguments << "-b" + speed;
 		}
 	} else {
 		arguments << "-P" + communication;
@@ -269,7 +279,7 @@ bool Builder::Upload(void)
 		arguments << "-D";
 	} 
 
-	arguments << "-q" << "-Uflash:w:" + outputFile + ":i";
+    arguments << "-q" << "-Uflash:w:\"" + outputFile + "\":i" << "-v";
 
     bool ok = launcher->RunCommand(uploaderPath, arguments, config.uploadTimeout, progress);
 	
