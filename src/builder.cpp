@@ -279,7 +279,7 @@ bool Builder::Upload(void)
 		arguments << "-D";
 	} 
 
-    arguments << "-q" << "-Uflash:w:\"" + outputFile + "\":i";
+    arguments << "-q" << "-Uflash:w:" + outputFile + ":i";
 
     bool ok = launcher->RunCommand(uploaderPath, arguments, config.uploadTimeout, progress);
 	

@@ -44,7 +44,7 @@ bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut, B
         while (running && (timeOutCounter < timeOut * 10)) {
             percentage = 10 * timeOutCounter / timeOut;
             progress->setValue(percentage);            
-            running = !(proc->waitForFinished(70));
+            running = !(proc->waitForFinished(-1));
             qApp->processEvents();            
             QThread::msleep(30);
             timeOutCounter++;
