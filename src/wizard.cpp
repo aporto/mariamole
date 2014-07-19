@@ -72,9 +72,13 @@ void Wizard::btnNextClicked(void)
 				if (selection.size() != 0) {
 					ui.projectName->setText(selection.at(0)->text(0));
 				}
-			}
-			if (ui.projectName->text() == "") {
-				ui.projectName->setText("New project");
+			} else if (ui.rbImportSketch->isChecked()) {
+				QFileInfo finfo (ui.ebSketchName->text());
+				ui.projectName->setText(finfo.baseName());
+			} else { // new empty project 
+				if (ui.projectName->text() == "") {
+					ui.projectName->setText("New project");
+				}
 			}
 		}
 	} else if (ui.stackedWidget->currentIndex() == 4) {
@@ -85,8 +89,13 @@ void Wizard::btnNextClicked(void)
 			ui.btnFinish->setEnabled(true);
 			ui.btnNext->setEnabled(false);
 			ui.btnPrevious->setEnabled(true);
-			if (ui.projectName->text() == "") {
-				ui.projectName->setText("New project");
+			if (ui.rbImportSketch->isChecked()) {
+				QFileInfo finfo (ui.ebSketchName->text());
+				ui.projectName->setText(finfo.baseName());
+			} else { // new empty project 
+				if (ui.projectName->text() == "") {
+					ui.projectName->setText("New project");
+				}
 			}
 		}
 	}

@@ -679,18 +679,51 @@ void Builder::ImportDeclarations(void)
 			}
 		}
 
-		bool ignore = false;
-		ignore = ignore | (words.indexOf("IF") >= 0);
-		ignore = ignore | (words.indexOf("ELSE") >= 0);
-		ignore = ignore | (words.indexOf("WHILE") >= 0);
-		ignore = ignore | (words.indexOf("DO") >= 0);
-		ignore = ignore | (words.indexOf("SWITCH") >= 0);
-		ignore = ignore | (lines[i].indexOf(";") >= 0);
-		ignore = ignore | (lines[i].indexOf(".") >= 0);
-		ignore = ignore | (lines[i].indexOf("->") >= 0);
-		ignore = ignore | (lines[i].indexOf("=") >= 0);
-		ignore = ignore | (lines[i].indexOf("==") >= 0);
+		if (words.count() < 4) { // at least "TYPE", "FUNCTION_NAME", "(", ")"
+			continue;
+		}
 
+		bool ignore = false;
+		ignore = ignore || (words.indexOf("IF") >= 0);
+		ignore = ignore || (words.indexOf("ELSE") >= 0);
+		ignore = ignore || (words.indexOf("WHILE") >= 0);
+		ignore = ignore || (words.indexOf("DO") >= 0);
+		ignore = ignore || (words.indexOf("SWITCH") >= 0);
+		ignore = ignore || (lines[i].indexOf(";") >= 0);
+		ignore = ignore || (lines[i].indexOf(".") >= 0);
+		ignore = ignore || (lines[i].indexOf("->") >= 0);
+		ignore = ignore || (lines[i].indexOf("=") >= 0);
+		ignore = ignore || (lines[i].indexOf("==") >= 0);
+		ignore = ignore || (lines[i].indexOf("\"") >= 0); // any argument with " may be considered a call, and not a definition
+		ignore = ignore || (lines[i].indexOf("'") >= 0); // idem
+
+		// check if any argument is a number. If yes, then it shall be considered a function call, and not a definiton
+		for (int j=0; j < words.count(); j++) {
+			double num = words.at(j).toDouble();
+			if (QString::number(num) == words.at(j)) {
+				ignore = true;
+				break;
+			}
+		}
+
+		// if the first word is not an recognized data type, ignore
+		bool validDataType = false;
+		validDataType = validDataType || (words.at(0) == "VOID");
+		validDataType = validDataType || (words.at(0) == "INT");
+		validDataType = validDataType || (words.at(0) == "CHAR");
+		validDataType = validDataType || (words.at(0) == "SHORT");
+		validDataType = validDataType || (words.at(0) == "UNSIGNED");
+		validDataType = validDataType || (words.at(0) == "SIGNED");
+		validDataType = validDataType || (words.at(0) == "LONG");
+		validDataType = validDataType || (words.at(0) == "FLOAT");
+		validDataType = validDataType || (words.at(0) == "DOUBLE");
+		validDataType = validDataType || (words.at(0) == "BYTE");
+		validDataType = validDataType || (words.at(0) == "INT16");
+		validDataType = validDataType || (words.at(0) == "INT32");
+		validDataType = validDataType || (words.at(0) == "INT64");
+		validDataType = validDataType || (words.at(0) == "BOOL");
+		ignore = ignore || (validDataType == false);
+		
 		if (lines[i].indexOf("//") >= 0) {
 			lines[i] = lines[i].left(lines[i].indexOf("//"));
 		}
