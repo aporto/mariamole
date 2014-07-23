@@ -2,7 +2,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
-EXEC_PROGRAM(bash ARGS ${PROJECT_SOURCE_DIR}/src/get_git_version_unix.sh > ${PROJECT_SOURCE_DIR}/src/git_version.h)
+if(EXISTS "${PROJECT_SOURCE_DIR}/src/git_version.h")
+	MESSAGE("GIT VERSION HEADER ALREADY EXIST")
+else()
+	EXEC_PROGRAM(bash ARGS ${PROJECT_SOURCE_DIR}/src/get_git_version_unix.sh > ${PROJECT_SOURCE_DIR}/src/git_version.h)
+endif()
+
+
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})

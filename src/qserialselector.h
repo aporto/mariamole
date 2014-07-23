@@ -17,7 +17,8 @@ public:
 	~QSerialSelector();
 
 protected: 
-	void focusInEvent(QFocusEvent * e);
+    //void focusInEvent(QFocusEvent * e);
+    bool eventFilter (QObject *object, QEvent *event);
 
 private:
 	Ui::QSerialSelector ui;
