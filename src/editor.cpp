@@ -483,3 +483,15 @@ void Editor::onCursorPositionChanged (int line, int index)
 {
 	lblCursorPosition->setText("lin:" + QString::number(line) + ", col:" + QString::number(index));
 }
+
+
+void Editor::keyPressEvent(QKeyEvent * event)
+{	
+	if (event->modifiers() == Qt::ControlModifier) {
+		if (event->key() == Qt::Key_U) {
+			emit ctrlUPressed();			
+		}
+	}
+
+	QsciScintilla::keyPressEvent(event);
+}

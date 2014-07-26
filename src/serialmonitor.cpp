@@ -15,7 +15,7 @@ SerialMonitor::SerialMonitor(QWidget *parent)
 	connect (ui.btnSend, SIGNAL(clicked()), this, SLOT(SendData()));
 	connect (ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(SendData()));
 
-    connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+    //connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
 	
 	LoadStyleSheet(this, "style_serial_monitor.css");
 
@@ -61,6 +61,8 @@ void SerialMonitor::CRT(QString text)
 		ui.plainTextEdit->textCursor().deletePreviousChar();
 		ui.plainTextEdit->setTextCursor( tcaux ); 
 	}
+
+	qApp->processEvents();
 }
 
 //-----------------------------------------------------------------------------
@@ -94,10 +96,12 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
     serialPort.setPortName(portId);
     //ui.cbSpeed->setCurrentText(speed);
 
-	if (PrepareSerialPort(portId, portSpeed) == false) {
+	PrepareSerialPort(portId, portSpeed);
+	
+	/*if (PrepareSerialPort(portId, portSpeed) == false) {
         CRT(">> Failed to open serial port [" + portId + "] at " + portSpeed + "!\n\r");
 		return false;
-	}
+	}*/
 
 
 
@@ -110,6 +114,9 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 		//serialPort.setDataTerminalReady(true);
         //serialPort.setRequestToSend(true);
         CRT(">> Serial port [" + portId + "] open at " + ui.cbSpeed->currentText() + "!\n\r");
+
+		connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+
 		return true;
 	} else {
         CRT(">> Failed to open serial port [" + portId + "] at " + ui.cbSpeed->currentText() + "!\n\r");
@@ -147,12 +154,15 @@ bool SerialMonitor::ClosePort(void)
 
 void SerialMonitor::ReOpenPort(void)
 {
+	bool go = true;
 	if (serialPort.isOpen()) {
-		if (ClosePort()) {
-            connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
-            OpenPort();
-		}
-	} 	
+		go = ClosePort();
+	}
+
+	if (go) {
+		 //connect (&serialPort, SIGNAL(readyRead()), this, SLOT(ReadSerialPort()));
+         OpenPort();
+	}
 }
 
 //-----------------------------------------------------------------------------

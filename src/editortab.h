@@ -10,6 +10,7 @@
 #include "serialmonitor.h"
 #include "mm_utils.h"
 #include "config.h"
+#include "workspace.h"
 
 namespace MM {
 	enum TabType {undefinedTab, codeTab, serialTab};
@@ -40,9 +41,11 @@ public slots:
 	void onEditorTextChanged(void);
 	void FormatCode(void);
 	void ShowEditorMenu(const QPoint point);	
+	void onCtrlUPressed(void);
 
 signals:
      void codeChanged(void);
+	 void uploadCode(void);
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event);

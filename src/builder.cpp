@@ -95,6 +95,7 @@ int Builder::Build(bool upload)
 	progress->SetPhase(BuildWindowTypes::compiling);
 	SetPercentage(0);		
 	progress->show();
+	qApp->processEvents();
 	running = true;	
 
 	project = workspace.GetCurrentProject();

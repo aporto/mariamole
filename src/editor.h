@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include <QApplication>
 #include <QColor>
+#include <QKeyEvent>
 #include <QMenu>
 #include <QDateTime>
 #include <QDesktopServices>
@@ -50,9 +51,13 @@ public slots:
 	void MenuSelectAll(void);
 	void onCursorPositionChanged (int line, int index); 
 
+signals:
+	void ctrlUPressed(void);
+
 protected: 
 	void focusInEvent ( QFocusEvent * event );
 	void mousePressEvent ( QMouseEvent * event );
+	void keyPressEvent(QKeyEvent * event);
 	
 private:
 	QsciAPIs *api;

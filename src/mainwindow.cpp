@@ -58,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//ui.editorTabs->clear();  //removes all the previous tabs
 	tabsEditor = new EditorTab(this);
 	connect(tabsEditor, SIGNAL(codeChanged()), this, SLOT(OnProjectModified()));
+	connect(tabsEditor, SIGNAL(uploadCode()), this, SLOT(UploadProgram()));
 	//ui.tabParent->addWidget(tabsEditor);
 	ui.splitter->addWidget(tabsEditor);
 
@@ -602,6 +603,7 @@ void MainWindow::OnBuildComplete(void)
 			ui.pbEEPROMSize->setVisible(false);
 		}
 	}
+
 }
 
 //-----------------------------------------------------------------------------
@@ -631,7 +633,7 @@ void MainWindow::BuildProject()
 
 //-----------------------------------------------------------------------------
 
-void MainWindow::UploadProgram()
+void MainWindow::UploadProgram(void)
 {
 	if (workspace.GetCurrentProject() == NULL) {
 		ErrorMessage("No project selected!");
