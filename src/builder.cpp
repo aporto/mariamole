@@ -234,7 +234,8 @@ bool Builder::Upload(void)
 	} else {
 		arguments << "-c" + programmer->second.protocol;
 		communication = programmer->second.communication;
-		speed = programmer->second.speed;				
+		speed = programmer->second.speed;	
+		//arguments << "-F";
 	}
 
 	if (speed == "") {
@@ -517,8 +518,6 @@ bool Builder::Link(void)
 		arguments << buildPath + "/" + project->name + ".hex";
 		
         ok = launcher->RunCommand(linkerPath, arguments);
-	} else {
-		msg.Add("Error linking the project " + project->name, mtError);
 	}
 
 	SetPercentage(100);

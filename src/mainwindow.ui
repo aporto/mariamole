@@ -38,7 +38,7 @@
  }
 
 QWidget {
-color:blue;
+	_color:white;
 	color:rgb(140, 140, 140);
 	background-color: rgb(22, 30, 32);
 	selection-background-color: rgb(68, 85, 89);
@@ -293,7 +293,6 @@ background-color: rgb(22, 30, 32);</string>
              <height>0</height>
             </size>
            </property>
-           
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -931,7 +930,11 @@ QToolButton {
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(22, 30, 32);</string>
+    <string notr="true">QStatusBar {
+	background-color: rgb(22, 30, 32);
+	color: white;
+}
+</string>
    </property>
   </widget>
   <action name="actionSelect_workspace">

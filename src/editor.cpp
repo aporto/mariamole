@@ -83,6 +83,8 @@ Editor::Editor(QWidget *parent)
 	
 	lastModifiedTime = QDateTime::currentDateTime();
 
+	setAutoIndent(true);
+
 	setEditorStyle();
 }
 
