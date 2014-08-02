@@ -677,8 +677,23 @@ void Builder::ImportDeclarations(void)
 	}
 
 	for (int i=0; i < lines.count(); i++) {
-		QRegExp rx("(\\ |\\,|\\(|\\)|\\.|\\:|\\t)"); //RegEx for ' ' or ',' or '.' or ':' or '\t'
-		QStringList words = lines[i].trimmed().split(rx);
+		//QRegExp rx("(\\ |\\,|\\(|\\)|\\.|\\:|\\t)"); //RegEx for ' ' or ',' or '.' or ':' or '\t'
+		QRegExp rx("\\s"); //RegEx for all white spaces, including tab'
+		bool ok = rx.isValid();
+		QString line = lines[i].trimmed();
+		int j = 0;
+		while (j < line.size()) { //insert spaces 
+			if ( ( (line.at(j) == '(') || (line.at(j) == ')') ) || ( (line.at(j) == '{') || (line.at(j) == '}') ) ) {
+				line.insert(j, " ");
+				j++;
+			}
+			if ( ( (line.at(j) == ':') || (line.at(j) == ',') ) || ( (line.at(j) == ';') || (line.at(j) == ';') ) ) {
+				line.insert(j, " ");
+				j++;
+			}
+			j++;
+		}
+		QStringList words = line.split(rx);
 		int w = 0;
 		while (w < words.count()) {
 			words[w] = words[w].trimmed().toUpper();

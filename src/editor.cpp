@@ -293,23 +293,6 @@ void Editor::CodeBeautifier(void)
 		inc = true;
 		QString trim = lines[i].trimmed();
 
-		int pos = trim.indexOf(" ");
-		bool IfAdd_DoItOnSametLine = false;
-		if (pos > 0) {
-			QString firstWord = trim.left(pos).trimmed().toUpper();
-			IfAdd_DoItOnSametLine |= (firstWord == "INT");
-			IfAdd_DoItOnSametLine |= (firstWord == "VOID");
-			IfAdd_DoItOnSametLine |= (firstWord == "FLOAT");
-			IfAdd_DoItOnSametLine |= (firstWord == "DOUBLE");
-			IfAdd_DoItOnSametLine |= (firstWord == "UNSIGNED");
-			IfAdd_DoItOnSametLine |= (firstWord == "LONG");
-			IfAdd_DoItOnSametLine |= (firstWord == "SHORT");
-			IfAdd_DoItOnSametLine |= (firstWord == "CHAR");
-			IfAdd_DoItOnSametLine |= (firstWord == "CHAR*");
-			IfAdd_DoItOnSametLine |= (firstWord == "BYTE");
-			IfAdd_DoItOnSametLine |= (firstWord == "BOOL");
-		}
-
 		// fix the } at the end of a block
 		if (trim.indexOf("}") >= 0) {
 			if (tab.length() > 0) {
@@ -324,16 +307,39 @@ void Editor::CodeBeautifier(void)
 		// fix the { at the beginning of a block
 		if (trim.indexOf("{") >= 0) {
 			if (trim == "{") {
-				if (i > 0) {					
+				if (i > 0) {
+					bool IfAdd_DoItOnSametLine = false;
+					int pos = trim.indexOf(" ");
+					QString prevLine = lines[i-1].trimmed();
+					if (pos > 0) {					
+						IfAdd_DoItOnSametLine = true;
+						QString firstWord = prevLine.left(pos).trimmed().toUpper();
+						bool dontAdd = false;
+						dontAdd |= (firstWord == "INT");
+						dontAdd |= (firstWord == "VOID");
+						dontAdd |= (firstWord == "FLOAT");
+						dontAdd |= (firstWord == "DOUBLE");
+						dontAdd |= (firstWord == "UNSIGNED");
+						dontAdd |= (firstWord == "LONG");
+						dontAdd |= (firstWord == "SHORT");
+						dontAdd |= (firstWord == "CHAR");
+						dontAdd |= (firstWord == "CHAR*");
+						dontAdd |= (firstWord == "BYTE");
+						dontAdd |= (firstWord == "BOOL");
+						if (dontAdd) {
+							IfAdd_DoItOnSametLine = false;
+						}
+					}
+
 					if (IfAdd_DoItOnSametLine) {
 						// move "{" of the end of the previous
 						lines[i-1] += " " + trim;
 						lines.erase(lines.begin() + i);
+						inc = false;
 					} else {
 						// leave "{" of the current line
-						lines[i] = trim; 
-					}
-					inc = false;
+						lines[i] = tab + trim; 
+					}					
 				}
 			}
 			tab += "\t";
