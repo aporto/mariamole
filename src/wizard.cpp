@@ -321,6 +321,7 @@ void Wizard::PopulateLibrariesList(void)
 			}
 		}
 	}	
+	ui.listLibs->sortItems();
 }
 
 //-----------------------------------------------------------------------------

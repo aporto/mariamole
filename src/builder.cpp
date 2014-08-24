@@ -130,7 +130,7 @@ int Builder::Build(bool upload)
 	bool ok = true;
 	for (unsigned int i=0; i < project->files.size(); i++) {
 		QString ext = QFileInfo(project->files.at(i).name).suffix().toUpper();
-		if ((ext == "CPP") || (ext == "c")) {
+		if ((ext == "CPP") || (ext == "C")) {
 			ok = ok & Compile(i);
 			if (GetCancel()) {
 				msg.Add("Build cancelled by the user!", mtRegular);
