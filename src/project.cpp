@@ -4,6 +4,7 @@
 
 Project::Project(void)
 {
+	serialPortSpeed = "9600";
 }
 
 //-----------------------------------------------------------------------------
@@ -71,6 +72,9 @@ bool Project::Load(QString workspace, QString filename)
 			useCodeAutomation = elem.attribute("useCodeAutomation").toInt() == 1;
 			linkPrintfVersion = elem.attribute("linkPrintfVersion").toInt(); 
 			serialPortSpeed = elem.attribute("serialPortSpeed");	
+			if (serialPortSpeed == "") {
+				serialPortSpeed = "9600";
+			}
 			isLibrary = elem.attribute("isLibrary").toInt() == 1;
 
 			QDomNode xmlFiles = xml.firstChild();

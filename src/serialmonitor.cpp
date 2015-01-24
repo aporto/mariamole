@@ -86,6 +86,10 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
 	if (serialPort.isOpen()) {
 		return true;
     }
+
+	if (speed == "") {
+		speed = "9600";
+	}
 		
     portId = port;
     portSpeed = speed;
@@ -111,6 +115,7 @@ bool SerialMonitor::OpenPort(QString port, QString speed)
         serialPort.setParity(QSerialPort::NoParity);
         serialPort.setStopBits(QSerialPort::OneStop);
         serialPort.setDataBits(QSerialPort::Data8);
+		serialPort.setDataTerminalReady(true);
 		//serialPort.setDataTerminalReady(true);
         //serialPort.setRequestToSend(true);
         CRT(">> Serial port [" + portId + "] open at " + ui.cbSpeed->currentText() + "!\n\r");
