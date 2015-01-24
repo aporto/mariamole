@@ -10,7 +10,7 @@
 #include "ui_buildwindow.h"
 
 namespace BuildWindowTypes {
-	enum phaseType {cleaning, compiling, linking, linkingCore, uploading, bootloader};
+	enum phaseType {cleaning, compiling, linking, linkingCore, uploading, bootloader, detectingLeonardo};
 }
 
 class BuildWindow : public QProgressDialog 

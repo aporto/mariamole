@@ -243,8 +243,10 @@ bool Builder::Upload(void)
 	}
 
 	if (communication == "serial") {
-		if (board->second.name == "Arduino Leonardo") {
+		if (board->second.name == "Arduino Leonardo") {			
+			progress->SetPhase(BuildWindowTypes::detectingLeonardo);
 			QString leoPort = GetLeonardoSerialPort(project->serialPort);
+			progress->SetPhase(BuildWindowTypes::uploading);
             //arguments << "-P\\\\.\\" + leoPort;
 
 #ifdef Q_OS_WIN
@@ -590,13 +592,15 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 	QStringList before, after;
 	QSerialPortInfo serialList;
 	QSerialPort port;
+
+	SetPercentage(100);
 	
 	for (int i=0; i < serialList.availablePorts().count();i++) {
 		before.append(serialList.availablePorts().at(i).portName());
 	}
 	
 #ifdef Q_OS_WIN
-	bool open = PrepareSerialPort(project->serialPort, project->serialPortSpeed);
+	bool open = PrepareSerialPort(project->serialPort, "1200");
 #else
 	port.setPortName(project->serialPort);
 	port.setFlowControl(QSerialPort::NoFlowControl);
@@ -612,7 +616,7 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 		QThread::msleep(100);
 		port.close();
 
-		int counter = 30;
+		int counter = 50;
 		after.clear();
 		while (counter > 0) {
 			QSerialPortInfo newSerialList;
@@ -625,14 +629,16 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 					return after.at(i);				
 				}
 			}
-			QThread::msleep(10);
+			QThread::msleep(100);
 			counter--;
+
+			SetPercentage(100 - counter * 2);
 		}
 	} else {
 		msg.Add("Invalid serial port for project " + project->name + ": '" + project->serialPort + "'", mtError);
 	}
 	
-	msg.Add("Could not detect Leonardo serial port for programming: " + project->name, mtWarning);
+	msg.Add("Could not detect Leonardo serial port for programming. Please try pressing the RESET button at your board during upload!", mtError);
 	return project->serialPort;
 }
 
@@ -651,7 +657,22 @@ void Builder::ImportDeclarations(void)
 	QTextStream in(&inFile);
 	QString code = in.readAll();
 
+	// Remove all single-line comments from the text that will be processed
+	QStringList lines = code.split("\n");
+	
+	int i=0;
+	while (i < lines.count()) {
+		int p = lines[i].indexOf("//");
+		if (p >= 0) {
+			lines[i] = lines[i].right(p);		
+		}		
+		i++;
+	}	
+	code = lines.join("\n");
+
+	// remove all multi-line comments from the text that will be processed
 	int p1 = code.indexOf("/*");
+	//int watchDogMonitor = code.length();
 	while (p1 >= 0) {
 		QString left = code.left(p1);
 		code = code.right(code.length() - p1);
@@ -659,17 +680,24 @@ void Builder::ImportDeclarations(void)
 		if (p2 >=0) {			
 			QString right = code.right(code.length() - p2 - 2);
 			code = left + right;
+		} else {
+			return; // could not find the end of a comment: break to avoid infinite loop
 		}
 		p1 = code.indexOf("/*");
+
+		/*if (code.length() == watchDogMonitor) {
+			return; // exit to avoid an infinite loop
+		}		
+		watchDogMonitor = code.length();*/
 	}
 
-	QStringList lines = code.split("\n");
+	lines = code.split("\n");
 	QStringList list;
 
-	int i=1;
+	i=1;
 	while (i < lines.count()) {
 		if (lines[i].trimmed().indexOf("{") == 0) {
-			lines[i-1] += " " + lines[i];
+			lines[i-1] = " " + lines[i];
 			lines.erase(lines.begin()+i);
 		} else {
 			i++;

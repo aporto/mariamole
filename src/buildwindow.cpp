@@ -68,6 +68,11 @@ void BuildWindow::SetPhase(BuildWindowTypes::phaseType phase)
 			css += "QProgressBar::chunk:horizontal {background: rgb(90, 160, 90); }";			
 		break;		
 
+		case BuildWindowTypes::detectingLeonardo:
+			ui.label->setText("Detecting Leonardo port...");
+			css += "QProgressBar::chunk:horizontal {background: rgb(90, 160, 160); }";			
+		break;		
+
 	}
 	ui.progressBar->setStyleSheet(css);
 	
