@@ -9,6 +9,8 @@ Editor::Editor(QWidget *parent)
 	setWindowIconText("editor");
 	//setEolMode(QsciScintilla::EolUnix);
 
+	this->setUtf8(true);
+
 	lexer = new QsciLexerCPP;
 	this->setLexer(lexer);
 	//setAutoCompletionThreshold(0);
