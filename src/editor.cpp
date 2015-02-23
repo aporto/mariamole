@@ -284,8 +284,8 @@ void Editor::focusInEvent ( QFocusEvent * event )
 
 void Editor::CodeBeautifier(void)
 {
-	QString code = this->text();
-	QString output = "";
+	QString code = QString::fromUtf8(this->text().toUtf8());
+	QString output = QString::fromUtf8("");
 	QStringList lines = code.split("\n");
 	QString tab = "";
 	int i = 0;
@@ -394,8 +394,8 @@ bool Editor::Save(void)
 		return false;
 	} else {    		
 		QTextStream out(&qfile); // we will serialize the data into the file
-		QString text = this->text();		
-		out << text; 		
+		QString utext = QString::fromUtf8(this->text().toUtf8());		// save using UTF-8 format
+		out << utext; 		
 		qfile.close();
 
 		setModified(false);
