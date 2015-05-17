@@ -39,6 +39,21 @@ SerialMonitor::~SerialMonitor()
 
 void SerialMonitor::CRT(QString text)
 {	
+	/*char buff[20000];
+	int l = text.length();
+	int sz = sizeof(buff) - 1;
+	strncpy(buff, text.toStdString().c_str(), sz);
+	for (int i=1; i < sz-1; i++) {
+		if (buff[i] == 13) {
+			if ( (buff[i+1] != 10) && (buff[i-1] != 10)) {
+				l = l + 1;
+			}
+		}
+	}*/
+	//text.replace("/r","");
+	//l = text.length();
+	//strcpy(buff, text.toStdString().c_str());
+
 	ui.plainTextEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
 	ui.plainTextEdit->moveCursor(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	ui.plainTextEdit->insertPlainText(text);		
@@ -61,7 +76,7 @@ void SerialMonitor::CRT(QString text)
 		ui.plainTextEdit->textCursor().deletePreviousChar();
 		ui.plainTextEdit->setTextCursor( tcaux ); 
 	}
-
+	ui.plainTextEdit->ensureCursorVisible();
 	qApp->processEvents();
 }
 
@@ -183,7 +198,7 @@ void SerialMonitor::SendData(void)
 	switch (lineEnding) {
 		case 1: text += "\n"; break;
 		case 2: text += "\r"; break;
-		case 3: text += "\n\r"; break;
+		case 3: text += "\r\n"; break;
 	}
 	if (serialPort.isOpen()) {
 		QByteArray bytes (text.toLocal8Bit());		

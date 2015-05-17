@@ -53,12 +53,12 @@ bool PrepareSerialPort(QString portId, QString portSpeed)
 	}
 
 	COMMTIMEOUTS timeouts={0};
-	timeouts.ReadIntervalTimeout=50;
+	timeouts.ReadIntervalTimeout=MAXDWORD;
 	timeouts.ReadTotalTimeoutConstant=1;
 	timeouts.ReadTotalTimeoutMultiplier=1;
 
-	timeouts.WriteTotalTimeoutConstant=50;
-	timeouts.WriteTotalTimeoutMultiplier=1;
+	timeouts.WriteTotalTimeoutConstant=0;
+	timeouts.WriteTotalTimeoutMultiplier=0;
 	SetCommTimeouts(hSerial, &timeouts);
 	CloseHandle(hSerial);
 #endif 
