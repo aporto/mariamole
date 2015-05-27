@@ -42,10 +42,13 @@ public slots:
 	void FormatCode(void);
 	void ShowEditorMenu(const QPoint point);	
 	void onCtrlUPressed(void);
+	void onSearchUPressed(void);
+	
 
 signals:
      void codeChanged(void);
 	 void uploadCode(void);
+	 void searchOnCode(void);
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event);

@@ -170,6 +170,7 @@ bool EditorTab::openFile(QString filename, int highlightLine)
 		
 		connect(textEdit, SIGNAL(textChanged()), this, SLOT(onEditorTextChanged()));
 		connect(textEdit, SIGNAL(ctrlUPressed()), this, SLOT(onCtrlUPressed()));
+		connect(textEdit, SIGNAL(searchPressed()), this, SLOT(onSearchUPressed()));
 		
 		addTab(textEdit, QFileInfo(filename).fileName());
 		setCurrentIndex(count() - 1);		
@@ -359,3 +360,10 @@ void EditorTab::onCtrlUPressed(void)
 {
 	emit uploadCode();
 }
+
+
+void EditorTab::onSearchUPressed(void)
+{
+	emit searchOnCode();
+}
+

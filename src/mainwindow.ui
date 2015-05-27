@@ -1119,6 +1119,9 @@ QToolButton {
    <property name="text">
     <string>Search</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
   </action>
   <action name="actionFormat_code">
    <property name="text">

@@ -53,6 +53,7 @@ public slots:
 
 signals:
 	void ctrlUPressed(void);
+	void searchPressed(void);
 
 protected: 
 	void focusInEvent ( QFocusEvent * event );

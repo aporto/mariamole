@@ -9,8 +9,8 @@ Editor::Editor(QWidget *parent)
 	setWindowIconText("editor");
 	//setEolMode(QsciScintilla::EolUnix);
 
-	this->setUtf8(true);
-
+	setUtf8(true);
+	
 	lexer = new QsciLexerCPP;
 	this->setLexer(lexer);
 	
@@ -29,7 +29,7 @@ Editor::Editor(QWidget *parent)
 	actionHelpWithThis = context->addAction("Help with this code");
 	connect(actionHelpWithThis, SIGNAL(triggered()), this, SLOT(HelpWithThis()));
 	context->addSeparator();
-	
+
 	QAction * action = context->addAction("Undo");
 	action->setShortcut(tr("Ctrl+Z"));
 	connect(action, SIGNAL(triggered()), this, SLOT(MenuUndo()));
@@ -276,6 +276,7 @@ void Editor::focusInEvent ( QFocusEvent * event )
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 			QString txt(in.readAll());
 			setText(txt);				
+			this->setUtf8(true);
 			setModified(false);
 			QApplication::restoreOverrideCursor();
         }
@@ -365,6 +366,7 @@ bool Editor::Open(QString filename)
 		return false;
 	}
 	QTextStream in(&file);
+	in.setCodec("UTF-8");
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	QString txt(in.readAll());
@@ -504,6 +506,10 @@ void Editor::keyPressEvent(QKeyEvent * event)
 	if (event->modifiers() == Qt::ControlModifier) {
 		if (event->key() == Qt::Key_U) {
 			emit ctrlUPressed();			
+		}
+
+		if (event->key() == Qt::Key_F) {
+			emit searchPressed();			
 		}
 	}
 

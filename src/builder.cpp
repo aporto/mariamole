@@ -243,7 +243,7 @@ bool Builder::Upload(void)
 	}
 
 	if (communication == "serial") {
-		if (board->second.name == "Arduino Leonardo") {			
+		if (board->second.name == "Arduino Leonardo") {					
 			progress->SetPhase(BuildWindowTypes::detectingLeonardo);
 			QString leoPort = GetLeonardoSerialPort(project->serialPort);
 			progress->SetPhase(BuildWindowTypes::uploading);
@@ -638,7 +638,7 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 		msg.Add("Invalid serial port for project " + project->name + ": '" + project->serialPort + "'", mtError);
 	}
 	
-	msg.Add("Could not detect Leonardo serial port for programming. Please try pressing the RESET button at your board during upload!", mtError);
+	msg.Add("Could not detect Leonardo serial port for programming. Please try pressing the RESET button at your board when you see the dialog message 'Detecting Leonardo port...'!", mtError);
 	return project->serialPort;
 }
 

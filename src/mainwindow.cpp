@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent)
 	tabsEditor = new EditorTab(this);
 	connect(tabsEditor, SIGNAL(codeChanged()), this, SLOT(OnProjectModified()));
 	connect(tabsEditor, SIGNAL(uploadCode()), this, SLOT(UploadProgram()));
+	connect(tabsEditor, SIGNAL(searchOnCode()), this, SLOT(OnSearchTab()));
+	
 	//ui.tabParent->addWidget(tabsEditor);
 	ui.splitter->addWidget(tabsEditor);
 
@@ -1220,6 +1222,13 @@ void MainWindow::OnSearchKeyPress(const QString&)
 	//}
 }
 
+
+//-----------------------------------------------------------------------------
+
+void MainWindow::OnSearchTab(void)
+{
+	ui.messageTabs->setCurrentIndex(3);
+}
 
 //-----------------------------------------------------------------------------
 
