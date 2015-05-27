@@ -61,7 +61,7 @@ QTabWidget{
      border: 1px solid rgb(34, 30, 32);
      background: rgb(74, 90, 92);
      height: 20px;
-     subcontrol-position: top;
+     subcontrol-position: bottom;
      subcontrol-origin: margin;
  }
 
@@ -76,7 +76,7 @@ QTabWidget{
      border: 1px solid rgb(34, 30, 32);
      background: rgb(74, 90, 92);
      height: 20px;
-     subcontrol-position: bottom;
+     subcontrol-position: top;
      subcontrol-origin: margin;
  }
 

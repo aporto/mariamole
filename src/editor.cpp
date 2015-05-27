@@ -9,9 +9,11 @@ Editor::Editor(QWidget *parent)
 	setWindowIconText("editor");
 	//setEolMode(QsciScintilla::EolUnix);
 
+	this->setUtf8(true);
+
 	lexer = new QsciLexerCPP;
 	this->setLexer(lexer);
-	this->setUtf8(true);
+	
 	//setAutoCompletionThreshold(0);
 	
 	api = new QsciAPIs(lexer);
@@ -369,6 +371,7 @@ bool Editor::Open(QString filename)
 	setText(txt);
 	SetFileName(filename);
 	setModified(false);
+	//this->setUtf8(true);
     lastModifiedTime = QFileInfo(filename).lastModified();
 	
 	return true;
@@ -393,7 +396,9 @@ bool Editor::Save(void)
 		return false;
 	} else {    		
 		QTextStream out(&qfile); // we will serialize the data into the file
-		QString utext = QString::fromUtf8(this->text().toUtf8());		// save using UTF-8 format
+		out.setCodec("UTF-8");
+		//out.setGenerateByteOrderMark(true);
+		QString utext = QString::fromUtf8(this->text().toUtf8());//.toUtf8());		// save using UTF-8 format
 		out << utext; 		
 		qfile.close();
 

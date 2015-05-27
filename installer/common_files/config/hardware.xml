@@ -216,6 +216,42 @@
 			<build.core>arduino</build.core>
 			<build.variant>eightanaloginputs</build.variant>			
 		</board>	
+		
+		<board name="Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>30720</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<bootloader.low_fuses>0xFF></bootloader.low_fuses>
+			<bootloader.high_fuses>0xda</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x05</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_atmega328-Mini.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega328p</build.mcu>
+			<build.f_cpu>16000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>standard</build.variant>			
+		</board>	
+		
+		<board name="Pololo Orangutan with ATmeta 328P">
+			<type>arduino</type>
+			<upload.protocol>arduino</upload.protocol>
+			<upload.maxsize>32768</upload.maxsize>
+			<upload.speed>57600</upload.speed>
+			<bootloader.low_fuses>0xff></bootloader.low_fuses>
+			<bootloader.high_fuses>0xda</bootloader.high_fuses>
+			<bootloader.extended_fuses>0x05</bootloader.extended_fuses>
+			<bootloader.path>atmega</bootloader.path>
+			<bootloader.file>ATmegaBOOT_168_atmega328.hex</bootloader.file>
+			<bootloader.unlock_bits>0x3F</bootloader.unlock_bits>
+			<bootloader.lock_bits>0x0F</bootloader.lock_bits>
+			<build.mcu>atmega328p</build.mcu>
+			<build.f_cpu>20000000L</build.f_cpu>
+			<build.core>arduino</build.core>
+			<build.variant>standard</build.variant>			
+		</board>	
 	</boards>
 	
 	<programmers>
@@ -262,6 +298,14 @@
 		<programmer name="Arduino as ISP">
 			<communication>serial</communication>
 			<protocol>stk500v1</protocol>
+			<force></force>
+			<delay></delay>
+			<speed>19200</speed>
+		</programmer>
+		
+		<programmer name="Pololo USB AVR">
+			<communication>serial</communication>
+			<protocol>stk500v2</protocol>
 			<force></force>
 			<delay></delay>
 			<speed>19200</speed>
