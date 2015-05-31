@@ -353,9 +353,9 @@ void Workspace::ImportLibraryFilesRecursively(Project * project, QString path, Q
 		pref = path.right(pathLen-1);
 	}
 
-	project->includePaths += ";$(LIBRARIES)/" + libName;
+	project->AddIncludePath(";$(LIBRARIES)/" + libName);
 	if (pref != "") {
-		project->includePaths += pref;
+		project->AddIncludePath(";$(LIBRARIES)/" + libName + "/" + pref);
 	}
 
 	QDir dir(path);                            

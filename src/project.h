@@ -34,6 +34,7 @@ public:
 	bool Load(QString workspace, QString filename);	
 	bool Save(QString workspacePath);
 	void AddPath(QString & pathList, QString newPath);
+	void AddIncludePath(QString newPath);
 
 	bool current;
 	bool rebuild;

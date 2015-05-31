@@ -21,6 +21,15 @@ void Project::Clear(void)
 
 //-----------------------------------------------------------------------------
 
+void Project::AddIncludePath(QString newPath)
+{
+	if (includePaths.contains(newPath) == false) {
+		includePaths += newPath;
+	}
+}
+
+//-----------------------------------------------------------------------------
+
 QString Project::ReadXMLNode(QDomNode xml, QString attribute, QString defaultValue)
 {
 	QDomNode xml2 = xml.firstChildElement(attribute);
