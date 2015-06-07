@@ -622,9 +622,9 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 		before.append(serialList.availablePorts().at(i).portName());
 	}
 	
-//#ifdef Q_OS_WIN
-//	bool open = PrepareSerialPort(project->serialPort, "1200");	
-//#else
+#ifdef Q_OS_WIN
+   	PrepareSerialPort(project->serialPort, "1200");	
+#endif
 	port.setPortName(project->serialPort);
 	port.setFlowControl(QSerialPort::NoFlowControl);
 	port.setBaudRate(QSerialPort::Baud1200);
@@ -639,11 +639,12 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 	}
 	char buffer[20] = "Hello!\r\n";
 	port.write ((const char *)buffer);
-	QThread::msleep(100);
+	QThread::msleep(500);
 	port.close();
 
 	int counter = 50;
 	after.clear();
+	bool warningMessage = true;
 	while (counter > 0) {
 		QSerialPortInfo newSerialList;
 		for (int i=0; i < newSerialList.availablePorts().count();i++) {
@@ -655,8 +656,14 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 				return after.at(i);				
 			}
 		}
-		QThread::msleep(100);
+		QThread::msleep(120);
 		counter--;
+
+		if ( (progress->value() > 40) && warningMessage) {
+			warningMessage = false;
+			progress->SetPhase(BuildWindowTypes::detectingLeonardo2);
+			msg.Add("Could not reset board automatically via serial port " + project->serialPort + "! Press RESET button at your board NOW!", mtWarning);
+		}
 
 		SetPercentage(100 - counter * 2);
 		if (GetCancel()) {
