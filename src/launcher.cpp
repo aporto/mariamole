@@ -48,7 +48,8 @@ bool Launcher::RunCommand(QString cmd, QStringList args, unsigned int timeOut, B
 			running = !(proc->waitForFinished(-1));
 #else
 			running = !(proc->waitForFinished(70));
-#endif            
+#endif          
+			running =  (proc->state() != QProcess::NotRunning);
             qApp->processEvents();            
             QThread::msleep(30);
             timeOutCounter++;

@@ -622,9 +622,9 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 		before.append(serialList.availablePorts().at(i).portName());
 	}
 	
-#ifdef Q_OS_WIN
-	bool open = PrepareSerialPort(project->serialPort, "1200");	
-#else
+//#ifdef Q_OS_WIN
+//	bool open = PrepareSerialPort(project->serialPort, "1200");	
+//#else
 	port.setPortName(project->serialPort);
 	port.setFlowControl(QSerialPort::NoFlowControl);
 	port.setBaudRate(QSerialPort::Baud1200);
@@ -632,7 +632,7 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 	port.setStopBits(QSerialPort::OneStop);
 	port.setDataBits(QSerialPort::Data8);
 	bool open = port.open (QIODevice::ReadWrite);
-#endif 
+//#endif 
 	if (open == false) {	
 		progress->SetPhase(BuildWindowTypes::detectingLeonardo2);
 		msg.Add("Could not reset board automatically via serial port " + project->serialPort + "! Press RESET button at your board NOW!", mtWarning);

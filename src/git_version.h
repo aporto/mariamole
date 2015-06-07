@@ -4,6 +4,6 @@
 #define STRINGIZE2(s) #s 
 #define STRINGIZE(s) STRINGIZE2(s) 
 // 
-#define GIT_VERSION_NUMBER mariamole_0.7-15-ge09d
+#define GIT_VERSION_NUMBER mariamole_0.7-16-g4cdb
 #define GIT_VERSION_STRING STRINGIZE(GIT_VERSION_NUMBER) 
 #endif 
