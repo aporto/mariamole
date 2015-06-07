@@ -1227,7 +1227,9 @@ void MainWindow::OnSearchKeyPress(const QString&)
 
 void MainWindow::OnSearchTab(void)
 {
-	ui.messageTabs->setCurrentIndex(3);
+	ui.messageTabs->setCurrentIndex(2);
+	ui.searchText->setFocus();
+	ui.searchText->lineEdit()->selectAll();
 }
 
 //-----------------------------------------------------------------------------

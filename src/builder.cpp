@@ -246,8 +246,11 @@ bool Builder::Upload(void)
 
 	if (communication == "serial") {
 		if (board->second.name == "Arduino Leonardo") {					
-			progress->SetPhase(BuildWindowTypes::detectingLeonardo);
+			progress->SetPhase(BuildWindowTypes::detectingLeonardo1);
 			QString leoPort = GetLeonardoSerialPort(project->serialPort);
+			if (leoPort == "") {
+				return false;
+			}
 			progress->SetPhase(BuildWindowTypes::uploading);
             //arguments << "-P\\\\.\\" + leoPort;
 
@@ -296,8 +299,6 @@ bool Builder::Upload(void)
 
 bool Builder::Compile(int fileIndex)
 {
-	msg.buildStage = 1;
-
 	QString inputFile;	
 
 	// Get the input file path
@@ -316,29 +317,37 @@ bool Builder::Compile(int fileIndex)
 		break; 
 	}
     qDebug() << "inputFile: " << inputFile;
-	return CompileFile(inputFile, true);//, false);
+	//msg.buildStage = 0;			/// pre processor
+	//CompileFile(inputFile, true, true);
+	msg.buildStage = 1;
+	return CompileFile(inputFile, true, false);
 }
 
 //-----------------------------------------------------------------------------
 
-QString Builder::MangleFileName(QString inputFile)
+QString Builder::MangleFileName(QString inputFile, bool compilerOutput = false)
 {
 	// Mangle it to avoid conflicting with other files with the same name from other directories
 	// filename shall be a fullpath file name
 	QString outputFile = QFileInfo(inputFile).fileName(); //project->files.at(fileIndex).name;
 	QString folder = QFileInfo(inputFile).dir().path();
 	folder = QFileInfo(folder).baseName();
-	outputFile = buildPath + "/" + folder + "_" + outputFile + ".o";
+	outputFile = buildPath + "/" + folder + "_" + outputFile;
+	if (compilerOutput) {
+		outputFile += ".txt";
+	} else {
+		outputFile += ".o";
+	}
 	return outputFile;
 }
 
 //-----------------------------------------------------------------------------
 
-bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
+bool Builder::CompileFile(QString inputFile, bool testDate, bool extractMacros) //, bool silent)
 {
 	// Define the output file.	
     msg.buildStage = 1;
-	QString outputFile = MangleFileName(inputFile);
+	QString outputFile = MangleFileName(inputFile, extractMacros);
 	
 	// Check if the compiled object file is update. 
 	// If yes, we won't compile it again to gain time
@@ -352,7 +361,11 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 		}
 	}
 	
-	msg.AddOutput("Compiling file: " + inputFile, false);	
+	if (extractMacros) {
+		msg.AddOutput("Preprocessing file: " + inputFile, false);	
+	} else {
+		msg.AddOutput("Compiling file: " + inputFile, false);	
+	}
 
 	// Get the compiler path	
 	QString compilerPath = config.avrPath;
@@ -384,7 +397,16 @@ bool Builder::CompileFile(QString inputFile, bool testDate) //, bool silent)
 	}
 
 	arguments << "-mmcu=" + board->second.build_mcu;;
-	arguments << "-DF_CPU=" + board->second.build_f_cpu;
+	arguments << "-DF_CPU=" + board->second.build_f_cpu; 
+
+	//arguments << "-MF" << "C:/Users/aporto/Desktop/teste.txt";
+	//arguments << "-E" << "-dM";	
+
+	if (extractMacros) {
+		QFile of(outputFile);
+		of.remove();
+		arguments << "-dN" << "-E";
+	}
 
 	// add all include paths from the project configurations
     QStringList projectIncludes = project->includePaths.split(";") + config.extraArduinoLibsSearchPaths.split(";");
@@ -493,7 +515,7 @@ bool Builder::Link(void)
 	// get linker arguments
 	map <QString, BoardDef>::const_iterator board = config.boards.find(project->boardName);
 	QStringList arguments;
-	arguments << "-Os" << "-Wl,--gc-section";	
+	arguments << "-Os" << "-Wl,--gc-section";
 	arguments << "-mmcu=" + board->second.build_mcu;
 	arguments << "-o" << binFile;
 	for (unsigned int i=0; i < project->files.size(); i++) {
@@ -501,8 +523,7 @@ bool Builder::Link(void)
 		if ( (ext == "CPP") || (ext == "C") ) {
 			QString objFile = MangleFileName(workspace.GetFullFilePath(project->name, project->files.at(i).name));
 			arguments << objFile;		
-
-			}
+		}
 	}
 
 	arguments << coreLib;		
@@ -569,7 +590,7 @@ bool Builder::BuildCoreLib(void)
 			ok = false;
 			break;
 		}
-		ok = ok && CompileFile (inputFile, false);//, true);
+		ok = ok && CompileFile (inputFile, false, false);//, true);
 		if (ok) {
 			QString outputFile = MangleFileName(inputFile);
 			QStringList arguments;
@@ -602,7 +623,7 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 	}
 	
 #ifdef Q_OS_WIN
-	bool open = PrepareSerialPort(project->serialPort, "1200");
+	bool open = PrepareSerialPort(project->serialPort, "1200");	
 #else
 	port.setPortName(project->serialPort);
 	port.setFlowControl(QSerialPort::NoFlowControl);
@@ -612,36 +633,40 @@ QString Builder::GetLeonardoSerialPort(QString defaultPort)
 	port.setDataBits(QSerialPort::Data8);
 	bool open = port.open (QIODevice::ReadWrite);
 #endif 
-	if (open) {	
-		char buffer[20] = "Hello!\r\n";
-		port.write ((const char *)buffer);
-		QThread::msleep(100);
-		port.close();
-
-		int counter = 50;
-		after.clear();
-		while (counter > 0) {
-			QSerialPortInfo newSerialList;
-			for (int i=0; i < newSerialList.availablePorts().count();i++) {
-				after.append(newSerialList.availablePorts().at(i).portName());
-			}
-
-			for (int i=0; i < after.count(); i++) {
-				if (before.indexOf(after.at(i)) < 0) {
-					return after.at(i);				
-				}
-			}
-			QThread::msleep(100);
-			counter--;
-
-			SetPercentage(100 - counter * 2);
-		}
-	} else {
-		msg.Add("Invalid serial port for project " + project->name + ": '" + project->serialPort + "'", mtError);
+	if (open == false) {	
+		progress->SetPhase(BuildWindowTypes::detectingLeonardo2);
+		msg.Add("Could not reset board automatically via serial port " + project->serialPort + "! Press RESET button at your board NOW!", mtWarning);
 	}
+	char buffer[20] = "Hello!\r\n";
+	port.write ((const char *)buffer);
+	QThread::msleep(100);
+	port.close();
+
+	int counter = 50;
+	after.clear();
+	while (counter > 0) {
+		QSerialPortInfo newSerialList;
+		for (int i=0; i < newSerialList.availablePorts().count();i++) {
+			after.append(newSerialList.availablePorts().at(i).portName());
+		}
+
+		for (int i=0; i < after.count(); i++) {
+			if (before.indexOf(after.at(i)) < 0) {
+				return after.at(i);				
+			}
+		}
+		QThread::msleep(100);
+		counter--;
+
+		SetPercentage(100 - counter * 2);
+		if (GetCancel()) {
+			counter = 0;
+			break;
+		}
+	}	
 	
-	msg.Add("Could not detect Leonardo serial port for programming. Please try pressing the RESET button at your board when you see the dialog message 'Detecting Leonardo port...'!", mtError);
-	return project->serialPort;
+	msg.Add("Could not detect Leonardo serial port for programming. Please try pressing the RESET button at your board when you see the dialog message 'Detecting Leonardo port...'!", mtError);	
+	return "";
 }
 
 //-----------------------------------------------------------------------------

@@ -45,13 +45,13 @@ private:
 	BuildWindow * progress;
 
 	bool Compile(int fileIndex);
-	bool CompileFile(QString inputFile, bool testDate);//, bool silent);
+	bool CompileFile(QString inputFile, bool testDate, bool extractMacros);
 	bool Link(void);
 	void GetBinarySize(void);
 	bool BuildCoreLib(void);
 	bool Upload(void);
 	QString GetLeonardoSerialPort(QString defaultPort);
-	QString MangleFileName(QString inputFile);
+	QString MangleFileName(QString inputFile, bool compilerOutput);
 	void ImportDeclarations(void);
 	void SetPercentage(int value);
 	bool GetCancel(void);

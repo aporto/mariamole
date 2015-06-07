@@ -68,9 +68,13 @@ void BuildWindow::SetPhase(BuildWindowTypes::phaseType phase)
 			css += "QProgressBar::chunk:horizontal {background: rgb(90, 160, 90); }";			
 		break;		
 
-		case BuildWindowTypes::detectingLeonardo:
+		case BuildWindowTypes::detectingLeonardo1:
 			ui.label->setText("Detecting Leonardo port...");
 			css += "QProgressBar::chunk:horizontal {background: rgb(90, 160, 160); }";			
+		break;		
+		case BuildWindowTypes::detectingLeonardo2:
+			ui.label->setText("Press RESET at your board!");
+			css += "QProgressBar::chunk:horizontal {background: rgb(255, 60, 60); }";			
 		break;		
 
 	}
