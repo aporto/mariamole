@@ -479,7 +479,8 @@ QString Config::DecodeLibraryPath(QString libPath)
 {
 	int pos = libPath.indexOf("$(");
 	if (pos < 0) {
-		return libPath;
+		return libPath.replace(QChar('\\'), QChar('/'));
+		//return libPath;
 	}
 
 	QString macro = libPath;
@@ -488,7 +489,8 @@ QString Config::DecodeLibraryPath(QString libPath)
 	macro = macro.remove(0, pos);
 	pos = macro.indexOf(")");
 	if (pos < 0) {
-		return libPath;
+		return libPath.replace(QChar('\\'), QChar('/'));
+		//return libPath;
 	}
 	QString path2 = macro;
 	path2 = path2.remove(0, pos+1);
@@ -507,7 +509,8 @@ QString Config::DecodeLibraryPath(QString libPath)
 		}
 		dirPath = path1 + dirPath + path2;
 		if (QDir(dirPath).exists()) {
-			return dirPath;
+			return dirPath.replace(QChar('\\'), QChar('/'));
+			//return dirPath;
 		}
 	}
 

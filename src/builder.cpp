@@ -411,10 +411,13 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool extractMacros) 
 	// add all include paths from the project configurations
     QStringList projectIncludes = project->includePaths.split(";") + config.extraArduinoLibsSearchPaths.split(";");
 	QStringList includes;
-	includes << QFileInfo(inputFile).path();
+	QString path = QFileInfo(inputFile).path();
+	path = path.replace(QChar('\\'), QChar('/'));
+	includes << path;	
 
-	QString core = config.DecodeMacros("$(ARDUINO_CORE)", project);
-	includes <<  core;
+	path = config.DecodeMacros("$(ARDUINO_CORE)", project);
+	path = path.replace(QChar('\\'), QChar('/'));
+	includes <<  path;
 /*#if defined(Q_OS_WIN)
     includes <<  qApp->applicationDirPath() + "/arduino/arduino/cores/" + board->second.build_core;
 #endif
@@ -424,8 +427,9 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool extractMacros) 
     includes << config.arduinoCoreOpt + "/arduino/cores/" + board->second.build_core;
 #endif
 */
-	QString variant = config.DecodeMacros("$(ARDUINO_VARIANT)", project);
-	includes << variant;
+	path = config.DecodeMacros("$(ARDUINO_VARIANT)", project);
+	path = path.replace(QChar('\\'), QChar('/'));
+	includes <<  path;
 
 	for (int l=0; l < projectIncludes.count(); l++) {
 		projectIncludes[l] = projectIncludes[l].trimmed();
@@ -451,6 +455,7 @@ bool Builder::CompileFile(QString inputFile, bool testDate, bool extractMacros) 
 
 	for (int i=0; i < includes.size(); i++) {
 		arguments << "-I"  << includes[i];
+		//arguments << "-I" << "\"" + includes[i] + "\"";
 	}
 
     bool ok = launcher->RunCommand(compilerPath, arguments);
