@@ -5,7 +5,7 @@ MariaMole: An alternative Arduino IDE
 
 More info at [http://alexporto.com/mariamole]
 
-Download the last Windows release from the Release page. Get the file [https://github.com/aporto/mariamole/releases MariaMole_Installer.exe]
+Download the last Windows release from the Release page. Get the file [[https://github.com/aporto/mariamole/releases MariaMole_Installer.exe]]
 
 For Linux and Macintosh, the last compiled binaries are at [http://alexporto.com/mariamole]. Note that these binaries are compiled by other people, and may be using old code. Only the Windows version is always compiled with the last version of this code.
 
