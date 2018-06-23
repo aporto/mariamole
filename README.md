@@ -3,10 +3,15 @@ mariamole
 
 MariaMole: An alternative Arduino IDE
 
-
 More info at [http://alexporto.com/mariamole]
 
-How to build this project:===
+Download the last Windows release from the Release page. Get the file [https://github.com/aporto/mariamole/releases MariaMole_Installer.exe]
+
+For Linux and Macintosh, the last compiled binaries are at [http://alexporto.com/mariamole]. Note that these binaries are compiled by other people, and may be using old code. Only the Windows version is always compiled with the last version of this code.
+
+If you want to build your own binaries, check the instructions below
+
+===How to build this project:===
 This project requires:--
 * Qt 5.4.1 (Other versions may be compatible, but this is recommended, since things may change)
 * QScintilla 2.8.3
