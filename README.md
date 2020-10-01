@@ -1,7 +1,7 @@
-mariamole
+mariamole 
 =========
 
-MariaMole: An alternative Arduino IDE
+MariaMole: An advance alternative Arduino IDE
 
 More info at [http://alexporto.com/mariamole]
 
